@@ -126,7 +126,7 @@ class ProductCard extends StatelessWidget {
           width: 5,
         ),
         Text(
-          product.price.toString(),
+          product.price[product.size[0]].toString(),
           style: const TextStyle(
             fontSize: 18,
           ),

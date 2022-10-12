@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/screens/main/main.dart';
+import 'package:coffe_flutter/screens/product/product.dart';
 import 'package:flutter/material.dart';
 
 class PathRoute {
@@ -54,6 +55,13 @@ class AppRoutes {
         isPrivate: false,
         routePath: PathRoute.login,
         route: (context) => LoginScreen()),
+    RouteItem(
+        titleKey: "product",
+        isMenu: false,
+        icon: Icons.production_quantity_limits,
+        isPrivate: false,
+        routePath: PathRoute.product,
+        route: (context) => ProductScreen()),
   ];
 
   List<RouteItem> getRouterList(bool isAuth) {

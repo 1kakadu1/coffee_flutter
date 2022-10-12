@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_avatar.dart';
+import 'package:coffe_flutter/widgets/buttons/btn_custom.dart';
 import 'package:coffe_flutter/widgets/cards/special_card.dart';
 import 'package:coffe_flutter/widgets/fields/input_search.dart';
 import 'package:coffe_flutter/widgets/list_view_products.dart';
@@ -48,6 +49,10 @@ class HomeScreenContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ButtonCustom(
+              onPress: () {},
+              child: Text("aaaaaa"),
+            ),
             const TitleWidget(
               text: "Find the best coffee for you ",
             ),
