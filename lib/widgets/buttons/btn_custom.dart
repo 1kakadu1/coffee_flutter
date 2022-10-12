@@ -13,8 +13,8 @@ class ButtonCustom extends StatelessWidget {
   const ButtonCustom(
       {Key? key,
       required this.child,
-      this.width = 46,
-      this.height = 46,
+      this.width,
+      this.height,
       required this.onPress,
       this.radius,
       this.padding,

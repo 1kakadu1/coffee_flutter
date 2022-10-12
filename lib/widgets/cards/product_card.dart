@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final double? width;
+  final void Function(String id) onPress;
   final ProductModel product;
-  const ProductCard({Key? key, this.width = 186, required this.product})
+  const ProductCard(
+      {Key? key,
+      this.width = 186,
+      required this.product,
+      required this.onPress})
       : super(key: key);
 
   @override
@@ -66,33 +71,61 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned.fill(
+                child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10.0),
+                      onTap: () {
+                        onPress(product.id);
+                      },
+                    )))
           ],
         ),
-        const SizedBox(
-          height: 12,
-        ),
-        SizedBox(
-          height: 40,
-          child: Text(
-            product.name,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: const TextStyle(
-              overflow: TextOverflow.ellipsis,
-              fontSize: 18,
+        Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  height: 40,
+                  child: Text(
+                    product.name,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  product.description,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      const TextStyle(fontSize: 14, color: AppColors.subtext),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          product.description,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 14, color: AppColors.subtext),
-        ),
-        const SizedBox(
-          height: 10,
+            Positioned.fill(
+                child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10.0),
+                      onTap: () {
+                        onPress(product.id);
+                      },
+                    )))
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

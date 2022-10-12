@@ -1,12 +1,10 @@
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_avatar.dart';
-import 'package:coffe_flutter/widgets/buttons/btn_custom.dart';
 import 'package:coffe_flutter/widgets/cards/special_card.dart';
 import 'package:coffe_flutter/widgets/fields/input_search.dart';
 import 'package:coffe_flutter/widgets/list_view_products.dart';
 import 'package:coffe_flutter/widgets/list_view_tabs.dart';
-import 'package:coffe_flutter/widgets/menu_bottom.dart';
 import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -49,10 +47,6 @@ class HomeScreenContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ButtonCustom(
-              onPress: () {},
-              child: Text("aaaaaa"),
-            ),
             const TitleWidget(
               text: "Find the best coffee for you ",
             ),
@@ -124,33 +118,3 @@ class HomeScreenContent extends StatelessWidget {
     );
   }
 }
-
-            // Row(
-            //   children: [
-            //     ProductCard(
-            //       product: ProductModel(
-            //           id: "1",
-            //           name: "Cappuccino",
-            //           descripton: "loprem lorem lorem",
-            //           preview:
-            //               "https://www.ornelio.ru/upload/iblock/c60/c60aeac97d6f41f7292b764c40016c7e.jpg",
-            //           price: 55.4,
-            //           rating: 4.2,
-            //           code: "134445"),
-            //     ),
-            //     const SizedBox(
-            //       width: 20,
-            //     ),
-            //     ProductCard(
-            //       product: ProductModel(
-            //           id: "2",
-            //           name: "Cappuccino milk top",
-            //           descripton: "loprem lorem lorem",
-            //           preview:
-            //               "https://st2.depositphotos.com/5355656/7813/i/450/depositphotos_78138608-stock-photo-a-cup-of-cappuccino.jpg",
-            //           price: 4,
-            //           rating: 5.0,
-            //           code: "134442"),
-            //     ),
-            //   ],
-            // ),
