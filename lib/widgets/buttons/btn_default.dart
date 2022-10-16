@@ -19,7 +19,7 @@ class ButtonDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      foregroundColor: AppColors.text,
+      // foregroundColor: AppColors.text,
       backgroundColor: AppColors.primary,
       minimumSize: const Size(32, 32),
       shape: RoundedRectangleBorder(
