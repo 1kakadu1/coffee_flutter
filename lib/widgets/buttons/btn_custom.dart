@@ -60,12 +60,14 @@ class ButtonPrimary extends StatelessWidget {
   final double? height;
   final double? radius;
   final Function onPress;
+  final double? borderWidth;
   const ButtonPrimary(
       {Key? key,
       required this.child,
       this.width,
       this.height,
       this.radius,
+      this.borderWidth,
       required this.onPress})
       : super(key: key);
 
@@ -89,7 +91,7 @@ class ButtonPrimary extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius ?? 14),
           border: Border.all(
             color: AppColors.backgraundLight,
-            width: 2,
+            width: borderWidth ?? 0,
           ),
         ),
         child: child,

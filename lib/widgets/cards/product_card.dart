@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
+import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
@@ -130,7 +131,9 @@ class ProductCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _cardPrice(),
+            PriceText(
+              price: product.price[product.size[0]].toString(),
+            ),
             ButtonDefault(
               onPress: () {},
               width: 32,
@@ -145,26 +148,6 @@ class ProductCard extends StatelessWidget {
           ],
         )
       ]),
-    );
-  }
-
-  Widget _cardPrice() {
-    return Row(
-      children: [
-        const Text(
-          '\$',
-          style: TextStyle(fontSize: 18, color: AppColors.primary),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        Text(
-          product.price[product.size[0]].toString(),
-          style: const TextStyle(
-            fontSize: 18,
-          ),
-        ),
-      ],
     );
   }
 }
