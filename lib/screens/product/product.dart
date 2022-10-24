@@ -215,18 +215,9 @@ class _ProductScreenState extends State<ProductScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ..._itemBuilder(["S", "SM", "XXL"])
+                  ..._itemBuilder(["S", "SM", "XXL"], "SM")
                 ],
               )
-              // SizedBox(
-              //   height: 45,
-              //   child: ListView.separated(
-              //       scrollDirection: Axis.horizontal,
-              //       itemBuilder: _itemBuilder,
-              //       separatorBuilder: (BuildContext context, int index) =>
-              //           const SizedBox(width: 10),
-              //       itemCount: 3),
-              // ),
             ],
           ),
         )),
@@ -258,20 +249,27 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             ButtonDefault(
               onPress: () {},
-              text: Text(
-                "Add cart",
-                style: TextStyle(color: AppColors.write),
+              text: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  "Add cart",
+                  style: TextStyle(color: AppColors.write),
+                ),
               ),
             ),
           ]),
     );
   }
 
-  List<Widget> _itemBuilder(List<String> sizes) {
+  List<Widget> _itemBuilder(List<String> sizes, String currentSize) {
     List<Widget> items = [];
     for (int i = 0; i < sizes.length; i++) {
       items.add(ButtonCustom(
-        //height: 45,
+        borderColor: AppColors.blackLight,
+        background: AppColors.blackLight,
+        activeColor: AppColors.black,
+        activeBorder: AppColors.primary,
+        active: sizes[i] == currentSize,
         width: 60,
         color: AppColors.red[400],
         child: Padding(

@@ -11,6 +11,11 @@ class ButtonCustom extends StatelessWidget {
   final LinearGradient? gradient;
   final Color? color;
   final Color? splashColor;
+  final Color? background;
+  final Color? activeColor;
+  final bool? active;
+  final Color? activeBorder;
+  final Color? borderColor;
   const ButtonCustom(
       {Key? key,
       required this.child,
@@ -21,7 +26,12 @@ class ButtonCustom extends StatelessWidget {
       this.padding,
       this.gradient,
       this.color,
-      this.splashColor})
+      this.splashColor,
+      this.background,
+      this.activeColor,
+      this.active = false,
+      this.activeBorder,
+      this.borderColor})
       : super(key: key);
 
   @override
@@ -41,12 +51,20 @@ class ButtonCustom extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 12),
         ),
-        child: Container(
+        child: AnimatedContainer(
+            duration: const Duration(minutes: 300),
             height: height,
             width: width,
             decoration: BoxDecoration(
+              color: active == true ? activeColor : background,
               gradient: gradient,
               borderRadius: BorderRadius.circular(radius ?? 12),
+              border: Border.all(
+                color: active == true
+                    ? activeBorder ?? AppColors.black
+                    : borderColor ?? AppColors.black,
+                width: 1,
+              ),
             ),
             child: child),
       ),
