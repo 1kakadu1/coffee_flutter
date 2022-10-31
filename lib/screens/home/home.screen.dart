@@ -48,7 +48,7 @@ class HomeScreenContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const TitleWidget(
-              text: "Find the best coffee for you ",
+              text: "Найдите лучший кофе для себя ",
             ),
             const SizedBox(
               height: 40,
@@ -68,7 +68,7 @@ class HomeScreenContent extends StatelessWidget {
               height: 40,
             ),
             const TitleWidget(
-              text: "Special products",
+              text: "Специальные продукты",
               fontSize: 18,
             ),
             const SizedBox(
@@ -76,8 +76,7 @@ class HomeScreenContent extends StatelessWidget {
             ),
             SpecialCard(
               title: productsMock[0].name,
-              description:
-                  "lorem lorem lorem Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you v Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you",
+              description: productsMock[0].description,
               preview: productsMock[0].preview,
               onPress: (dynamic value) {},
             ),
@@ -85,10 +84,9 @@ class HomeScreenContent extends StatelessWidget {
               height: 20,
             ),
             SpecialCard(
-              title: productsMock[0].name,
-              description:
-                  "lorem lorem lorem Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you",
-              preview: productsMock[0].preview,
+              title: productsMock[1].name,
+              description: productsMock[1].description,
+              preview: productsMock[1].preview,
               orientation: SpecialCardOrientation.horizontal,
               onPress: (dynamic value) {
                 pushNewScreen(
@@ -102,10 +100,9 @@ class HomeScreenContent extends StatelessWidget {
             ),
             SpecialCard(
               horizontalWidgetReverse: true,
-              title: productsMock[0].name,
-              description:
-                  "lorem lorem lorem Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you Find the best coffee for you",
-              preview: productsMock[0].preview,
+              title: productsMock[2].name,
+              description: productsMock[2].description,
+              preview: productsMock[2].preview,
               orientation: SpecialCardOrientation.horizontal,
               onPress: (dynamic value) {},
             ),

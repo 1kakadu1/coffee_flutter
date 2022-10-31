@@ -1,11 +1,15 @@
 import 'package:coffe_flutter/firebase_options.dart';
+import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/router/router.dart';
+import 'package:coffe_flutter/services/firebase_create_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //final db = FirebaseCreateData();
+  // await db.createProductsDB(productsMock);
   runApp(const MyApp());
 }
 

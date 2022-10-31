@@ -28,7 +28,7 @@ class ProductModel {
       required this.isPublic,
       required this.measurement_value,
       required this.size,
-      required categorys});
+      required this.categorys});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     name = json["name"] ?? "";
@@ -104,67 +104,94 @@ class ProductModel {
 final List<ProductModel> productsMock = [
   ProductModel(
       id: "1",
-      name: "Cappuccino",
-      description: "loprem lorem lorem",
+      name: "Бамбл кофе",
+      description:
+          "Холодный веселый напиток: кофе с апельсиновым соком, уложенные полосками. Отсюда и сравнение со шмелем (bumblebee по-английски — шмель). Перед употреблением напиток лучше размешать. Этот рецепт — из «Кофемании».",
       preview:
-          "https://www.ornelio.ru/upload/iblock/c60/c60aeac97d6f41f7292b764c40016c7e.jpg",
+          "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/products%2Fp_O.jpg?alt=media&token=24682faf-6aef-48c4-a86f-3a2b9792e971",
       rating: 4.2,
       code: "134445",
-      price: {"350": 55.4},
+      price: {"280": 55.4},
       isPublic: true,
       gallary: [],
-      composition: [],
+      composition: ["Эспрессо", "апельсиновый сок", "карамельный сироп", "лёд"],
       measurement_value: "мл",
-      energy_and_nutritional_value: [],
-      size: ["350"],
-      categorys: []),
+      energy_and_nutritional_value: [
+        {"title": "Белки, гр", "value": "0,7"},
+        {"title": "Жиры, гр", "value": "3,83"},
+        {"title": "Углеводы, гр", "value": "3,44"},
+        {"title": "Энергетическая ценность, ккал", "value": "34,82"}
+      ],
+      size: ["280"],
+      categorys: ["id-all", "id-coffee"]),
   ProductModel(
       id: "2",
-      name: "Cappuccino milk top",
-      description: "loprem lorem lorem",
+      name: "Латте-халва",
+      description:
+          "Этот кофейный напиток можно назвать самым русским, ведь в нем неожиданное сочетание семечек и кофе. Но вы будете приятно удивлены, этот кофе получается нежным, сладким и ароматным.",
       preview:
-          "https://st2.depositphotos.com/5355656/7813/i/450/depositphotos_78138608-stock-photo-a-cup-of-cappuccino.jpg",
+          "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/products%2Fdawd.jpg?alt=media&token=df9c8b64-6890-44ff-be97-deb523710b40",
       rating: 5.0,
       code: "134442",
-      price: {"350": 55.4},
+      price: {"300": 100},
       isPublic: true,
       gallary: [],
-      composition: [],
+      composition: ["Эспрессо", "молоко", "соус из халвы"],
       measurement_value: "мл",
-      energy_and_nutritional_value: [],
-      size: ["350"],
-      categorys: []),
+      energy_and_nutritional_value: [
+        {"title": "Белки, гр", "value": "3,56"},
+        {"title": "Жиры, гр", "value": "6,34"},
+        {"title": "Углеводы, гр", "value": "14,63"},
+        {"title": "Энергетическая ценность, ккал", "value": "127,91"}
+      ],
+      size: ["300"],
+      categorys: ["id-all", "id-coffee"]),
   ProductModel(
-      id: "1",
-      name: "Cappuccino",
-      description: "loprem lorem lorem",
+      id: "3",
+      name: "Раф",
+      description:
+          "Раф кофе — это горячий кофейный напиток на основе эспрессо, ванильного сахара и жирных сливок, которые смешиваются в питчере и взбиваются паром с помощью кофемашины.",
       preview:
-          "https://www.ornelio.ru/upload/iblock/c60/c60aeac97d6f41f7292b764c40016c7e.jpg",
-      price: {"350": 55.4},
+          "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/products%2Floj.jpg?alt=media&token=214c886e-352a-49f0-aca1-b1062fe2a3ba",
+      price: {
+        "250": 25,
+        "350": 55.4,
+      },
       isPublic: true,
       gallary: [],
-      composition: [],
+      composition: ["спрессо", "сливки", "ваниль"],
       measurement_value: "мл",
-      energy_and_nutritional_value: [],
-      size: ["350"],
+      energy_and_nutritional_value: [
+        {"title": "Белки, гр", "value": "2,37"},
+        {"title": "Жиры, гр", "value": "7,99"},
+        {"title": "Углеводы, гр", "value": "10,1"},
+        {"title": "Энергетическая ценность, ккал", "value": "160,86"}
+      ],
+      size: ["250", "350"],
       rating: 4.2,
       code: "134445",
-      categorys: []),
+      categorys: ["id-all", "id-coffee"]),
   ProductModel(
-    id: "2",
-    name: "Cappuccino milk top",
-    description: "loprem lorem lorem",
+    id: "4",
+    name: "Чай Молочный улун",
+    description:
+        "Молочный улун (оолонг) – самый знаменитый светлый улун, особый вид полуферментированного китайского чая. Сливочный вкус, а также необыкновенно полезный состав — все это делает чай очень востребованным и популярным. Легенда и история открытия нового сорта чая начинается с 1982 году, в горной области Наньтоу на острове Тайвань. Настоящий молочный улун получил официальное название «Най Сян Цзинь Сюань» - что означает «золотой цветок», и в короткие сроки стал широко известен среди ценителей чая по всему миру.",
     preview:
-        "https://st2.depositphotos.com/5355656/7813/i/450/depositphotos_78138608-stock-photo-a-cup-of-cappuccino.jpg",
-    price: {"350": 55.4},
+        "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/products%2F008e015cd907da87f5f306f673337439b1c.jpeg?alt=media&token=bbe919da-ba86-49ce-adb5-aeb241dd94bb",
+    price: {"400": 62},
     isPublic: true,
     gallary: [],
-    composition: [],
+    composition: ["китайский чай" "сливки"],
     measurement_value: "мл",
-    energy_and_nutritional_value: [],
-    size: ["350"],
+    energy_and_nutritional_value: [
+      {"title": "Белки, гр", "value": "0,22"},
+      {"title": "Жиры, гр", "value": "0,06"},
+      {"title": "Углеводы, гр", "value": "2,95"},
+      {"title": "Энергетическая ценность, ккал", "value": "12,61"}
+    ],
+    size: ["400"],
     rating: 5.0,
     code: "134442",
-    categorys: [],
+    categorys: ["id-all", "id-tea"],
   )
 ];

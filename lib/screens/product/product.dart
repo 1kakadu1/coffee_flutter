@@ -90,7 +90,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   Positioned(
                       bottom: 0,
                       child: GlassPaper(
-                        height: 114,
+                        height: 124,
                         radius: 12,
                         color: AppColors.glass,
                         width: MediaQuery.of(context).size.width - 40,
@@ -100,48 +100,56 @@ class _ProductScreenState extends State<ProductScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      productsMock[0].name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text(
-                                      productsMock[0].description,
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.subtext),
-                                    )
-                                  ],
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        productsMock[0].name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        productsMock[0].description,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.subtext),
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
-                                  width: 12,
+                                  width: 22,
                                 ),
-                                Row(
-                                  children: const [
-                                    ProductMarker(
-                                      iconName: "coffee.png",
-                                      title: "Coffee",
-                                      color: AppColors.black,
-                                      width: 44,
-                                      height: 44,
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    ProductMarker(
-                                      iconName: "water.png",
-                                      color: AppColors.black,
-                                      width: 44,
-                                      height: 44,
-                                    ),
-                                  ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      ProductMarker(
+                                        iconName: "coffee.png",
+                                        title: "Coffee",
+                                        color: AppColors.black,
+                                        width: 44,
+                                        height: 44,
+                                      ),
+                                      ProductMarker(
+                                        iconName: "water.png",
+                                        color: AppColors.black,
+                                        width: 44,
+                                        height: 44,
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
@@ -185,16 +193,16 @@ class _ProductScreenState extends State<ProductScreen> {
                 height: 20,
               ),
               const Text(
-                "Description: ",
+                "Описание: ",
                 style: TextStyle(fontSize: 16, color: AppColors.subtext),
               ),
               const SizedBox(
                 height: 14,
               ),
-              const ExpandableText(
-                "Show more show more show more show moreshow moreshow more show more show moreshow moreshow moreshow moreshow more show more  show more show more show moreshow moreshow more show more show morevshow more show moreshow moreshow more show more show moreshow more",
-                expandText: 'Read more',
-                collapseText: 'hide',
+              ExpandableText(
+                productsMock[0].description,
+                expandText: 'ещё',
+                collapseText: 'скрыть',
                 maxLines: 2,
                 linkColor: AppColors.primaryLight,
                 animation: true,
@@ -204,8 +212,8 @@ class _ProductScreenState extends State<ProductScreen> {
               const SizedBox(
                 height: 36,
               ),
-              const Text(
-                "Size: ",
+              Text(
+                "Размер (${productsMock[0].measurement_value}): ",
                 style: TextStyle(fontSize: 16, color: AppColors.subtext),
               ),
               const SizedBox(
@@ -237,7 +245,7 @@ class _ProductScreenState extends State<ProductScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                Text("Price",
+                Text("Цена",
                     style: TextStyle(fontSize: 14, color: AppColors.subtext)),
                 SizedBox(
                   height: 6,
@@ -252,7 +260,7 @@ class _ProductScreenState extends State<ProductScreen> {
               text: const Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  "Add cart",
+                  "Добавить",
                   style: TextStyle(color: AppColors.write),
                 ),
               ),
