@@ -29,7 +29,7 @@ class _InputSearchState extends State<InputSearch> {
       decoration: const InputDecoration(
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(),
-          hintText: "Search products"),
+          hintText: "Поиск продуктов"),
       onSubmitted: (String value) async {
         await showDialog<void>(
           context: context,

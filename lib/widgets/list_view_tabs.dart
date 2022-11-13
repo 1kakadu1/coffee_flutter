@@ -103,10 +103,7 @@ class ListViewTab extends StatelessWidget {
 }
 
 final List<ListViewTabModel> listViewMock = [
-  ListViewTabModel(id: "1", title: "Coffee"),
-  ListViewTabModel(id: "2", title: "Latte"),
-  ListViewTabModel(id: "3", title: "Tea"),
-  ListViewTabModel(id: "4", title: "Coffee Milk"),
-  ListViewTabModel(id: "5", title: "Cappuccino"),
-  ListViewTabModel(id: "6", title: "Expresso"),
+  ListViewTabModel(id: "id-all", title: "Все"),
+  ListViewTabModel(id: "id-coffee", title: "Кофе"),
+  ListViewTabModel(id: "id-tea", title: "Чай"),
 ];
