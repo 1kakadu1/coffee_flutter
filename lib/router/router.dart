@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class RoutsAuthContianer extends StatefulWidget {
-  RoutsAuthContianer({Key? key}) : super(key: key);
+class RoutsAuthContainer extends StatefulWidget {
+  RoutsAuthContainer({Key? key}) : super(key: key);
 
   @override
   _RoutsAuthContianerState createState() => _RoutsAuthContianerState();
 }
 
-class _RoutsAuthContianerState extends State<RoutsAuthContianer> {
+class _RoutsAuthContianerState extends State<RoutsAuthContainer> {
   User? user;
   @override
   void initState() {
