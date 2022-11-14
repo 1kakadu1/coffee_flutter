@@ -3,6 +3,19 @@ import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletons/skeletons.dart';
+
+final _decorationContainer = BoxDecoration(
+  gradient: const LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      AppColors.backgraundLight,
+      AppColors.backgraundLightBotto,
+    ],
+  ),
+  borderRadius: BorderRadius.circular(12),
+);
 
 class ProductCard extends StatelessWidget {
   final double? width;
@@ -19,17 +32,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColors.backgraundLight,
-            AppColors.backgraundLightBotto,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: _decorationContainer,
       padding: const EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Stack(
@@ -148,6 +151,78 @@ class ProductCard extends StatelessWidget {
           ],
         )
       ]),
+    );
+  }
+}
+
+class ProductCardSkeleton extends StatelessWidget {
+  final double? width;
+
+  const ProductCardSkeleton({super.key, this.width = 186});
+  @override
+  Widget build(BuildContext context) {
+    return SkeletonTheme(
+      themeMode: ThemeMode.light,
+      shimmerGradient: AppColors.skeletonGradient,
+      child: Container(
+        width: width,
+        height: 160,
+        decoration: _decorationContainer,
+        padding: const EdgeInsets.all(10),
+        child: Column(children: [
+          SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: width,
+              height: 160,
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          SkeletonParagraph(
+            style: const SkeletonParagraphStyle(
+              lines: 1,
+              spacing: 0,
+              padding: EdgeInsets.all(0),
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          SkeletonParagraph(
+            style: const SkeletonParagraphStyle(
+              lines: 1,
+              spacing: 0,
+              padding: EdgeInsets.all(0),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(children: [
+            Expanded(
+              child: SkeletonParagraph(
+                style: const SkeletonParagraphStyle(
+                    lines: 1,
+                    spacing: 0,
+                    padding: EdgeInsets.all(0),
+                    lineStyle: SkeletonLineStyle(
+                      maxLength: 10,
+                    )),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            const SkeletonAvatar(
+              style: SkeletonAvatarStyle(
+                width: 32,
+                height: 32,
+              ),
+            )
+          ]),
+        ]),
+      ),
     );
   }
 }
