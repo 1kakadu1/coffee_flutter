@@ -39,13 +39,13 @@ class _MainPageState extends State<MainPage>
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
-        children: const [
-          HomeScreenContent(),
-          AboutScreenContent(),
-          Center(
+        children: [
+          HomeScreen(),
+          const AboutScreenContent(),
+          const Center(
             child: Text("It's sunny here"),
           ),
-          Center(
+          const Center(
             child: Text("It's sunny here"),
           ),
         ],

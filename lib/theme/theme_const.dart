@@ -26,4 +26,17 @@ class AppColors {
     400: Color(0xffFF3D3D)
   };
   static const menuIcon = Color.fromRGBO(78, 80, 83, 1);
+
+  static const LinearGradient skeletonGradient = LinearGradient(
+    colors: [
+      AppColors.backgraundLight,
+      Color.fromARGB(255, 41, 45, 54),
+      AppColors.backgraundLight,
+    ],
+    stops: [
+      0.1,
+      0.5,
+      0.9,
+    ],
+  );
 }

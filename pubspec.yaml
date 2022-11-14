@@ -37,6 +37,7 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^4.2.5
   expandable_text: ^2.3.0
   flutter_bloc: ^8.1.1
+  skeletons: ^0.0.3
 
 dev_dependencies:
   flutter_test:

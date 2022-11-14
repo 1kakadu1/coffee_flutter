@@ -1,43 +1,60 @@
+import 'dart:developer';
+
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
-import 'package:coffe_flutter/widgets/buttons/btn_avatar.dart';
+import 'package:coffe_flutter/store/home/home_bloc.dart';
+import 'package:coffe_flutter/store/home/home_event.dart';
+import 'package:coffe_flutter/store/home/home_state.dart';
 import 'package:coffe_flutter/widgets/cards/special_card.dart';
 import 'package:coffe_flutter/widgets/fields/input_search.dart';
 import 'package:coffe_flutter/widgets/list_view_products.dart';
 import 'package:coffe_flutter/widgets/list_view_tabs.dart';
 import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+//AutomaticKeepAliveClientMixin
+//https://www.youtube.com/watch?v=SadkWSERCrI&ab_channel=CommunityBrain
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   final homeScreenKey = GlobalKey();
+  late HomeBloc homeBloc = HomeBloc();
+
+  @override
+  void initState() {
+    log("_homeBloc");
+    homeBloc.add(HomeEventInit());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    homeBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        actions: [
-          ButtonAvatar(
-            img: "https://www.ixbt.com/img/n1/news/2022/5/6/vk_large.jpg",
-            radius: 10,
-            width: 44,
-            onPress: () {},
-          )
-        ],
-      ),
-      body: HomeScreenContent(key: homeScreenKey),
+    return HomeScreenContent(
+      key: homeScreenKey,
+      blocHome: homeBloc,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class HomeScreenContent extends StatelessWidget {
-  const HomeScreenContent({Key? key}) : super(key: key);
+  final HomeBloc blocHome;
+  const HomeScreenContent({Key? key, required this.blocHome}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +80,10 @@ class HomeScreenContent extends StatelessWidget {
             ),
             ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300),
-                child: ListViewProducts(onPress: () {}, items: productsMock)),
+                child: BlocBuilder<HomeBloc, HomeState>(
+                    bloc: blocHome,
+                    builder: (context, state) => ListViewProducts(
+                        onPress: () {}, items: state.special))),
             const SizedBox(
               height: 40,
             ),

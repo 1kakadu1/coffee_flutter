@@ -19,18 +19,29 @@ class _ListViewProductsState extends State<ListViewProducts> {
     MediaQueryData queryData = MediaQuery.of(context);
     return SizedBox(
       height: 300,
-      child: ListView.separated(
-          itemCount: widget.items.length,
-          separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(width: 20),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return ProductCard(
-              onPress: _handlerPress,
-              product: widget.items[index],
-              width: (queryData.size.width / 2) - 30,
-            );
-          }),
+      child: widget.items.isEmpty
+          ? ListView.separated(
+              itemCount: 6,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(width: 20),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return ProductCardSkeleton(
+                  width: (queryData.size.width / 2) - 30,
+                );
+              })
+          : ListView.separated(
+              itemCount: widget.items.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(width: 20),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return ProductCard(
+                  onPress: _handlerPress,
+                  product: widget.items[index],
+                  width: (queryData.size.width / 2) - 30,
+                );
+              }),
     );
   }
 
