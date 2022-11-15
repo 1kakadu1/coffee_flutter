@@ -40,19 +40,53 @@ class Api {
         return ProductModel.fromJson(data);
       }).toList();
 
+      var requestTabs = await _collectionProducts
+          .limit(10)
+          .where("categorys", arrayContains: "id-all")
+          .get();
+
+      List<ProductModel> tabsProduct = requestTabs.docs.toList().map((element) {
+        var data = element.data();
+        return ProductModel.fromJson(data);
+      }).toList();
+
       var requestCategory = await _collectionCategories.get();
       List<CategoryModel> cat = requestCategory.docs.map((item) {
         return CategoryModel.fromJson(item.data());
       }).toList();
 
       return ApiData<HomeModel>(
-          data: HomeModel(special: special, categorys: cat),
-          hashCode: requestCategory.hashCode + requestSpecial.hashCode);
+          data: HomeModel(
+              special: special, categorys: cat, tabsProduct: tabsProduct),
+          hashCode: requestCategory.hashCode +
+              requestSpecial.hashCode +
+              requestTabs.hashCode);
     } catch (e) {
       return ApiData(
-          data: HomeModel(special: [], categorys: []),
+          data: HomeModel(special: [], categorys: [], tabsProduct: []),
           error: "Error ${e.toString()}",
           hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<List<ProductModel>>> getProductCategory(String id,
+      {int limit = 10}) async {
+    try {
+      var request = await _collectionProducts
+          .limit(limit)
+          .where("categorys", arrayContains: id)
+          .get();
+
+      List<ProductModel> products = request.docs.toList().map((element) {
+        var data = element.data();
+        return ProductModel.fromJson(data);
+      }).toList();
+
+      return ApiData<List<ProductModel>>(
+          data: products, hashCode: request.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
     }
   }
 }

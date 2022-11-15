@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
@@ -74,16 +75,23 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            ListViewTabs(
-              items: listViewMock,
-              onPress: (int index, String id) {},
-            ),
+            BlocBuilder<HomeBloc, HomeState>(
+                bloc: blocHome,
+                builder: (context, state) => ListViewTabs<dynamic>(
+                      items: state.categorys,
+                      onPress: (int index, String id) {
+                        blocHome.add(HomeEventChangeCategory(id));
+                      },
+                    )),
             ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300),
                 child: BlocBuilder<HomeBloc, HomeState>(
                     bloc: blocHome,
+                    buildWhen: (previousState, state) {
+                      return previousState.tabsProduct != state.tabsProduct;
+                    },
                     builder: (context, state) => ListViewProducts(
-                        onPress: () {}, items: state.special))),
+                        onPress: () {}, items: state.tabsProduct))),
             const SizedBox(
               height: 40,
             ),

@@ -1,5 +1,6 @@
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletons/skeletons.dart';
 
 class ListViewTabModel {
   String id;
@@ -8,10 +9,18 @@ class ListViewTabModel {
   ListViewTabModel({required this.id, required this.title});
 }
 
-class ListViewTabs extends StatefulWidget {
+abstract class TypeExtends {
+  String id;
+  String? title;
+  String? name;
+
+  TypeExtends({required this.id, this.name, this.title});
+}
+
+class ListViewTabs<T> extends StatefulWidget {
   final void Function(int, String) onPress;
-  final List<ListViewTabModel> items;
-  ListViewTabs({Key? key, required this.onPress, required this.items})
+  final List<T> items;
+  const ListViewTabs({Key? key, required this.onPress, required this.items})
       : super(key: key);
 
   @override
@@ -28,23 +37,45 @@ class _ListViewTabsState extends State<ListViewTabs> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final List<ListViewTabModel> tabList = widget.items
+        .map(((e) =>
+            ListViewTabModel(id: e.id, title: e.name ?? e.title ?? "UNSET")))
+        .toList();
+    return SizedBox(
       height: 50,
-      child: ListView.builder(
-          itemCount: widget.items.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return ListViewTab(
-              item: widget.items[index],
-              onPress: (String id) {
-                widget.onPress(index, id);
-                setState(() {
-                  activeItem = index;
-                });
-              },
-              active: index == activeItem,
-            );
-          }),
+      child: widget.items.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  ListViewTabSkeleton(
+                    height: 30,
+                  ),
+                  ListViewTabSkeleton(
+                    height: 30,
+                  ),
+                  ListViewTabSkeleton(
+                    height: 30,
+                  )
+                ],
+              ),
+            )
+          : ListView.builder(
+              itemCount: widget.items.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return ListViewTab(
+                  item: tabList[index],
+                  onPress: (String id) {
+                    widget.onPress(index, id);
+                    setState(() {
+                      activeItem = index;
+                    });
+                  },
+                  active: index == activeItem,
+                );
+              }),
     );
   }
 }
@@ -52,12 +83,14 @@ class _ListViewTabsState extends State<ListViewTabs> {
 class ListViewTab extends StatelessWidget {
   final ListViewTabModel item;
   final bool active;
+  final double? height;
   final void Function(String) onPress;
   const ListViewTab(
       {Key? key,
       required this.item,
       required this.active,
-      required this.onPress})
+      required this.onPress,
+      this.height = 50})
       : super(key: key);
 
   @override
@@ -96,6 +129,25 @@ class ListViewTab extends StatelessWidget {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListViewTabSkeleton extends StatelessWidget {
+  final double? height;
+
+  const ListViewTabSkeleton({super.key, this.height = 50});
+  @override
+  Widget build(BuildContext context) {
+    return SkeletonTheme(
+      themeMode: ThemeMode.light,
+      shimmerGradient: AppColors.skeletonGradient,
+      child: SkeletonAvatar(
+        style: SkeletonAvatarStyle(
+          width: 100,
+          height: height,
         ),
       ),
     );
