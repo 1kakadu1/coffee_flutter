@@ -102,6 +102,13 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            const TitleWidget(
+              text: "Последние посты",
+              fontSize: 18,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             SpecialCard(
               title: productsMock[0].name,
               description: productsMock[0].description,

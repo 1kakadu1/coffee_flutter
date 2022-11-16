@@ -19,7 +19,7 @@ final _decorationContainer = BoxDecoration(
 
 class ProductCard extends StatelessWidget {
   final double? width;
-  final void Function(String id) onPress;
+  final void Function(String id, ProductModel product) onPress;
   final ProductModel product;
   const ProductCard(
       {Key? key,
@@ -81,7 +81,7 @@ class ProductCard extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10.0),
                       onTap: () {
-                        onPress(product.id);
+                        onPress(product.id, product);
                       },
                     )))
           ],
@@ -126,7 +126,7 @@ class ProductCard extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10.0),
                       onTap: () {
-                        onPress(product.id);
+                        onPress(product.id, product);
                       },
                     )))
           ],
