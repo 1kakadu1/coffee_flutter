@@ -31,7 +31,9 @@ class ButtonDefault extends StatelessWidget {
       height: height,
       child: TextButton(
         style: flatButtonStyle,
-        onPressed: () {},
+        onPressed: () {
+          onPress();
+        },
         child: text,
       ),
     );

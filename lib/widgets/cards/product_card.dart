@@ -1,8 +1,15 @@
+import 'dart:developer';
+
+import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
+import 'package:coffe_flutter/store/cart/cart_bloc.dart';
+import 'package:coffe_flutter/store/cart/cart_event.dart';
+import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 final _decorationContainer = BoxDecoration(
@@ -30,6 +37,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CartBloc cartBloc = CartBloc();
     return Container(
       width: width,
       decoration: _decorationContainer,
@@ -137,17 +145,28 @@ class ProductCard extends StatelessWidget {
             PriceText(
               price: product.price[product.size[0]].toString(),
             ),
-            ButtonDefault(
-              onPress: () {},
-              width: 32,
-              height: 32,
-              radius: 12,
-              text: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 16.0,
-              ),
-            )
+            BlocBuilder<CartBloc, CartState>(
+                bloc: cartBloc,
+                buildWhen: (previousState, state) {
+                  return previousState.products != state.products;
+                },
+                builder: (context, state) {
+                  return ButtonDefault(
+                    onPress: () {
+                      log("aaaaaa");
+                      cartBloc.add(CartAddAction(
+                          size: product.size[0], product: product));
+                    },
+                    width: 32,
+                    height: 32,
+                    radius: 12,
+                    text: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 16.0,
+                    ),
+                  );
+                }),
           ],
         )
       ]),
