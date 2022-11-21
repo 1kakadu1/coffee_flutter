@@ -19,7 +19,8 @@ class GlassPaper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius ?? 0),
       child: BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: 10.0,

@@ -55,6 +55,8 @@ class ProductMarker extends StatelessWidget {
                     padding: EdgeInsets.only(top: iconName != null ? 4 : 0),
                     child: Text(
                       title!,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: const TextStyle(fontSize: 10),
                     ),
                   )

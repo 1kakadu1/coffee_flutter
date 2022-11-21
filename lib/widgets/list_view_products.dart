@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/models/navigation.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/widgets/cards/product_card.dart';
@@ -45,16 +46,11 @@ class _ListViewProductsState extends State<ListViewProducts> {
     );
   }
 
-  void _handlerPress(String id) {
+  void _handlerPress(String id, ProductModel product) {
     if (widget.onPress != null) {
       widget.onPress!();
     }
-    Navigator.pushNamed(
-      context,
-      PathRoute.product,
-      arguments: <String, String>{
-        'id': id,
-      },
-    );
+    Navigator.pushNamed(context, PathRoute.product,
+        arguments: NavigationArgumentsProduct(id, product));
   }
 }
