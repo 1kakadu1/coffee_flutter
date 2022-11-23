@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
@@ -153,7 +150,6 @@ class ProductCard extends StatelessWidget {
                 builder: (context, state) {
                   return ButtonDefault(
                     onPress: () {
-                      log("aaaaaa");
                       cartBloc.add(CartAddAction(
                           size: product.size[0], product: product));
                     },
