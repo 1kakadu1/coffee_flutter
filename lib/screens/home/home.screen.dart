@@ -99,6 +99,18 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 300),
+                child: BlocBuilder<HomeBloc, HomeState>(
+                    bloc: blocHome,
+                    buildWhen: (previousState, state) {
+                      return previousState.special != state.special;
+                    },
+                    builder: (context, state) => ListViewProducts(
+                        onPress: () {}, items: state.special))),
+            const SizedBox(
+              height: 20,
+            ),
             const TitleWidget(
               text: "Последние посты",
               fontSize: 18,

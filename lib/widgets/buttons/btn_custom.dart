@@ -51,8 +51,7 @@ class ButtonCustom extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 12),
         ),
-        child: AnimatedContainer(
-            duration: const Duration(minutes: 300),
+        child: Container(
             height: height,
             width: width,
             decoration: BoxDecoration(

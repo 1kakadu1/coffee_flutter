@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
@@ -352,9 +350,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                 state.product?.size ?? [], state.size ?? "",
                                 (String value) {
                               productBloc.add(ProductEventChangeSize(value));
-                            })
+                            }),
                           ],
-                        ))
+                        )),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           )),
@@ -404,7 +405,6 @@ class _ProductScreenState extends State<ProductScreen> {
       List<String> sizes, String currentSize, Function(String value) onChange) {
     List<Widget> items = [];
     for (int i = 0; i < sizes.length; i++) {
-      log("current ${currentSize}");
       items.add(ButtonCustom(
         key: Key(sizes[i]),
         borderColor: AppColors.blackLight,
@@ -447,7 +447,8 @@ class ProductCounter extends StatelessWidget {
         return Counter(
           counter: count,
           onAdd: () {
-            BlocProvider.of<CartBloc>(context)
+            context
+                .read<CartBloc>()
                 .add(CartAddAction(size: size, product: product));
           },
           onSub: () {

@@ -34,7 +34,6 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartBloc cartBloc = CartBloc();
     return Container(
       width: width,
       decoration: _decorationContainer,
@@ -79,6 +78,45 @@ class ProductCard extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            Positioned(
+              top: 3,
+              left: 3,
+              child: BlocBuilder<CartBloc, CartState>(
+                  buildWhen: (previousState, state) {
+                return previousState.products != state.products;
+              }, builder: (context, state) {
+                int countSum = 0;
+                for (int i = 0; i < product.size.length; i++) {
+                  final index = state.products.indexWhere((element) =>
+                      element.currentSize == product.size[i] &&
+                      element.id == product.id);
+                  final int count =
+                      index == -1 ? 0 : state.products[index].count;
+                  countSum += count;
+                }
+
+                return AnimatedOpacity(
+                  opacity: countSum > 0 ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 500),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(19, 19, 19, 0.8),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        countSum.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: AppColors.write, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ),
             Positioned.fill(
                 child: Material(
@@ -142,27 +180,24 @@ class ProductCard extends StatelessWidget {
             PriceText(
               price: product.price[product.size[0]].toString(),
             ),
-            BlocBuilder<CartBloc, CartState>(
-                bloc: cartBloc,
-                buildWhen: (previousState, state) {
-                  return previousState.products != state.products;
+            BlocBuilder<CartBloc, CartState>(buildWhen: (previousState, state) {
+              return previousState.products != state.products;
+            }, builder: (context, state) {
+              return ButtonDefault(
+                onPress: () {
+                  context.read<CartBloc>().add(
+                      CartAddAction(size: product.size[0], product: product));
                 },
-                builder: (context, state) {
-                  return ButtonDefault(
-                    onPress: () {
-                      cartBloc.add(CartAddAction(
-                          size: product.size[0], product: product));
-                    },
-                    width: 32,
-                    height: 32,
-                    radius: 12,
-                    text: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 16.0,
-                    ),
-                  );
-                }),
+                width: 32,
+                height: 32,
+                radius: 12,
+                text: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 16.0,
+                ),
+              );
+            }),
           ],
         )
       ]),
