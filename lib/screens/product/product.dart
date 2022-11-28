@@ -1,4 +1,7 @@
 import 'package:coffe_flutter/models/product.model.dart';
+import 'package:coffe_flutter/store/cart/cart_bloc.dart';
+import 'package:coffe_flutter/store/cart/cart_event.dart';
+import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/store/product/product_bloc.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/product.utils.dart';
@@ -339,17 +342,20 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 BlocBuilder<ProductBloc, ProductState>(
                     bloc: productBloc,
-                    buildWhen: (previousState, state) {
-                      return previousState.product?.size != state.product?.size;
-                    },
                     builder: (context, state) => Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ..._itemBuilder(state.product?.size ?? [],
-                                state.product?.size[0] ?? "")
+                            ..._itemBuilder(
+                                state.product?.size ?? [], state.size ?? "",
+                                (String value) {
+                              productBloc.add(ProductEventChangeSize(value));
+                            }),
                           ],
-                        ))
+                        )),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           )),
@@ -365,9 +371,6 @@ class _ProductScreenState extends State<ProductScreen> {
       color: AppColors.black,
       child: BlocBuilder<ProductBloc, ProductState>(
           bloc: productBloc,
-          buildWhen: (previousState, state) {
-            return previousState.product != state.product;
-          },
           builder: (context, state) => Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -385,29 +388,25 @@ class _ProductScreenState extends State<ProductScreen> {
                           price: getPrice(
                                   price: state.product?.price,
                                   filtersSize: state.product?.size,
-                                  size: "")
+                                  size: state.size)
                               .toString(),
                         ),
                       ],
                     ),
-                    ButtonDefault(
-                      onPress: () {},
-                      text: const Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Добавить",
-                          style: TextStyle(color: AppColors.write),
-                        ),
-                      ),
-                    ),
+                    ProductCounter(
+                      size: state.size ?? "",
+                      product: state.product,
+                    )
                   ])),
     );
   }
 
-  List<Widget> _itemBuilder(List<String> sizes, String currentSize) {
+  List<Widget> _itemBuilder(
+      List<String> sizes, String currentSize, Function(String value) onChange) {
     List<Widget> items = [];
     for (int i = 0; i < sizes.length; i++) {
       items.add(ButtonCustom(
+        key: Key(sizes[i]),
         borderColor: AppColors.blackLight,
         background: AppColors.blackLight,
         activeColor: AppColors.black,
@@ -415,13 +414,98 @@ class _ProductScreenState extends State<ProductScreen> {
         active: sizes[i] == currentSize,
         width: 60,
         color: AppColors.red[400],
+        onPress: () {
+          onChange(sizes[i]);
+        },
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(child: Text(sizes[i].toUpperCase())),
         ),
-        onPress: () {},
       ));
     }
     return items;
+  }
+}
+
+class ProductCounter extends StatelessWidget {
+  final ProductModel? product;
+  final String size;
+  const ProductCounter({
+    Key? key,
+    required this.product,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        final index = state.products.indexWhere((element) =>
+            element.currentSize == size && element.id == product?.id);
+        final int count = index == -1 ? 0 : state.products[index].count;
+
+        return Counter(
+          counter: count,
+          onAdd: () {
+            context
+                .read<CartBloc>()
+                .add(CartAddAction(size: size, product: product));
+          },
+          onSub: () {
+            BlocProvider.of<CartBloc>(context)
+                .add(CartSubAction(size: size, product: product));
+          },
+        );
+      },
+    );
+  }
+}
+
+class Counter extends StatelessWidget {
+  final int? counter;
+  final Function onAdd;
+  final Function onSub;
+  const Counter(
+      {Key? key, this.counter = 0, required this.onAdd, required this.onSub})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ButtonDefault(
+          onPress: onSub,
+          width: 30,
+          height: 30,
+          radius: 30,
+          text: const Icon(
+            Icons.remove,
+            color: Colors.white,
+            size: 16.0,
+          ),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+        Text(
+          counter.toString(),
+          style: const TextStyle(fontSize: 18),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+        ButtonDefault(
+          onPress: onAdd,
+          width: 30,
+          height: 30,
+          radius: 30,
+          text: const Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 16.0,
+          ),
+        )
+      ],
+    );
   }
 }

@@ -16,3 +16,9 @@ class ProductEventRefresh extends ProductEvent {
 
   ProductEventRefresh(this.id);
 }
+
+class ProductEventChangeSize extends ProductEvent {
+  final String size;
+
+  ProductEventChangeSize(this.size);
+}

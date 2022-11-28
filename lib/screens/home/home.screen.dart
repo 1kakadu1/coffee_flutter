@@ -15,8 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-//AutomaticKeepAliveClientMixin
-//https://www.youtube.com/watch?v=SadkWSERCrI&ab_channel=CommunityBrain
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
   @override
@@ -30,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    log("_homeBloc");
     homeBloc.add(HomeEventInit());
     super.initState();
   }
@@ -99,6 +96,18 @@ class HomeScreenContent extends StatelessWidget {
               text: "Специальные продукты",
               fontSize: 18,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 300),
+                child: BlocBuilder<HomeBloc, HomeState>(
+                    bloc: blocHome,
+                    buildWhen: (previousState, state) {
+                      return previousState.special != state.special;
+                    },
+                    builder: (context, state) => ListViewProducts(
+                        onPress: () {}, items: state.special))),
             const SizedBox(
               height: 20,
             ),
