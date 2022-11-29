@@ -47,7 +47,7 @@ class SpecialCard extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  AppColors.backgraundLight,
+                  AppColors.backgroundLight,
                   AppColors.backgraundLightBotto,
                 ],
               ),

@@ -12,7 +12,7 @@ class AppColors {
   static const btnText = Color.fromRGBO(164, 166, 163, 1);
   static const glass = Color.fromARGB(124, 39, 39, 39);
   static const background = Color.fromRGBO(12, 15, 20, 1);
-  static const backgraundLight = Color.fromRGBO(37, 41, 50, 1);
+  static const backgroundLight = Color.fromRGBO(37, 41, 50, 1);
   static const backgraundLightBotto = Color.fromRGBO(15, 18, 24, 1);
   static const gradientBlack = {
     100: Color.fromRGBO(64, 65, 66, 1),
@@ -29,9 +29,9 @@ class AppColors {
 
   static const LinearGradient skeletonGradient = LinearGradient(
     colors: [
-      AppColors.backgraundLight,
+      AppColors.backgroundLight,
       Color.fromARGB(255, 41, 45, 54),
-      AppColors.backgraundLight,
+      AppColors.backgroundLight,
     ],
     stops: [
       0.1,

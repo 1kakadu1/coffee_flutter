@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
@@ -14,7 +15,7 @@ final _decorationContainer = BoxDecoration(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      AppColors.backgraundLight,
+      AppColors.backgroundLight,
       AppColors.backgraundLightBotto,
     ],
   ),
@@ -202,6 +203,25 @@ class ProductCard extends StatelessWidget {
         )
       ]),
     );
+  }
+}
+
+class ProductCartCard extends StatelessWidget {
+  final double? width;
+  final CartItemModel product;
+  const ProductCartCard({
+    Key? key,
+    this.width = double.infinity,
+    required this.product,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: width,
+        decoration: _decorationContainer,
+        padding: const EdgeInsets.all(10),
+        child: Text("Tesxt"));
   }
 }
 

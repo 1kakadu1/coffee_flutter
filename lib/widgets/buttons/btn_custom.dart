@@ -107,7 +107,7 @@ class ButtonPrimary extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 14),
           border: Border.all(
-            color: AppColors.backgraundLight,
+            color: AppColors.backgroundLight,
             width: borderWidth ?? 0,
           ),
         ),

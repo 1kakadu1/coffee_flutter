@@ -9,9 +9,10 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       actions: [
         ButtonAvatar(
-          img: "https://www.ixbt.com/img/n1/news/2022/5/6/vk_large.jpg",
+          img: "assets/img/icon_appbar.png",
           radius: 10,
           width: 44,
+          assets: true,
           onPress: () {},
         )
       ],
