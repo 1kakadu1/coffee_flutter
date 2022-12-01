@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -5,10 +7,12 @@ import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
+import 'package:coffe_flutter/widgets/counter.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 final _decorationContainer = BoxDecoration(
   gradient: const LinearGradient(
@@ -217,11 +221,69 @@ class ProductCartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final widthWidget = MediaQuery.of(context).size.width;
+    log(product.toJson().toString());
     return Container(
         width: width,
         decoration: _decorationContainer,
-        padding: const EdgeInsets.all(10),
-        child: Text("Tesxt"));
+        child: Row(
+          children: [
+            Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: product.preview != null
+                    ? DecorationImage(
+                        image: NetworkImage(product.preview!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                SizedBox(
+                  width: widthWidget - 140,
+                  child: TextScroll(
+                    product.name,
+                    delayBefore: const Duration(milliseconds: 1000),
+                    pauseBetween: const Duration(milliseconds: 5000),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: widthWidget - 140,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          PriceText(
+                            price: (product.price[product.currentSize] *
+                                    product.count)
+                                .toString(),
+                          ),
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          Text("(${product.currentSize})")
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Counter(onAdd: () {}, onSub: () {})
+                    ],
+                  ),
+                )
+              ]),
+            ),
+          ],
+        ));
   }
 }
 

@@ -6,7 +6,7 @@ import 'package:coffe_flutter/store/product/product_bloc.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/product.utils.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_custom.dart';
-import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
+import 'package:coffe_flutter/widgets/counter.dart';
 import 'package:coffe_flutter/widgets/glass_paper.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:coffe_flutter/widgets/product_marker.dart';
@@ -457,55 +457,6 @@ class ProductCounter extends StatelessWidget {
           },
         );
       },
-    );
-  }
-}
-
-class Counter extends StatelessWidget {
-  final int? counter;
-  final Function onAdd;
-  final Function onSub;
-  const Counter(
-      {Key? key, this.counter = 0, required this.onAdd, required this.onSub})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ButtonDefault(
-          onPress: onSub,
-          width: 30,
-          height: 30,
-          radius: 30,
-          text: const Icon(
-            Icons.remove,
-            color: Colors.white,
-            size: 16.0,
-          ),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-        Text(
-          counter.toString(),
-          style: const TextStyle(fontSize: 18),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-        ButtonDefault(
-          onPress: onAdd,
-          width: 30,
-          height: 30,
-          radius: 30,
-          text: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 16.0,
-          ),
-        )
-      ],
     );
   }
 }
