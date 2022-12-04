@@ -34,3 +34,5 @@ class CartChangeCommentsAction extends CartEvent {
 }
 
 class CartClearAction extends CartEvent {}
+
+class CartUpdateProductsAction extends CartEvent {}

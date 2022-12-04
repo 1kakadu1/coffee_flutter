@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/home_model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
@@ -84,6 +85,32 @@ class Api {
 
       return ApiData<List<ProductModel>>(
           data: products, hashCode: request.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<List<CartItemModel>>> getCartProducts(
+    List<CartItemModel> items,
+  ) async {
+    try {
+      var cart = items;
+      var request = await _collectionProducts
+          .where("id", whereIn: items.map((e) => (e.id)).toList())
+          .get();
+
+      request.docs.toList().forEach((element) {
+        final product = ProductModel.fromJson(element.data());
+        final int indexToCart =
+            cart.indexWhere((item) => item.id == product.id);
+        if (indexToCart != -1) {
+          cart[indexToCart].price = product.price;
+        }
+      });
+
+      return ApiData<List<CartItemModel>>(
+          data: cart, hashCode: request.hashCode);
     } catch (e) {
       return ApiData(
           data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);

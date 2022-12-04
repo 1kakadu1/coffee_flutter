@@ -21,11 +21,6 @@ class CartItemModel {
       this.comments,
       required this.currentSize});
 
-  @override
-  String toString() {
-    return 'CartItem: {name: ${name}, age: ${price}}';
-  }
-
   CartItemModel.fromJson(Map<String, dynamic> json) {
     name = json["title"] ?? "";
     preview = json["preview"] ?? "";

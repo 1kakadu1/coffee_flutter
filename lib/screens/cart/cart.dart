@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
+import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/cards/product_card.dart';
@@ -16,6 +17,19 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartState extends State<CartScreen> {
+  @override
+  void initState() {
+    super.initState();
+    initCart();
+  }
+
+  void initCart() async {
+    final CartBloc cartBloc = BlocProvider.of<CartBloc>(context);
+    if (cartBloc.state.products.isNotEmpty) {
+      cartBloc.add(CartUpdateProductsAction());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,22 +71,25 @@ class _AnimatedListCart extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final loading =
+        BlocProvider.of<CartBloc>(context, listen: true).state.isLoading;
     return AnimatedList(
       key: listKey,
       initialItemCount: items.length,
       itemBuilder: (context, index, animation) =>
-          buildItem(items[index], index, animation, context),
+          buildItem(items[index], index, animation, context, loading),
     );
   }
 
   Widget buildItem(CartItemModel item, int index, Animation<double> animation,
-          BuildContext context) =>
+          BuildContext context, bool loading) =>
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Container(
-            child: ProductCartCard(
-          product: item,
-        )),
+        child: loading
+            ? ProductCartCardSkeleton()
+            : ProductCartCard(
+                product: item,
+              ),
       );
 
   void _onAdd(CartItemModel? product, String size, int count, int index,
@@ -104,10 +121,13 @@ class _AnimatedListCart extends StatelessWidget {
 
   void removeItem(int index) {
     final item = items.removeAt(index);
-
     listKey.currentState?.removeItem(
       index,
-      (context, animation) => buildItem(item, index, animation, context),
+      (context, animation) {
+        final loading =
+            BlocProvider.of<CartBloc>(context, listen: false).state.isLoading;
+        return buildItem(item, index, animation, context, loading);
+      },
     );
   }
 }

@@ -222,7 +222,6 @@ class ProductCartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
-    log(product.toJson().toString());
     return Container(
         width: width,
         decoration: _decorationContainer,
@@ -284,6 +283,64 @@ class ProductCartCard extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class ProductCartCardSkeleton extends StatelessWidget {
+  final double? width;
+  const ProductCartCardSkeleton({
+    Key? key,
+    this.width = double.infinity,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final widthWidget = MediaQuery.of(context).size.width;
+    return SkeletonTheme(
+      themeMode: ThemeMode.light,
+      shimmerGradient: AppColors.skeletonGradient,
+      child: Container(
+        width: width,
+        decoration: _decorationContainer,
+        child: Row(children: [
+          const SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: 90,
+              height: 90,
+            ),
+          ),
+          Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                SizedBox(
+                    width: widthWidget - 140,
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                    width: widthWidget - 140,
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )),
+              ])),
+        ]),
+      ),
+    );
   }
 }
 
