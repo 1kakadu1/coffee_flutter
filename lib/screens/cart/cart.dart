@@ -45,12 +45,27 @@ class _CartState extends State<CartScreen> {
             Positioned.fill(
               child: AnimatedScale(
                 scale: state.products.isEmpty ? 1 : 0,
-                duration: const Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 200),
                 child: Container(
                     width: double.infinity,
                     height: double.infinity,
                     color: AppColors.black,
-                    child: const Center(child: Text("Empty"))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/img/cart-empty.png",
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text("Корзина пуста")
+                      ],
+                    )),
               ),
             )
           ],
@@ -86,32 +101,51 @@ class _AnimatedListCart extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: loading
-            ? ProductCartCardSkeleton()
+            ? const ProductCartCardSkeleton()
             : ProductCartCard(
+                animation: animation,
                 product: item,
-              ),
+                onAdd: () => _onAdd(item, context),
+                onSub: () => _onSub(item, index, context),
+                onRemove: () => _onRemove(item, index, context)),
       );
 
-  void _onAdd(CartItemModel? product, String size, int count, int index,
-      BuildContext context) {}
-
-  void _onRemove(
-      CartItemModel product, String size, int index, BuildContext context) {
+  void _onAdd(CartItemModel? product, BuildContext context) {
     if (product != null) {
-      this.removeItem(index);
-      Timer(Duration(seconds: delay ?? 1), () => {});
+      final CartBloc cartBloc =
+          BlocProvider.of<CartBloc>(context, listen: false);
+      cartBloc.add(CartAddAction(size: product.currentSize, cartItem: product));
     }
   }
 
-  void _onSub(CartItemModel? product, String size, int count, int index,
-      BuildContext context) {
-    bool isRemove = false;
-    if (count - 1 == 0) {
-      isRemove = true;
-      this.removeItem(index);
-      Timer(Duration(seconds: delay ?? 1), () => {});
+  void _onRemove(CartItemModel product, int index, BuildContext context) {
+    removeItem(index);
+    Timer(Duration(seconds: delay ?? 1), () {
+      final CartBloc cartBloc =
+          BlocProvider.of<CartBloc>(context, listen: false);
+      cartBloc.add(CartSubAction(size: product.currentSize, cartItem: product));
+    });
+  }
+
+  void _onSub(CartItemModel? product, int index, BuildContext context) {
+    if (product != null) {
+      final CartBloc cartBloc =
+          BlocProvider.of<CartBloc>(context, listen: false);
+      bool isRemove = false;
+      if (product.count - 1 == 0) {
+        isRemove = true;
+        removeItem(index);
+        Timer(
+            Duration(seconds: delay ?? 1),
+            () => {
+                  cartBloc.add(CartSubAction(
+                      size: product.currentSize, cartItem: product))
+                });
+      } else if (product.count - 1 > 0 && !isRemove) {
+        cartBloc
+            .add(CartSubAction(size: product.currentSize, cartItem: product));
+      }
     }
-    if (product != null && count - 1 >= 0 && isRemove == false) {}
   }
 
   void insertItem(int index, CartItemModel item) {

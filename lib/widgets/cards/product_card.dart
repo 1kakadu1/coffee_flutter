@@ -213,76 +213,94 @@ class ProductCard extends StatelessWidget {
 class ProductCartCard extends StatelessWidget {
   final double? width;
   final CartItemModel product;
+  final Function onAdd;
+  final Function onSub;
+  final Function() onRemove;
+  final Animation<double> animation;
   const ProductCartCard({
     Key? key,
     this.width = double.infinity,
     required this.product,
+    required this.onAdd,
+    required this.onSub,
+    required this.onRemove,
+    required this.animation,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
-    return Container(
-        width: width,
-        decoration: _decorationContainer,
-        child: Row(
-          children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: product.preview != null
-                    ? DecorationImage(
-                        image: NetworkImage(product.preview!),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(children: [
-                SizedBox(
-                  width: widthWidget - 140,
-                  child: TextScroll(
-                    product.name,
-                    delayBefore: const Duration(milliseconds: 1000),
-                    pauseBetween: const Duration(milliseconds: 5000),
+    return GestureDetector(
+      onLongPress: onRemove,
+      child: ScaleTransition(
+        scale: animation,
+        child: Container(
+            width: width,
+            decoration: _decorationContainer,
+            child: Row(
+              children: [
+                Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: product.preview != null
+                        ? DecorationImage(
+                            image: NetworkImage(product.preview!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: widthWidget - 140,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    SizedBox(
+                      width: widthWidget - 140,
+                      child: TextScroll(
+                        product.name,
+                        delayBefore: const Duration(milliseconds: 1000),
+                        pauseBetween: const Duration(milliseconds: 5000),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: widthWidget - 140,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          PriceText(
-                            price: (product.price[product.currentSize] *
-                                    product.count)
-                                .toString(),
+                          Row(
+                            children: [
+                              PriceText(
+                                price: (product.price[product.currentSize] *
+                                        product.count)
+                                    .toString(),
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text("(${product.currentSize})")
+                            ],
                           ),
                           const SizedBox(
-                            width: 6,
+                            width: 20,
                           ),
-                          Text("(${product.currentSize})")
+                          Counter(
+                            onAdd: onAdd,
+                            onSub: onSub,
+                            counter: product.count,
+                          )
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Counter(onAdd: () {}, onSub: () {})
-                    ],
-                  ),
-                )
-              ]),
-            ),
-          ],
-        ));
+                    )
+                  ]),
+                ),
+              ],
+            )),
+      ),
+    );
   }
 }
 
