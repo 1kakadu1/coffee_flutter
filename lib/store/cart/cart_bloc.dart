@@ -2,16 +2,18 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
+import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc() : super(CartState(products: const [])) {
+  CartBloc() : super(CartState(products: const [], isLoading: false)) {
     on<CartClearAction>(_clearCartProduct);
     on<CartAddAction>(_addItem);
     on<CartSubAction>(_subItem);
     on<CartRemoveAction>(_removeItem);
     on<CartChangeCommentsAction>(_changeCommentItem);
+    on<CartUpdateProductsAction>(_onUpdateCartProductData);
   }
 
   _clearCartProduct(CartClearAction event, Emitter<CartState> emit) {
@@ -78,5 +80,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     items[itemIndex] =
         items[itemIndex].copyWith(comments: event.comments ?? "");
     return state.copyWith(products: items.toList());
+  }
+
+  Future<void> _onUpdateCartProductData(
+      CartUpdateProductsAction event, Emitter<CartState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      var response = await apiServices.getCartProducts(state.products);
+      emit(state.copyWith(
+          products: response.data, isLoading: false, error: response.error));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
   }
 }

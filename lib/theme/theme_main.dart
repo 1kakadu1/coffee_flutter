@@ -27,7 +27,7 @@ InputDecorationTheme _customInputDecorationTheme(InputDecorationTheme base) {
   return base.copyWith(
     labelStyle: const TextStyle(color: AppColors.subtext),
     filled: true,
-    fillColor: AppColors.backgraundLight,
+    fillColor: AppColors.backgroundLight,
     prefixIconColor: AppColors.subtext,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(14.0),
@@ -37,7 +37,7 @@ InputDecorationTheme _customInputDecorationTheme(InputDecorationTheme base) {
       borderRadius: BorderRadius.circular(14.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: AppColors.backgraundLight),
+      borderSide: const BorderSide(color: AppColors.backgroundLight),
       borderRadius: BorderRadius.circular(14.0),
     ),
   );

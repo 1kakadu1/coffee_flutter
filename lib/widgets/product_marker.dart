@@ -30,10 +30,10 @@ class ProductMarker extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: color ?? AppColors.backgraundLight,
+        color: color ?? AppColors.backgroundLight,
         borderRadius: BorderRadius.circular(radius ?? 8),
         border: Border.all(
-          color: color ?? AppColors.backgraundLight,
+          color: color ?? AppColors.backgroundLight,
           width: 2,
         ),
       ),

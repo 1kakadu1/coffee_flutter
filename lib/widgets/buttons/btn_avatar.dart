@@ -48,13 +48,13 @@ class ButtonAvatar extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppColors.backgraundLight,
+              color: AppColors.backgroundLight,
               width: 2,
             ),
             borderRadius: BorderRadius.circular(radius ?? width ?? 32),
             image: DecorationImage(
               image: image as ImageProvider<Object>,
-              fit: BoxFit.cover,
+              fit: assets == true ? BoxFit.scaleDown : BoxFit.cover,
             ),
           ),
         ),

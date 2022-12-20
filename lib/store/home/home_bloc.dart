@@ -36,7 +36,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onChangeCategory(
       HomeEventChangeCategory event, Emitter<HomeState> emit) async {
     try {
-      log("${state.tabsProduct}");
       var response = await apiServices.getProductCategory(event.categoryID);
       emit(state.copyWith(tabsProduct: response.data, error: response.error));
     } catch (e) {

@@ -1,20 +1,25 @@
+import 'dart:developer';
+
+import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
+import 'package:coffe_flutter/widgets/counter.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 final _decorationContainer = BoxDecoration(
   gradient: const LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      AppColors.backgraundLight,
+      AppColors.backgroundLight,
       AppColors.backgraundLightBotto,
     ],
   ),
@@ -201,6 +206,158 @@ class ProductCard extends StatelessWidget {
           ],
         )
       ]),
+    );
+  }
+}
+
+class ProductCartCard extends StatelessWidget {
+  final double? width;
+  final CartItemModel product;
+  final Function onAdd;
+  final Function onSub;
+  final Function() onRemove;
+  final Animation<double> animation;
+  const ProductCartCard({
+    Key? key,
+    this.width = double.infinity,
+    required this.product,
+    required this.onAdd,
+    required this.onSub,
+    required this.onRemove,
+    required this.animation,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final widthWidget = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onLongPress: onRemove,
+      child: ScaleTransition(
+        scale: animation,
+        child: Container(
+            width: width,
+            decoration: _decorationContainer,
+            child: Row(
+              children: [
+                Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: product.preview != null
+                        ? DecorationImage(
+                            image: NetworkImage(product.preview!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    SizedBox(
+                      width: widthWidget - 140,
+                      child: TextScroll(
+                        product.name,
+                        delayBefore: const Duration(milliseconds: 1000),
+                        pauseBetween: const Duration(milliseconds: 5000),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: widthWidget - 140,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              PriceText(
+                                price: (product.price[product.currentSize] *
+                                        product.count)
+                                    .toString(),
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text("(${product.currentSize})")
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Counter(
+                            onAdd: onAdd,
+                            onSub: onSub,
+                            counter: product.count,
+                          )
+                        ],
+                      ),
+                    )
+                  ]),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+class ProductCartCardSkeleton extends StatelessWidget {
+  final double? width;
+  const ProductCartCardSkeleton({
+    Key? key,
+    this.width = double.infinity,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final widthWidget = MediaQuery.of(context).size.width;
+    return SkeletonTheme(
+      themeMode: ThemeMode.light,
+      shimmerGradient: AppColors.skeletonGradient,
+      child: Container(
+        width: width,
+        decoration: _decorationContainer,
+        child: Row(children: [
+          const SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: 90,
+              height: 90,
+            ),
+          ),
+          Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                SizedBox(
+                    width: widthWidget - 140,
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                    width: widthWidget - 140,
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )),
+              ])),
+        ]),
+      ),
     );
   }
 }
