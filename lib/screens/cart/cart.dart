@@ -5,9 +5,13 @@ import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
+import 'package:coffe_flutter/widgets/buttons/btn_custom.dart';
+import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/cards/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../widgets/price_text.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({Key? key}) : super(key: key);
@@ -33,6 +37,7 @@ class _CartState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: _bottomNavigationBar(),
       body: BlocBuilder<CartBloc, CartState>(buildWhen: (previousState, state) {
         return previousState.products != state.products;
       }, builder: (context, state) {
@@ -72,6 +77,63 @@ class _CartState extends State<CartScreen> {
         );
       }),
     );
+  }
+
+  Widget _bottomNavigationBar() {
+    return BlocBuilder<CartBloc, CartState>(buildWhen: (previousState, state) {
+      return previousState.products != state.products;
+    }, builder: (context, state) {
+      return AnimatedSlide(
+        offset: state.products.isNotEmpty
+            ? const Offset(0, 0)
+            : const Offset(0, 400),
+        duration: const Duration(milliseconds: 5000),
+        curve: Curves.easeInOut,
+        child: Container(
+            height: 110,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.backgroundLight,
+                  AppColors.backgraundLightBotto,
+                ],
+              ),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text("Всего к оплате:",
+                        style: TextStyle(
+                          fontSize: 18,
+                        )),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    PriceText(
+                      price: ("34").toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ButtonDefault(
+                  width: double.infinity,
+                  onPress: () {},
+                  text: const Text(
+                    "Оформить заказ",
+                    style: TextStyle(color: AppColors.write),
+                  ),
+                )
+              ],
+            )),
+      );
+    });
   }
 }
 
