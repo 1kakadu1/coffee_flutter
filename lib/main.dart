@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/database/database.dart';
 import 'package:coffe_flutter/firebase_options.dart';
 import 'package:coffe_flutter/router/router.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await DatabaseHive.initDB();
+  //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
   // await db.createProductsDB(productsMock);
   runApp(const MyApp());

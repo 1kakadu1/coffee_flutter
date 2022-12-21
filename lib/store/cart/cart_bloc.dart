@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:coffe_flutter/database/database.dart';
+import 'package:coffe_flutter/database/models/cart.hive.model.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
@@ -27,7 +29,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       int item = [...state.products]
           .indexWhere((x) => x.id == product.id && x.currentSize == event.size);
       if (item == -1) {
-        items.add(CartItemModel(
+        final value = CartItemModel(
             name: product.name,
             price: product.price,
             preview: product.preview,
@@ -36,9 +38,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 ? event.product!.categorys[1]
                 : event.cartItem!.category ?? "",
             count: 1,
-            currentSize: event.size));
+            currentSize: event.size);
+        items.add(value);
+        DatabaseHive.createCartItem(
+          CartHive(
+              name: value.name,
+              preview: value.preview ?? "",
+              id: value.id,
+              count: value.count,
+              price: value.price,
+              category: value.category,
+              comments: value.comments,
+              currentSize: value.currentSize),
+        );
       } else {
         items[item] = items[item].copyWith(count: items[item].count + 1);
+        DatabaseHive.whereUpdateCartItem(
+            item: CartHive(
+                name: items[item].name,
+                preview: items[item].preview ?? "",
+                id: items[item].id,
+                count: items[item].count + 1,
+                price: items[item].price,
+                category: items[item].category,
+                comments: items[item].comments,
+                currentSize: items[item].currentSize),
+            size: items[item].currentSize,
+            id: items[item].id);
       }
       emit(state.copyWith(products: items));
     }
