@@ -22,7 +22,7 @@ class CartHiveAdapter extends TypeAdapter<CartHive> {
       id: fields[2] as String,
       count: fields[3] as int,
       price: fields[4] as dynamic,
-      category: fields[5] as String?,
+      categorys: (fields[5] as List?)?.cast<String>(),
       comments: fields[6] as String?,
       currentSize: fields[7] as String,
     );
@@ -43,7 +43,7 @@ class CartHiveAdapter extends TypeAdapter<CartHive> {
       ..writeByte(4)
       ..write(obj.price)
       ..writeByte(5)
-      ..write(obj.category)
+      ..write(obj.categorys)
       ..writeByte(6)
       ..write(obj.comments)
       ..writeByte(7)

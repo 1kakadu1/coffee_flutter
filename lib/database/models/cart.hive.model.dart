@@ -9,7 +9,7 @@ class CartHive extends HiveObject {
     required this.id,
     required this.count,
     required this.price,
-    required this.category,
+    required this.categorys,
     required this.comments,
     required this.currentSize,
   });
@@ -25,9 +25,22 @@ class CartHive extends HiveObject {
   @HiveField(4)
   dynamic price;
   @HiveField(5)
-  String? category;
+  List<String>? categorys;
   @HiveField(6)
   String? comments;
   @HiveField(7)
   String currentSize;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data["id"] = id;
+    data["count"] = count;
+    data["price"] = price;
+    data["preview"] = preview;
+    data["name"] = name;
+    data["currentSize"] = currentSize;
+    data["categorys"] = categorys?.toList() ?? [];
+    data["comments"] = comments ?? "";
+    return data;
+  }
 }

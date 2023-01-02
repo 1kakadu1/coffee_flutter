@@ -21,7 +21,7 @@ class DatabaseHive<T> {
 
   static Future<Box<CartHive>> cartBox() async {
     try {
-      return await Hive.openBox<CartHive>('UserHiveModels');
+      return await Hive.openBox<CartHive>('CartHiveModels');
     } on Exception catch (e) {
       log("Error open table Cart: ${e.toString()}");
       throw Exception("Error open table Cart: ${e.toString()}");
@@ -31,7 +31,8 @@ class DatabaseHive<T> {
   static Future<void> whereUpdateCartItem(
       {required CartHive item,
       required String size,
-      required String id}) async {
+      required String id,
+      bool notUpdateCount = false}) async {
     try {
       final box = await cartBox();
       final cartFilter = box.values
@@ -41,13 +42,14 @@ class DatabaseHive<T> {
       if (cartFilter.isNotEmpty) {
         final cartBox = box.get(cartFilter[0].key);
         if (cartBox != null) {
-          cartBox.category = item.category;
+          cartBox.categorys = item.categorys;
           cartBox.currentSize = item.currentSize;
           cartBox.id = item.id;
           cartBox.preview = item.preview;
           cartBox.comments = item.comments;
           cartBox.price = item.price;
-          cartBox.count = item.count;
+          cartBox.count =
+              notUpdateCount == true ? cartFilter[0].count : item.count;
           await cartBox.save();
         } else {
           throw Exception('Cart item ${item.id} not found');
@@ -58,15 +60,17 @@ class DatabaseHive<T> {
     }
   }
 
+  static Future<List<CartHive>> getCartProducts() async {
+    try {
+      final box = await cartBox();
+      return box.values.toList();
+    } catch (e) {
+      throw Exception('Cart items not found');
+    }
+  }
+
   static Future<void> whereDelateCartItem(
-      {required CartHive item,
-      required String size,
-      required String id}) async {
-    final box = await cartBox();
-    final cartFilter = box.values
-        .toList()
-        .where((element) => element.id == id && element.currentSize == size)
-        .toList();
+      {required String size, required String id}) async {
     try {
       final box = await cartBox();
       final cartFilter = box.values
@@ -74,14 +78,15 @@ class DatabaseHive<T> {
           .where((element) => element.id == id && element.currentSize == size)
           .toList();
       if (cartFilter.isNotEmpty) {
-        final cartBox = box.get(cartFilter[0]);
+        final cartBox = box.get(cartFilter[0].key);
         if (cartBox != null) {
+          box.delete(cartBox.key);
         } else {
-          throw Exception('Cart item ${item.id} not found');
+          throw Exception('Cart item ${id} not found');
         }
       }
     } catch (e) {
-      Exception('Cart item ${item.id} error: ${e.toString()}');
+      Exception('Cart item ${id} error: ${e.toString()}');
     }
   }
 
@@ -89,8 +94,6 @@ class DatabaseHive<T> {
     var uuid = const Uuid();
     final db = await cartBox();
     final key = uuid.v1();
-    final tesdt = db.values.toList();
-    log("create ${key}");
     db.put(key, item);
   }
 
