@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:coffe_flutter/database/database.dart';
+import 'package:coffe_flutter/database/models/cart.hive.model.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
@@ -14,6 +16,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartRemoveAction>(_removeItem);
     on<CartChangeCommentsAction>(_changeCommentItem);
     on<CartUpdateProductsAction>(_onUpdateCartProductData);
+    on<CartInitProductsAction>(_onInitCart);
   }
 
   _clearCartProduct(CartClearAction event, Emitter<CartState> emit) {
@@ -27,24 +30,46 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       int item = [...state.products]
           .indexWhere((x) => x.id == product.id && x.currentSize == event.size);
       if (item == -1) {
-        items.add(CartItemModel(
+        final value = CartItemModel(
             name: product.name,
             price: product.price,
             preview: product.preview,
             id: product.id,
-            category: event.product != null
-                ? event.product!.categorys[1]
-                : event.cartItem!.category ?? "",
+            categorys: event.product!.categorys,
             count: 1,
-            currentSize: event.size));
+            currentSize: event.size);
+        items.add(value);
+        DatabaseHive.createCartItem(
+          CartHive(
+              name: value.name,
+              preview: value.preview ?? "",
+              id: value.id,
+              count: value.count,
+              price: value.price,
+              categorys: value.categorys,
+              comments: value.comments,
+              currentSize: value.currentSize),
+        );
       } else {
         items[item] = items[item].copyWith(count: items[item].count + 1);
+        DatabaseHive.whereUpdateCartItem(
+            item: CartHive(
+                name: items[item].name,
+                preview: items[item].preview ?? "",
+                id: items[item].id,
+                count: items[item].count,
+                price: items[item].price,
+                categorys: items[item].categorys,
+                comments: items[item].comments,
+                currentSize: items[item].currentSize),
+            size: items[item].currentSize,
+            id: items[item].id);
       }
       emit(state.copyWith(products: items));
     }
   }
 
-  _subItem(CartSubAction event, Emitter<CartState> emit) {
+  _subItem(CartSubAction event, Emitter<CartState> emit) async {
     List<CartItemModel> items = [...state.products];
     dynamic product = event.product ?? event.cartItem ?? event.cartItem;
     if (product != null) {
@@ -53,7 +78,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       if (item != -1 && state.products[item].count - 1 > 0) {
         items[item] = items[item].copyWith(count: items[item].count - 1);
+        DatabaseHive.whereUpdateCartItem(
+            item: CartHive(
+                name: items[item].name,
+                preview: items[item].preview ?? "",
+                id: items[item].id,
+                count: items[item].count,
+                price: items[item].price,
+                categorys: items[item].categorys,
+                comments: items[item].comments,
+                currentSize: items[item].currentSize),
+            size: items[item].currentSize,
+            id: items[item].id);
       } else if (item != -1 && state.products[item].count - 1 <= 0) {
+        await DatabaseHive.whereDelateCartItem(
+            size: items[item].currentSize, id: items[item].id);
         items.removeAt(item);
       }
     }
@@ -67,6 +106,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     List<CartItemModel> items = [...state.products];
 
     if (item != -1) {
+      DatabaseHive.whereUpdateCartItem(
+          item: CartHive(
+              name: items[item].name,
+              preview: items[item].preview ?? "",
+              id: items[item].id,
+              count: items[item].count,
+              price: items[item].price,
+              categorys: items[item].categorys,
+              comments: items[item].comments,
+              currentSize: items[item].currentSize),
+          size: items[item].currentSize,
+          id: items[item].id);
       items.removeAt(item);
     }
 
@@ -87,8 +138,46 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(state.copyWith(isLoading: true));
     try {
       var response = await apiServices.getCartProducts(state.products);
+
+      response.data.toList().forEach(((value) {
+        DatabaseHive.whereUpdateCartItem(
+            item: CartHive(
+                name: value.name,
+                preview: value.preview ?? "",
+                id: value.id,
+                count: value.count,
+                price: value.price,
+                categorys: value.categorys,
+                comments: value.comments,
+                currentSize: value.currentSize),
+            size: value.currentSize,
+            id: value.id,
+            notUpdateCount: true);
+      }));
+
       emit(state.copyWith(
           products: response.data, isLoading: false, error: response.error));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onInitCart(
+      CartInitProductsAction event, Emitter<CartState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      final localProducts = await DatabaseHive.getCartProducts();
+      if (localProducts.isNotEmpty) {
+        final cart = localProducts
+            .map((e) => CartItemModel.fromJson(e.toJson()))
+            .toList();
+        var response = await apiServices.getCartProducts(cart);
+
+        emit(state.copyWith(
+            products: response.data, isLoading: false, error: response.error));
+      } else {
+        emit(state.copyWith(products: [], isLoading: false, error: null));
+      }
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }

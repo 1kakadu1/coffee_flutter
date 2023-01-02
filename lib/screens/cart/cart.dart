@@ -196,13 +196,13 @@ class _AnimatedListCart extends StatelessWidget {
       bool isRemove = false;
       if (product.count - 1 == 0) {
         isRemove = true;
-        removeItem(index);
-        Timer(
-            Duration(seconds: delay ?? 1),
-            () => {
-                  cartBloc.add(CartSubAction(
-                      size: product.currentSize, cartItem: product))
-                });
+        //removeItem(index);
+        //  Timer(
+        // Duration(seconds: delay ?? 1),
+        //() => {
+        cartBloc
+            .add(CartSubAction(size: product.currentSize, cartItem: product));
+        // });
       } else if (product.count - 1 > 0 && !isRemove) {
         cartBloc
             .add(CartSubAction(size: product.currentSize, cartItem: product));

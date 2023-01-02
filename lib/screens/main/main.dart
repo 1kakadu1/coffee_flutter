@@ -1,9 +1,13 @@
 import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/cart/cart.dart';
 import 'package:coffe_flutter/screens/home/home.screen.dart';
+import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
 import 'package:coffe_flutter/widgets/menu_bottom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../store/cart/cart_event.dart';
 
 const _appBarTitle = [
   null,
@@ -28,6 +32,8 @@ class _MainPageState extends State<MainPage>
     super.initState();
     _tabController = TabController(vsync: this, length: 4);
     active = 0;
+    final CartBloc cartBloc = BlocProvider.of<CartBloc>(context);
+    cartBloc.add(CartInitProductsAction());
   }
 
   @override

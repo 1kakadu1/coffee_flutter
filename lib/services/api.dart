@@ -105,7 +105,7 @@ class Api {
         final int indexToCart =
             cart.indexWhere((item) => item.id == product.id);
         if (indexToCart != -1) {
-          cart[indexToCart].price = product.price;
+          cart[indexToCart].copyWith(price: product.price);
         }
       });
 

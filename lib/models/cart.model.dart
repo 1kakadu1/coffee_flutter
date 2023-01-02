@@ -7,7 +7,7 @@ class CartItemModel {
   late String id;
   late int count;
   late dynamic price;
-  late String? category;
+  late List<String>? categorys;
   late String? comments;
   late String currentSize;
 
@@ -17,16 +17,16 @@ class CartItemModel {
       required this.id,
       required this.count,
       this.price,
-      this.category,
+      this.categorys,
       this.comments,
       required this.currentSize});
 
   CartItemModel.fromJson(Map<String, dynamic> json) {
-    name = json["title"] ?? "";
+    name = json["name"] ?? "";
     preview = json["preview"] ?? "";
     id = json["id"] ?? "";
     count = json["count"] ?? 0;
-    category = json["category"] ?? "";
+    categorys = json["categorys"] ?? [];
     comments = json["comments"] ?? "";
     currentSize = json["currentSize"] ?? "";
     price = json['price'] ?? 0;
@@ -49,7 +49,7 @@ class CartItemModel {
     id,
     count,
     price,
-    category,
+    categorys,
     comments,
     currentSize,
   }) {
@@ -59,7 +59,7 @@ class CartItemModel {
       id: id ?? this.id,
       count: count ?? this.count,
       price: price ?? this.price,
-      category: category ?? this.category,
+      categorys: categorys ?? this.categorys,
       comments: comments ?? this.comments,
       currentSize: currentSize ?? this.currentSize,
     );
