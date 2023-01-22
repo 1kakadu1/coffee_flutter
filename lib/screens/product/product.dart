@@ -49,6 +49,15 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
+  Future<void> _pullRefresh() async {
+    final NavigationArgumentsProduct arguments = ModalRoute.of(context)
+        ?.settings
+        .arguments as NavigationArgumentsProduct;
+    if (arguments.product != null) {
+      productBloc.add(ProductEventRefresh(arguments.product!.id));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).viewPadding.top;
@@ -57,308 +66,317 @@ class _ProductScreenState extends State<ProductScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: _scaffoldBottom(),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-              child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: height + 12,
-                ),
-                Container(
-                  child: Stack(children: [
-                    BlocBuilder<ProductBloc, ProductState>(
-                        bloc: productBloc,
-                        buildWhen: (previousState, state) {
-                          return previousState.product?.preview !=
-                              state.product?.preview;
-                        },
-                        builder: (context, state) => Container(
-                              height: 420,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                image: DecorationImage(
-                                  image: state.product != null
-                                      ? NetworkImage(state.product!.preview)
-                                      : const AssetImage(
-                                              "assets/img/no_img_avaliable.jpg")
-                                          as ImageProvider,
-                                  fit: BoxFit.cover,
+        body: RefreshIndicator(
+          onRefresh: _pullRefresh,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SingleChildScrollView(
+                child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: height + 12,
+                  ),
+                  Container(
+                    child: Stack(children: [
+                      BlocBuilder<ProductBloc, ProductState>(
+                          bloc: productBloc,
+                          buildWhen: (previousState, state) {
+                            return previousState.product?.preview !=
+                                state.product?.preview;
+                          },
+                          builder: (context, state) => Container(
+                                height: 420,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  image: DecorationImage(
+                                    image: state.product != null
+                                        ? NetworkImage(state.product!.preview)
+                                        : const AssetImage(
+                                                "assets/img/no_img_avaliable.jpg")
+                                            as ImageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                            )),
-                    Positioned(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 6),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ButtonPrimary(
-                                onPress: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Icon(
-                                      Icons.arrow_back_ios,
-                                      size: 12,
-                                      color: AppColors.btnText,
-                                    ),
-                                  ],
+                              )),
+                      Positioned(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 6),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ButtonPrimary(
+                                  onPress: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_back_ios,
+                                        size: 12,
+                                        color: AppColors.btnText,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              ButtonPrimary(
-                                onPress: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    Icon(
-                                      Icons.favorite,
-                                      size: 12,
-                                      color: AppColors.btnText,
-                                    ),
-                                  ],
+                                ButtonPrimary(
+                                  onPress: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.favorite,
+                                        size: 12,
+                                        color: AppColors.btnText,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ]),
+                              ]),
+                        ),
                       ),
-                    ),
-                    BlocBuilder<ProductBloc, ProductState>(
-                        bloc: productBloc,
-                        buildWhen: (previousState, state) {
-                          return previousState.product != state.product;
-                        },
-                        builder: (context, state) {
-                          final isTea = state.product?.categorys
-                                  .where((element) => element == "id-tea")
-                                  .isNotEmpty ??
-                              false;
+                      BlocBuilder<ProductBloc, ProductState>(
+                          bloc: productBloc,
+                          buildWhen: (previousState, state) {
+                            return previousState.product != state.product;
+                          },
+                          builder: (context, state) {
+                            final isTea = state.product?.categorys
+                                    .where((element) => element == "id-tea")
+                                    .isNotEmpty ??
+                                false;
 
-                          return Positioned(
-                              bottom: 0,
-                              child: GlassPaper(
-                                height: 130,
-                                radius: 12,
-                                color: AppColors.glass,
-                                width: MediaQuery.of(context).size.width - 40,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
+                            return Positioned(
+                                bottom: 0,
+                                child: GlassPaper(
+                                  height: 130,
+                                  radius: 12,
+                                  color: AppColors.glass,
+                                  width: MediaQuery.of(context).size.width - 40,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  state.product?.name ?? "",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: 18),
+                                                ),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  state.product?.description ??
+                                                      "",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 22,
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                ProductMarker(
+                                                  iconName: isTea
+                                                      ? "tea.png"
+                                                      : "coffee.png",
+                                                  title: isTea ? "чай" : "кофе",
+                                                  color: AppColors.black,
+                                                  width: 44,
+                                                  height: 44,
+                                                ),
+                                                const ProductMarker(
+                                                  iconName: "water.png",
+                                                  color: AppColors.black,
+                                                  width: 44,
+                                                  height: 44,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                state.product?.name ?? "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 18),
+                                              const Icon(
+                                                Icons.star,
+                                                color: AppColors.primary,
+                                                size: 16.0,
                                               ),
                                               const SizedBox(
-                                                height: 8,
+                                                width: 6,
                                               ),
-                                              Text(
-                                                state.product?.description ??
+                                              Text(state.product?.rating
+                                                      .toString() ??
+                                                  "0")
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 6,
+                                          ),
+                                          ProductMarker(
+                                            color: AppColors.black,
+                                            title:
+                                                state.product?.composition[0] ??
                                                     "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
+                                            padding: const EdgeInsets.all(10),
+                                            width: (44 * 2) + 20,
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 22,
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              ProductMarker(
-                                                iconName: isTea
-                                                    ? "tea.png"
-                                                    : "coffee.png",
-                                                title: isTea ? "чай" : "кофе",
-                                                color: AppColors.black,
-                                                width: 44,
-                                                height: 44,
-                                              ),
-                                              const ProductMarker(
-                                                iconName: "water.png",
-                                                color: AppColors.black,
-                                                width: 44,
-                                                height: 44,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Row(
+                                        ],
+                                      )
+                                    ]),
+                                  ),
+                                ));
+                          }),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Описание: ",
+                    style: TextStyle(fontSize: 16, color: AppColors.subtext),
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  BlocBuilder<ProductBloc, ProductState>(
+                      bloc: productBloc,
+                      buildWhen: (previousState, state) {
+                        return previousState.product?.description !=
+                            state.product?.description;
+                      },
+                      builder: (context, state) => ExpandableText(
+                            state.product?.description ?? "",
+                            expandText: 'ещё',
+                            collapseText: 'скрыть',
+                            maxLines: 2,
+                            linkColor: AppColors.primaryLight,
+                            animation: true,
+                            collapseOnTextTap: true,
+                            style: const TextStyle(fontSize: 16),
+                          )),
+                  const SizedBox(
+                    height: 36,
+                  ),
+                  BlocBuilder<ProductBloc, ProductState>(
+                      bloc: productBloc,
+                      buildWhen: (previousState, state) {
+                        return previousState
+                                .product?.energy_and_nutritional_value !=
+                            state.product?.energy_and_nutritional_value;
+                      },
+                      builder: (context, state) {
+                        final list = state.product?.energy_and_nutritional_value
+                                .map((item) => (Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.star,
-                                              color: AppColors.primary,
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 6,
-                                            ),
-                                            Text(state.product?.rating
-                                                    .toString() ??
-                                                "0")
-                                          ],
-                                        ),
+                                        Text(item["title"] + ": "),
                                         const SizedBox(
                                           width: 6,
                                         ),
-                                        ProductMarker(
-                                          color: AppColors.black,
-                                          title:
-                                              state.product?.composition[0] ??
-                                                  "",
-                                          padding: const EdgeInsets.all(10),
-                                          width: (44 * 2) + 20,
-                                        ),
+                                        Text(item["value"].toString())
                                       ],
-                                    )
-                                  ]),
-                                ),
-                              ));
-                        }),
-                  ]),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "Описание: ",
-                  style: TextStyle(fontSize: 16, color: AppColors.subtext),
-                ),
-                const SizedBox(
-                  height: 14,
-                ),
-                BlocBuilder<ProductBloc, ProductState>(
-                    bloc: productBloc,
-                    buildWhen: (previousState, state) {
-                      return previousState.product?.description !=
-                          state.product?.description;
-                    },
-                    builder: (context, state) => ExpandableText(
-                          state.product?.description ?? "",
-                          expandText: 'ещё',
-                          collapseText: 'скрыть',
-                          maxLines: 2,
-                          linkColor: AppColors.primaryLight,
-                          animation: true,
-                          collapseOnTextTap: true,
-                          style: const TextStyle(fontSize: 16),
-                        )),
-                const SizedBox(
-                  height: 36,
-                ),
-                BlocBuilder<ProductBloc, ProductState>(
-                    bloc: productBloc,
-                    buildWhen: (previousState, state) {
-                      return previousState
-                              .product?.energy_and_nutritional_value !=
-                          state.product?.energy_and_nutritional_value;
-                    },
-                    builder: (context, state) {
-                      final list = state.product?.energy_and_nutritional_value
-                              .map((item) => (Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(item["title"] + ": "),
-                                      const SizedBox(
-                                        width: 6,
-                                      ),
-                                      Text(item["value"].toString())
-                                    ],
-                                  ))) ??
-                          [];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Состав:",
-                            style: TextStyle(
-                                fontSize: 16, color: AppColors.subtext),
-                          ),
-                          const SizedBox(
-                            height: 14,
-                          ),
-                          ...list,
-                          const SizedBox(
-                            height: 14,
-                          ),
-                        ],
-                      );
-                    }),
-                BlocBuilder<ProductBloc, ProductState>(
-                    bloc: productBloc,
-                    buildWhen: (previousState, state) {
-                      return previousState.product?.measurement_value !=
-                          state.product?.measurement_value;
-                    },
-                    builder: (context, state) => Text(
-                          "Размер (${state.product?.measurement_value ?? "мл"}): ",
-                          style: const TextStyle(
-                              fontSize: 16, color: AppColors.subtext),
-                        )),
-                const SizedBox(
-                  height: 14,
-                ),
-                BlocBuilder<ProductBloc, ProductState>(
-                    bloc: productBloc,
-                    builder: (context, state) => Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    ))) ??
+                            [];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ..._itemBuilder(
-                                state.product?.size ?? [], state.size ?? "",
-                                (String value) {
-                              productBloc.add(ProductEventChangeSize(value));
-                            }),
+                            const Text(
+                              "Состав:",
+                              style: TextStyle(
+                                  fontSize: 16, color: AppColors.subtext),
+                            ),
+                            const SizedBox(
+                              height: 14,
+                            ),
+                            ...list,
+                            const SizedBox(
+                              height: 14,
+                            ),
                           ],
-                        )),
-                const SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
-          )),
+                        );
+                      }),
+                  BlocBuilder<ProductBloc, ProductState>(
+                      bloc: productBloc,
+                      buildWhen: (previousState, state) {
+                        return previousState.product?.measurement_value !=
+                            state.product?.measurement_value;
+                      },
+                      builder: (context, state) => Text(
+                            "Размер (${state.product?.measurement_value ?? "мл"}): ",
+                            style: const TextStyle(
+                                fontSize: 16, color: AppColors.subtext),
+                          )),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  BlocBuilder<ProductBloc, ProductState>(
+                      bloc: productBloc,
+                      builder: (context, state) => Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ..._itemBuilder(
+                                  state.product?.size ?? [], state.size ?? "",
+                                  (String value) {
+                                productBloc.add(ProductEventChangeSize(value));
+                              }),
+                            ],
+                          )),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
+            )),
+          ),
         ),
       ),
     );

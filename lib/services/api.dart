@@ -91,6 +91,27 @@ class Api {
     }
   }
 
+  Future<ApiData<ProductModel?>> getProductById(String id) async {
+    try {
+      var request = await _collectionProducts.where("id", isEqualTo: id).get();
+
+      List<ProductModel> data = [];
+      for (var element in request.docs) {
+        var doc = element.data();
+        data.add(ProductModel.fromJson(doc));
+      }
+
+      if (data.isEmpty) {
+        throw Exception("Not found 404");
+      }
+
+      return ApiData<ProductModel>(data: data[0], hashCode: request.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
   Future<ApiData<List<CartItemModel>>> getCartProducts(
     List<CartItemModel> items,
   ) async {
