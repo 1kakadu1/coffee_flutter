@@ -2,6 +2,8 @@ import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/cart/cart.dart';
 import 'package:coffe_flutter/screens/home/home.screen.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
+import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
+import 'package:coffe_flutter/store/favorite/favorite_event.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
 import 'package:coffe_flutter/widgets/menu_bottom.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,8 @@ class _MainPageState extends State<MainPage>
     active = 0;
     final CartBloc cartBloc = BlocProvider.of<CartBloc>(context);
     cartBloc.add(CartInitProductsAction());
+    final FavoriteBloc favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    favoriteBloc.add(FavoriteInitProductsAction());
   }
 
   @override

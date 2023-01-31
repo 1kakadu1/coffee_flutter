@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
+import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/home_model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -132,6 +133,36 @@ class Api {
 
       return ApiData<List<CartItemModel>>(
           data: cart, hashCode: request.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<List<FavoriteItemModel>>> getFavoriteProducts(
+    List<FavoriteItemModel> items,
+  ) async {
+    try {
+      var favorite = items;
+      var request = await _collectionProducts
+          .where("id", whereIn: items.map((e) => (e.id)).toList())
+          .get();
+
+      request.docs.toList().forEach((element) {
+        final product = ProductModel.fromJson(element.data());
+        final int indexToCart =
+            favorite.indexWhere((item) => item.id == product.id);
+        if (indexToCart != -1) {
+          favorite[indexToCart].copyWith(
+              description: product.description,
+              preview: product.preview,
+              name: product.name,
+              categorys: product.categorys);
+        }
+      });
+
+      return ApiData<List<FavoriteItemModel>>(
+          data: favorite, hashCode: request.hashCode);
     } catch (e) {
       return ApiData(
           data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);

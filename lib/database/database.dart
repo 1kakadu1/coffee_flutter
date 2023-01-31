@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:coffe_flutter/database/models/cart.hive.model.dart';
+import 'package:coffe_flutter/database/models/favorite.hive.model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,6 +18,7 @@ class DatabaseHive<T> {
   static Future<void> initDB() async {
     await Hive.initFlutter();
     Hive.registerAdapter(CartHiveAdapter());
+    Hive.registerAdapter(FavoriteHiveAdapter());
   }
 
   static Future<Box<CartHive>> cartBox() async {
@@ -25,6 +27,15 @@ class DatabaseHive<T> {
     } on Exception catch (e) {
       log("Error open table Cart: ${e.toString()}");
       throw Exception("Error open table Cart: ${e.toString()}");
+    }
+  }
+
+  static Future<Box<FavoriteHive>> favoriteBox() async {
+    try {
+      return await Hive.openBox<FavoriteHive>('FavoriteHiveModels');
+    } on Exception catch (e) {
+      log("Error open table Favorite: ${e.toString()}");
+      throw Exception("Error open table Favorite: ${e.toString()}");
     }
   }
 
@@ -69,6 +80,15 @@ class DatabaseHive<T> {
     }
   }
 
+  static Future<List<FavoriteHive>> getFavoriteProducts() async {
+    try {
+      final box = await favoriteBox();
+      return box.values.toList();
+    } catch (e) {
+      throw Exception('Cart items not found');
+    }
+  }
+
   static Future<void> whereDelateCartItem(
       {required String size, required String id}) async {
     try {
@@ -90,6 +110,24 @@ class DatabaseHive<T> {
     }
   }
 
+  static Future<void> whereDelateFavoriteItem({required String id}) async {
+    try {
+      final box = await favoriteBox();
+      final cartFilter =
+          box.values.toList().where((element) => element.id == id).toList();
+      if (cartFilter.isNotEmpty) {
+        final cartBox = box.get(cartFilter[0].key);
+        if (cartBox != null) {
+          box.delete(cartBox.key);
+        } else {
+          throw Exception('Favorite item ${id} not found');
+        }
+      }
+    } catch (e) {
+      Exception('Favorite item ${id} error: ${e.toString()}');
+    }
+  }
+
   static createCartItem(CartHive item) async {
     var uuid = const Uuid();
     final db = await cartBox();
@@ -97,8 +135,17 @@ class DatabaseHive<T> {
     db.put(key, item);
   }
 
+  static createFavoriteItem(FavoriteHive item) async {
+    var uuid = const Uuid();
+    final db = await favoriteBox();
+    final key = uuid.v1();
+    db.put(key, item);
+  }
+
   static clearBoxes() async {
-    final users = await cartBox();
-    users.deleteFromDisk();
+    final cart = await cartBox();
+    cart.deleteFromDisk();
+    final favorite = await favoriteBox();
+    favorite.deleteFromDisk();
   }
 }
