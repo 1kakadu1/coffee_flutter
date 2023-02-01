@@ -1,16 +1,39 @@
-# coffe_flutter
+# Coffee shop
 
-A new Flutter project.
+Небольшое приложение для продажи напитков
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Выполнить команду
 
-A few resources to get you started if this is your first Flutter project:
+```
+flutter pub get
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Запусть эмулятор для нужной OS и нажать клавишу F5.
+Произойдет сборка и установка в эмулятор приложения
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Выполнить настройки для работы со соим firebase
+
+## Обновление БД
+
+Можно заполнить базу данных firebase временными данными вызвав нужнве методы класса FirebaseCreateData
+```
+  final db = FirebaseCreateData();
+  await db.createProductsDB(productsMock);
+```
+В правилах базы нужно разрешить запись в коллекции.
+
+## Сборка
+
+Для андроид все делается стандартно по шагам из доки.
+
+Для ios нужен macbook и Xcode.
+Выполнить нужные насройки в General. Выбрать в качестве устройства Any и создать Archive. Начнется создание ipa и затем будет предложен вариант распространения.
+
+## Использовалось
+  - firebase
+  - animated_bottom_navigation_bar
+  - flutter_bloc
+  - hive
+  - и другое
