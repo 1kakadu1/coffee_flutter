@@ -1,5 +1,6 @@
 import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/cart/cart.dart';
+import 'package:coffe_flutter/screens/favorite/favorite.dart';
 import 'package:coffe_flutter/screens/home/home.screen.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
@@ -14,7 +15,7 @@ import '../../store/cart/cart_event.dart';
 const _appBarTitle = [
   null,
   null,
-  null,
+  "Избранное",
   "Корзина",
 ];
 
@@ -67,9 +68,7 @@ class _MainPageState extends State<MainPage>
         children: [
           HomeScreen(),
           const AboutScreenContent(),
-          const Center(
-            child: Text("It's sunny here"),
-          ),
+          const FavoriteScreen(),
           CartScreen(),
         ],
       ),

@@ -8,7 +8,7 @@ part of 'favorite.hive.model.dart';
 
 class FavoriteHiveAdapter extends TypeAdapter<FavoriteHive> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   FavoriteHive read(BinaryReader reader) {

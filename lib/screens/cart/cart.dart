@@ -5,7 +5,6 @@ import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
-import 'package:coffe_flutter/widgets/buttons/btn_custom.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/cards/product_card.dart';
 import 'package:flutter/material.dart';

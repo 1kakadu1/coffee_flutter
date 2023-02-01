@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/database/database.dart';
-import 'package:coffe_flutter/database/models/cart.hive.model.dart';
 import 'package:coffe_flutter/database/models/favorite.hive.model.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/services/api.dart';

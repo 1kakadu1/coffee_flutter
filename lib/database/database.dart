@@ -85,7 +85,7 @@ class DatabaseHive<T> {
       final box = await favoriteBox();
       return box.values.toList();
     } catch (e) {
-      throw Exception('Cart items not found');
+      throw Exception('Favorite items not found');
     }
   }
 

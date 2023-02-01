@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'favorite.hive.model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class FavoriteHive extends HiveObject {
   FavoriteHive({
     required this.name,

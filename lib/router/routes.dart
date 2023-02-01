@@ -1,5 +1,6 @@
 import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/cart/cart.dart';
+import 'package:coffe_flutter/screens/favorite/favorite.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/screens/main/main.dart';
 import 'package:coffe_flutter/screens/product/product.dart';
@@ -14,6 +15,7 @@ class PathRoute {
   static const String login = "/login";
   static const String profile = "/profile";
   static const String about = "/about";
+  static const String favorite = '/favorite';
 }
 
 class RouteItem {
@@ -62,7 +64,7 @@ class AppRoutes {
       icon: Icons.production_quantity_limits,
       isPrivate: false,
       routePath: PathRoute.product,
-      route: (context) => ProductScreen(),
+      route: (context) => const ProductScreen(),
     ),
     RouteItem(
       titleKey: "cart",
@@ -72,25 +74,33 @@ class AppRoutes {
       routePath: PathRoute.cart,
       route: (context) => CartScreen(),
     ),
+    RouteItem(
+      titleKey: "favorite",
+      isMenu: true,
+      icon: Icons.production_quantity_limits,
+      isPrivate: false,
+      routePath: PathRoute.favorite,
+      route: (context) => const FavoriteScreen(),
+    ),
   ];
 
   List<RouteItem> getRouterList(bool isAuth) {
     List<RouteItem> routes = [];
-    this._listRoutes.forEach((element) {
+    for (var element in this._listRoutes) {
       if (isAuth == true && element.isPrivate == true) {
         routes.add(element);
       }
       if (element.isPrivate != true && element.isMenu == true) {
         routes.add(element);
       }
-    });
+    }
 
     return routes;
   }
 
   Map<String, Widget Function(BuildContext)> getRoutersMap(bool isAuth) {
     Map<String, Widget Function(BuildContext)> routes = {};
-    this._listRoutes.forEach((element) {
+    for (var element in this._listRoutes) {
       if (isAuth == true && element.isPrivate == true) {
         routes[element.routePath] = element.route;
       }
@@ -98,7 +108,7 @@ class AppRoutes {
       if (element.isPrivate != true) {
         routes[element.routePath] = element.route;
       }
-    });
+    }
 
     return routes;
   }
