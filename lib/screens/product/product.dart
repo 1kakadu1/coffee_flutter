@@ -1,7 +1,11 @@
+import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
+import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
+import 'package:coffe_flutter/store/favorite/favorite_event.dart';
+import 'package:coffe_flutter/store/favorite/favorite_state.dart';
 import 'package:coffe_flutter/store/product/product_bloc.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/product.utils.dart';
@@ -41,6 +45,8 @@ class _ProductScreenState extends State<ProductScreen> {
       if (arguments.product != null) {
         productBloc
             .add(ProductEventSet(isLoading: false, product: arguments.product));
+      } else if (arguments.id != null) {
+        productBloc.add(ProductEventRefresh(arguments.id));
       }
     }
 
@@ -127,21 +133,61 @@ class _ProductScreenState extends State<ProductScreen> {
                                     ],
                                   ),
                                 ),
-                                ButtonPrimary(
-                                  onPress: () {},
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.favorite,
-                                        size: 12,
-                                        color: AppColors.btnText,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                BlocBuilder<ProductBloc, ProductState>(
+                                    bloc: productBloc,
+                                    builder: (contextProduct, stateProduct) =>
+                                        BlocBuilder<FavoriteBloc,
+                                            FavoriteState>(
+                                          buildWhen: (previousState, state) {
+                                            return previousState
+                                                    .products.length !=
+                                                state.products.length;
+                                          },
+                                          builder: (context, state) {
+                                            bool isFavorite = state.products
+                                                .where((element) =>
+                                                    element.id ==
+                                                    stateProduct.product?.id)
+                                                .toList()
+                                                .isNotEmpty;
+                                            return ButtonPrimary(
+                                              onPress: () {
+                                                final product =
+                                                    stateProduct.product;
+                                                if (product != null) {
+                                                  context
+                                                      .read<FavoriteBloc>()
+                                                      .add(FavoriteToggleAction(
+                                                          product: FavoriteItemModel(
+                                                              categorys: product
+                                                                  .categorys,
+                                                              id: product.id,
+                                                              description: product
+                                                                  .description,
+                                                              name:
+                                                                  product.name,
+                                                              preview: product
+                                                                  .preview)));
+                                                }
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.favorite,
+                                                    size: 12,
+                                                    color: isFavorite == true
+                                                        ? AppColors.primaryLight
+                                                        : AppColors.btnText,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        )),
                               ]),
                         ),
                       ),
@@ -363,8 +409,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ..._itemBuilder(
-                                  state.product?.size ?? [], state.size ?? "",
+                              ..._itemBuilder(state.product?.size ?? [],
+                                  state.size ?? state.product?.size[0] ?? "",
                                   (String value) {
                                 productBloc.add(ProductEventChangeSize(value));
                               }),
@@ -406,13 +452,15 @@ class _ProductScreenState extends State<ProductScreen> {
                           price: getPrice(
                                   price: state.product?.price,
                                   filtersSize: state.product?.size,
-                                  size: state.size)
+                                  size: state.size ??
+                                      state.product?.size[0] ??
+                                      "")
                               .toString(),
                         ),
                       ],
                     ),
                     ProductCounter(
-                      size: state.size ?? "",
+                      size: state.size ?? state.product?.size[0] ?? "",
                       product: state.product,
                     )
                   ])),
