@@ -36,7 +36,7 @@ class SpecialCard extends StatelessWidget {
     final SpecialCardOrientation orientationProps =
         orientation ?? SpecialCardOrientation.vertical;
     final double heightProps =
-        SpecialCardOrientation.vertical == orientationProps ? 312 : 150;
+        SpecialCardOrientation.vertical == orientationProps ? 324 : 162;
     return Stack(
       children: [
         Container(
@@ -137,7 +137,7 @@ class SpecialCard extends StatelessWidget {
 
   Widget _title() {
     return SizedBox(
-      height: 44,
+      height: 56,
       child: Text(
         title,
         overflow: TextOverflow.ellipsis,

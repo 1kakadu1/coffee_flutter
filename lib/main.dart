@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/database/database.dart';
 import 'package:coffe_flutter/firebase_options.dart';
 import 'package:coffe_flutter/router/router.dart';
+import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/category/category_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
       ),
       BlocProvider<CartBloc>(
         create: (context) => CartBloc(),
+      ),
+      BlocProvider<BlogBloc>(
+        create: (context) => BlogBloc(),
       ),
     ], child: RoutsAuthContainer());
   }

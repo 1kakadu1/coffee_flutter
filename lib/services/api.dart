@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffe_flutter/models/blog.model.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
@@ -26,6 +27,7 @@ class ApiData<T> {
 }
 
 class Api {
+  final _collectionBlog = FirebaseFirestore.instance.collection('blog');
   final _collectionProducts = FirebaseFirestore.instance.collection('products');
   final _collectionCategories =
       FirebaseFirestore.instance.collection('categorys');
@@ -163,6 +165,24 @@ class Api {
 
       return ApiData<List<FavoriteItemModel>>(
           data: favorite, hashCode: request.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<List<BlogModel>>> getBlog(
+    int limit,
+  ) async {
+    try {
+      var request = await _collectionBlog.limit(limit).get();
+
+      List<BlogModel> posts = request.docs.toList().map((element) {
+        var data = element.data();
+        return BlogModel.fromJson(data);
+      }).toList();
+
+      return ApiData<List<BlogModel>>(data: posts, hashCode: request.hashCode);
     } catch (e) {
       return ApiData(
           data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);

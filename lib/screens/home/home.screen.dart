@@ -1,5 +1,5 @@
-import 'package:coffe_flutter/models/product.model.dart';
-import 'package:coffe_flutter/screens/login/login.screen.dart';
+import 'package:coffe_flutter/store/blog/blog_bloc.dart';
+import 'package:coffe_flutter/store/blog/blog_state.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
 import 'package:coffe_flutter/store/home/home_event.dart';
 import 'package:coffe_flutter/store/home/home_state.dart';
@@ -11,6 +11,7 @@ import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class HomeScreenContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const TitleWidget(
-              text: "Найдите лучший кофе для себя ",
+              text: "Найдите напиток для себя ",
             ),
             const SizedBox(
               height: 40,
@@ -109,50 +110,58 @@ class HomeScreenContent extends StatelessWidget {
               height: 20,
             ),
             const TitleWidget(
-              text: "Последние посты",
+              text: "Последние новости",
               fontSize: 18,
             ),
             const SizedBox(
               height: 20,
             ),
-            SpecialCard(
-              title: productsMock[0].name,
-              description: productsMock[0].description,
-              preview: productsMock[0].preview,
-              onPress: (dynamic value) {},
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SpecialCard(
-              title: productsMock[1].name,
-              description: productsMock[1].description,
-              preview: productsMock[1].preview,
-              orientation: SpecialCardOrientation.horizontal,
-              onPress: (dynamic value) {
-                pushNewScreen(
-                  context,
-                  screen: LoginScreen(),
-                );
+            BlocBuilder<BlogBloc, BlogState>(
+              buildWhen: (previousState, state) {
+                return previousState.posts.length != state.posts.length;
+              },
+              builder: (context, state) {
+                return state.isLoading
+                    ? const Text("loading...")
+                    : ListView.builder(
+                        itemCount: state.posts.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: SpecialCard(
+                              orientation: index == 0
+                                  ? SpecialCardOrientation.vertical
+                                  : SpecialCardOrientation.horizontal,
+                              title: state.posts[index].name,
+                              description: state.posts[index].description ?? "",
+                              preview: state.posts[index].preview,
+                              onPress: (dynamic value) {
+                                _launchURL(state.posts[index].link);
+                              },
+                              horizontalWidgetReverse: index % 2 == 0,
+                            ),
+                          );
+                        });
               },
             ),
             const SizedBox(
-              height: 20,
-            ),
-            SpecialCard(
-              horizontalWidgetReverse: true,
-              title: productsMock[2].name,
-              description: productsMock[2].description,
-              preview: productsMock[2].preview,
-              orientation: SpecialCardOrientation.horizontal,
-              onPress: (dynamic value) {},
-            ),
-            const SizedBox(
-              height: 80,
+              height: 60,
             ),
           ],
         ),
       ),
     );
+  }
+
+  _launchURL(String link) async {
+    final uri = Uri.parse(link);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $link';
+    }
   }
 }
