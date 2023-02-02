@@ -43,6 +43,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   uuid: ^3.0.6
+  url_launcher: ^6.1.8
   #json_annotation: ^4.7.0
 
 
