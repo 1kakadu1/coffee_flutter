@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:coffe_flutter/router/routes.dart';
+import 'package:coffe_flutter/services/firebase_messaging_service_provider.dart';
 import 'package:coffe_flutter/store/category/category_bloc.dart';
 import 'package:coffe_flutter/theme/theme_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,10 @@ class _RoutsAuthContianerState extends State<RoutsAuthContainer> {
   User? user;
   @override
   void initState() {
-    _auth.authStateChanges().listen((User? user) {
+    _auth.authStateChanges().listen((User? user) async {
+      final tokenPush =
+          await firebaseMessagingService.registerNotification('1');
+      log("SET USER PUSH TOKEN: id 1 = $tokenPush");
       if (user == null) {
         log('User is currently signed out!');
       } else {
