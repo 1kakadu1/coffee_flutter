@@ -30,9 +30,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.20.1
-  firebase_auth: ^3.6.3
-  cloud_firestore: ^2.5.0
+  firebase_auth: ^4.2.6
+  firebase_core: ^2.5.0
+  firebase_messaging: ^14.2.2
+  cloud_firestore: ^4.3.2
   animated_bottom_navigation_bar: ^1.1.0
   persistent_bottom_nav_bar_v2: ^4.2.5
   expandable_text: ^2.3.0
@@ -42,8 +43,12 @@ dependencies:
   path_provider: ^2.0.11
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  uuid: ^3.0.6
+  uuid: ^3.0.7
   url_launcher: ^6.1.8
+  rxdart: ^0.27.7
+  flutter_local_notifications: ^13.0.0
+  flutter_native_timezone: ^2.0.0
+  flutter_secure_storage: ^8.0.0
   #json_annotation: ^4.7.0
 
 

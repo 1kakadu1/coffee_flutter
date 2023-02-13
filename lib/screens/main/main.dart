@@ -1,12 +1,19 @@
+import 'dart:developer';
+
+import 'package:coffe_flutter/models/navigation.model.dart';
+import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/screens/about/about.screen.dart';
 import 'package:coffe_flutter/screens/cart/cart.dart';
 import 'package:coffe_flutter/screens/favorite/favorite.dart';
 import 'package:coffe_flutter/screens/home/home.screen.dart';
+import 'package:coffe_flutter/services/firebase_messaging_service_provider.dart';
+import 'package:coffe_flutter/services/notification_service.dart';
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/blog/blog_event.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_event.dart';
+import 'package:coffe_flutter/utils/cart.utils.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
 import 'package:coffe_flutter/widgets/menu_bottom.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +50,8 @@ class _MainPageState extends State<MainPage>
     favoriteBloc.add(FavoriteInitProductsAction());
     final BlogBloc blogBloc = BlocProvider.of<BlogBloc>(context);
     blogBloc.add(BlogInitAction());
+    listenToNotification();
+    listenToNotificationOpenApp();
   }
 
   @override
@@ -77,5 +86,39 @@ class _MainPageState extends State<MainPage>
         ],
       ),
     );
+  }
+
+  void listenToNotification() => notificationService.onNotificationClick.stream
+      .listen(onNotificationListener);
+
+  void onNotificationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      switch (payload) {
+        case "cart":
+          {
+            cartNotification.clearNotification();
+            setState(() {
+              active = 3;
+            });
+            _tabController.animateTo((3));
+          }
+          break;
+      }
+    }
+  }
+
+  void listenToNotificationOpenApp() =>
+      firebaseMessagingService.onNotificationOpenAppClick.stream
+          .listen(onNotificationOpenAppClick);
+
+  void onNotificationOpenAppClick(Map<String, dynamic>? payload) {
+    log("payload firebase ${payload.toString()}");
+    if (payload != null && payload.isNotEmpty) {
+      if (payload["product"] != null) {
+        Navigator.pushNamed(context, PathRoute.product,
+            arguments: NavigationArgumentsProduct(
+                payload["product"].toString(), null));
+      }
+    }
   }
 }
