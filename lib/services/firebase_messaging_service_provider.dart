@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffe_flutter/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,14 +10,17 @@ class PushNotification {
     this.body,
     this.dataTitle,
     this.dataBody,
+    this.data = const {},
   });
   String? title;
   String? body;
   String? dataTitle;
+
   String? dataBody;
+  Map<String, dynamic> data;
 
   String printData() {
-    return "$title $body $dataTitle $dataBody";
+    return "$title $body $dataTitle $dataBody ${data.toString()}";
   }
 }
 
@@ -28,7 +32,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirebaseMessagingService {
   FirebaseMessagingService();
-  final BehaviorSubject<Map<String, dynamic>> onNotificationClick =
+  final BehaviorSubject<Map<String, dynamic>> onNotificationOpenAppClick =
       BehaviorSubject();
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   String? token;
@@ -53,22 +57,24 @@ class FirebaseMessagingService {
       title: message.notification?.title,
       body: message.notification?.body,
     );
-    notification.printData();
+    notificationService.showNotification(
+        id: -1,
+        body: notification.body ?? notification.dataBody ?? "",
+        title: notification.title ?? notification.dataTitle ?? "");
   }
 
   Future<void> _firebaseMessagingOnOpenAppHandler(RemoteMessage message) async {
-    PushNotification notification = PushNotification(
-      title: message.notification?.title,
-      body: message.notification?.body,
-    );
-    onNotificationClick.add(message.data);
+    onNotificationOpenAppClick.add(message.data);
   }
 
   checkForInitialMessage(RemoteMessage? initialMessage,
-      {CallbackType? callback}) async {
+      {CallbackType? callback, bool isMessage = false}) async {
     if (initialMessage != null) {
       if (callback != null) {
         callback(initialMessage.data);
+      }
+      if (isMessage) {
+        _firebaseMessagingHandler(initialMessage);
       }
     }
   }

@@ -10,7 +10,6 @@ import 'package:coffe_flutter/widgets/list_view_tabs.dart';
 import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {

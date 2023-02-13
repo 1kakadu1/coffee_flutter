@@ -7,6 +7,7 @@ import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
+import 'package:coffe_flutter/utils/cart.utils.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartState(products: const [], isLoading: false)) {
@@ -23,7 +24,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(state.copyWith(products: []));
   }
 
-  _addItem(CartAddAction event, Emitter<CartState> emit) {
+  _addItem(CartAddAction event, Emitter<CartState> emit) async {
     dynamic product = event.product ?? event.cartItem ?? event.cartItem;
     List<CartItemModel> items = [...state.products];
     if (product != null) {
@@ -65,6 +66,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             size: items[item].currentSize,
             id: items[item].id);
       }
+
+      final bool isNotification =
+          await cartNotification.checkLocalNotification();
+      if (isNotification == false) {
+        cartNotification.setNotification();
+      }
+
       emit(state.copyWith(products: items));
     }
   }
@@ -94,13 +102,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await DatabaseHive.whereDelateCartItem(
             size: items[item].currentSize, id: items[item].id);
         items.removeAt(item);
+        final bool isNotification =
+            await cartNotification.checkLocalNotification();
+        if (isNotification == true && items.isEmpty) {
+          cartNotification.clearNotification();
+        }
       }
     }
 
     emit(state.copyWith(products: items));
   }
 
-  _removeItem(CartRemoveAction event, Emitter<CartState> emit) {
+  _removeItem(CartRemoveAction event, Emitter<CartState> emit) async {
     int item = [...state.products].indexWhere(
         (x) => x.id == event.product.id && x.currentSize == event.size);
     List<CartItemModel> items = [...state.products];
@@ -119,6 +132,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           size: items[item].currentSize,
           id: items[item].id);
       items.removeAt(item);
+    }
+
+    final bool isNotification = await cartNotification.checkLocalNotification();
+    if (isNotification == true && items.isEmpty) {
+      cartNotification.clearNotification();
     }
 
     return state.copyWith(products: items);
