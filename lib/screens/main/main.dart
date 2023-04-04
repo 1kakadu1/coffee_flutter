@@ -80,7 +80,7 @@ class _MainPageState extends State<MainPage>
         controller: _tabController,
         children: [
           HomeScreen(),
-          const AboutScreenContent(),
+          AboutScreen(),
           const FavoriteScreen(),
           CartScreen(),
         ],
