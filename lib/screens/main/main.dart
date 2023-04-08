@@ -23,9 +23,9 @@ import '../../store/cart/cart_event.dart';
 
 const _appBarTitle = [
   null,
-  null,
   "Избранное",
   "Корзина",
+  "Контакты",
 ];
 
 class MainPage extends StatefulWidget {
@@ -80,9 +80,9 @@ class _MainPageState extends State<MainPage>
         controller: _tabController,
         children: [
           HomeScreen(),
-          AboutScreen(),
           const FavoriteScreen(),
           CartScreen(),
+          AboutScreen(),
         ],
       ),
     );
