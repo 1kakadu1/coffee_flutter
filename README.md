@@ -6,6 +6,14 @@
 
 Выполнить команду
 
+Создать файл env.dart в lib/const/
+```
+class Env {
+  static const String MAPBOX_KEY = "";
+}
+
+```
+
 ```
 flutter pub get
 ```

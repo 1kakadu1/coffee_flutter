@@ -6,9 +6,9 @@ import 'buttons/btn_cart.dart';
 
 final iconListUrl = <String>[
   "assets/img/icons/home.png",
-  "assets/img/icons/login.png",
   "assets/img/icons/favorite.png",
   "assets/img/icons/cart.png",
+  "assets/img/icons/login.png",
 ];
 
 class MenuScaffoldBottom extends StatefulWidget {
@@ -23,9 +23,9 @@ class _MenuBottomState extends State<MenuScaffoldBottom> {
   late int _bottomNavIndex;
   final iconList = <IconData>[
     Icons.brightness_5,
-    Icons.brightness_4,
     Icons.brightness_6,
     Icons.brightness_7,
+    Icons.brightness_4,
   ];
 
   @override
@@ -47,7 +47,7 @@ class _MenuBottomState extends State<MenuScaffoldBottom> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            index != 3
+            index != 2
                 ? Image.asset(
                     iconListUrl[index],
                     width: 20,

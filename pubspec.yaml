@@ -49,6 +49,10 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   flutter_native_timezone: ^2.0.0
   flutter_secure_storage: ^8.0.0
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.1
+  sliding_up_panel: ^2.0.0+1
+  cached_network_image: ^3.2.3
   #json_annotation: ^4.7.0
 
 
