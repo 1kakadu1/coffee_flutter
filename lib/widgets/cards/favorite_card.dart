@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class FavoriteCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     image: product.preview != null
                         ? DecorationImage(
-                            image: NetworkImage(product.preview!),
+                            image: CachedNetworkImageProvider(product.preview!),
                             fit: BoxFit.cover,
                           )
                         : null,

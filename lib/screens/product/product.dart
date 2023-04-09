@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -98,7 +99,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                   borderRadius: BorderRadius.circular(18),
                                   image: DecorationImage(
                                     image: state.product != null
-                                        ? NetworkImage(state.product!.preview)
+                                        ? CachedNetworkImageProvider(
+                                            state.product!.preview)
                                         : const AssetImage(
                                                 "assets/img/no_img_avaliable.jpg")
                                             as ImageProvider,

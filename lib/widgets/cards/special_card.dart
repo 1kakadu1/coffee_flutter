@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
 
@@ -128,7 +129,7 @@ class SpecialCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: NetworkImage(preview),
+          image: CachedNetworkImageProvider(preview),
           fit: BoxFit.cover,
         ),
       ),

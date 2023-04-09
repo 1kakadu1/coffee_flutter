@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -13,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 final _decorationContainer = BoxDecoration(
   gradient: const LinearGradient(
@@ -52,7 +51,7 @@ class ProductCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: NetworkImage(product.preview),
+                  image: CachedNetworkImageProvider(product.preview),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -246,7 +245,7 @@ class ProductCartCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     image: product.preview != null
                         ? DecorationImage(
-                            image: NetworkImage(product.preview!),
+                            image: CachedNetworkImageProvider(product.preview!),
                             fit: BoxFit.cover,
                           )
                         : null,
