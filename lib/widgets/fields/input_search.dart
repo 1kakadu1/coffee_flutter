@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffe_flutter/models/navigation.model.dart';
+import 'package:coffe_flutter/models/product.model.dart';
+import 'package:coffe_flutter/router/routes.dart';
+import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class InputSearch extends StatefulWidget {
   InputSearch({Key? key}) : super(key: key);
@@ -31,24 +37,102 @@ class _InputSearchState extends State<InputSearch> {
           border: OutlineInputBorder(),
           hintText: "Поиск продуктов"),
       onSubmitted: (String value) async {
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Thanks!'),
-              content: Text(
-                  'You typed "$value", which has length ${value.characters.length}.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+        showMaterialModalBottomSheet(
+            isDismissible: true,
+            enableDrag: false,
+            context: context,
+            builder: (context) => Container(
+                  height: 400,
+                  color: AppColors.backgroundLight,
+                  child: SingleChildScrollView(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: (_controller.text == "")
+                          ? FirebaseFirestore.instance
+                              .collection('products')
+                              .limit(20)
+                              .snapshots()
+                          : FirebaseFirestore.instance
+                              .collection('products')
+                              .limit(20)
+                              .where("search_name",
+                                  arrayContains: _controller.text)
+                              .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(child: Text("Error"));
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return Container(
+                              padding: const EdgeInsets.all(20),
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+                          default:
+                            return SizedBox(
+                              height: 400,
+                              child: snapshot.data!.docs.isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: Text(
+                                            "Найдено: ${snapshot.data!.docs.length}",
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w900),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ListView(
+                                            children: snapshot.data!.docs.map((
+                                              DocumentSnapshot doc,
+                                            ) {
+                                              Map<String, dynamic> data =
+                                                  doc.data()!
+                                                      as Map<String, dynamic>;
+                                              return SizedBox(
+                                                child: ListTile(
+                                                  onTap: () {
+                                                    ProductModel product =
+                                                        ProductModel.fromJson(
+                                                            data);
+                                                    Navigator.pushNamed(context,
+                                                        PathRoute.product,
+                                                        arguments:
+                                                            NavigationArgumentsProduct(
+                                                                product.id,
+                                                                product));
+                                                  },
+                                                  title: Text(data["name"]),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(30.0),
+                                        child: Text(
+                                          "Нам не удалось найти нужный продукт! Попробуйте ввести, например: 'кофе', 'чай' или другое.",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                            );
+                        }
+                      },
+                    ),
+                  ),
+                ));
       },
     );
   }
