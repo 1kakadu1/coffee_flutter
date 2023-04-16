@@ -1,13 +1,9 @@
-import 'dart:ui';
-
-// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_flutter/const/env.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-//https://www.youtube.com/watch?v=2aJZzRMziJc&ab_channel=Flutter
-import '../../const/env.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 
 class Item {
   Item({
@@ -59,9 +55,13 @@ class _AboutScreenState extends State<AboutScreen> {
   final double _panelHeightOpen = 0;
   final double _panelHeightClosed = 95.0;
   final List<Item> _data = _getItems();
+  late final ScrollController _scrollController;
+  late final PanelController _panelController;
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _panelController = PanelController();
     super.initState();
 
     _fabHeight = _initFabHeight;
@@ -83,6 +83,8 @@ class _AboutScreenState extends State<AboutScreen> {
           panelHeightClosed: _panelHeightClosed,
           onPanelSlide: _onPanelSlide,
           expanded: _data,
+          scrollController: _scrollController,
+          panelController: _panelController,
           toggleExpanded: _toggleExpanded),
     );
   }
@@ -98,6 +100,8 @@ class AboutScreenContent extends StatelessWidget {
   double fabHeight;
   double panelHeightOpen;
   double panelHeightClosed;
+  ScrollController scrollController;
+  PanelController panelController;
   List<Item> expanded;
   Function(double value, double panelHeightOpen) onPanelSlide;
   Function(int index, bool isExpanded) toggleExpanded;
@@ -110,6 +114,8 @@ class AboutScreenContent extends StatelessWidget {
     required this.onPanelSlide,
     required this.toggleExpanded,
     required this.expanded,
+    required this.panelController,
+    required this.scrollController,
   }) : super(key: key);
 
   Widget _body() {
@@ -153,12 +159,13 @@ class AboutScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _panel(ScrollController sc, BuildContext context) {
+  Widget _panel(BuildContext context) {
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
         child: ListView(
-          controller: sc,
+          physics: PanelScrollPhysics(controller: panelController),
+          controller: scrollController,
           children: <Widget>[
             const SizedBox(
               height: 12.0,
@@ -274,17 +281,22 @@ class AboutScreenContent extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: <Widget>[
           SlidingUpPanel(
-              maxHeight: panelHeightOpen,
-              minHeight: panelHeightClosed,
-              parallaxEnabled: true,
-              parallaxOffset: .5,
-              body: _body(),
-              color: AppColors.background,
-              panelBuilder: (sc) => _panel(sc, context),
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18.0),
-                  topRight: Radius.circular(18.0)),
-              onPanelSlide: (double pos) => onPanelSlide(pos, panelHeightOpen)),
+            snapPoint: .5,
+            color: AppColors.background,
+            disableDraggableOnScrolling: false,
+            maxHeight: panelHeightOpen,
+            minHeight: panelHeightClosed,
+            parallaxEnabled: true,
+            parallaxOffset: .5,
+            body: _body(),
+            controller: panelController,
+            scrollController: scrollController,
+            panelBuilder: () => _panel(context),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(18.0),
+                topRight: Radius.circular(18.0)),
+            onPanelSlide: (double pos) => onPanelSlide(pos, panelHeightOpen),
+          ),
         ],
       ),
     );

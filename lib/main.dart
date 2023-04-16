@@ -23,6 +23,8 @@ void main() async {
   //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
   // await db.createProductsDB(productsMock);
+  //final db = FirebaseCreateSearchData();
+  //db.createSearchDataDB(productsMock, "search_name");
   runApp(const MyApp());
 }
 
