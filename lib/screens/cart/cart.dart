@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:coffe_flutter/models/cart.model.dart';
+import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
@@ -123,7 +124,9 @@ class _CartState extends State<CartScreen> {
                 ),
                 ButtonDefault(
                   width: double.infinity,
-                  onPress: () {},
+                  onPress: () {
+                    Navigator.pushNamed(context, PathRoute.order);
+                  },
                   text: const Text(
                     "Оформить заказ",
                     style: TextStyle(color: AppColors.write),

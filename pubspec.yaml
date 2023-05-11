@@ -54,6 +54,7 @@ dependencies:
   sliding_up_panel2: ^3.2.2
   cached_network_image: ^3.2.3
   modal_bottom_sheet: ^2.1.2
+  flutter_multi_formatter: ^2.11.0
   #json_annotation: ^4.7.0
 
 
