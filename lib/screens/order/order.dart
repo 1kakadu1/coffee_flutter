@@ -1,11 +1,14 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/models/order.model.dart';
+import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/validation.utils.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/buttons/btn_default.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
@@ -21,7 +24,8 @@ class _OrderScreenState extends State<OrderScreen> {
   final _formKey = GlobalKey<FormState>();
   final _timeKey = GlobalKey<FormFieldState>();
   DateTime time = DateTime(2016, 5, 10, 22, 35);
-  var _controllerTime = TextEditingController();
+  final _controllerTime = TextEditingController();
+  String? phone, name;
   @override
   void initState() {
     super.initState();
@@ -80,6 +84,9 @@ class _OrderScreenState extends State<OrderScreen> {
                           height: 4,
                         ),
                         TextFormField(
+                          onChanged: (text) => setState(() {
+                            name = text;
+                          }),
                           validator: validationString,
                         ),
                         const SizedBox(
@@ -96,6 +103,9 @@ class _OrderScreenState extends State<OrderScreen> {
                         ),
                         TextFormField(
                           validator: validationPhone,
+                          onChanged: (text) => setState(() {
+                            phone = text;
+                          }),
                           keyboardType: TextInputType.phone,
                           inputFormatters: [
                             MaskedInputFormatter('+# (###) ####-###')
@@ -181,8 +191,23 @@ class _OrderScreenState extends State<OrderScreen> {
                           )),
                         ),
                         onPress: () {
-                          if (_formKey.currentState!.validate() &&
-                              _timeKey.currentState!.validate()) {}
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.validate() &&
+                              _timeKey.currentState!.validate() &&
+                              name != null &&
+                              phone != null) {
+                            final CartBloc cartBloc =
+                                BlocProvider.of<CartBloc>(context);
+                            var data = OrderModel(
+                              name: name!,
+                              phone: phone!,
+                              date:
+                                  ' ${time.year}.${time.month}.${time.day} ${time.hour}:${(time.minute % 5 * 5).toString()}',
+                              address: "London",
+                              products: cartBloc.state.products,
+                            );
+                            apiServices.createOrder(data);
+                          }
                         })
                   ],
                 ),
