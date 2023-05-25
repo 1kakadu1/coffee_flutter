@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:coffe_flutter/models/order.model.dart';
+import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
+import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/validation.utils.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
@@ -20,7 +23,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  late CartBloc homeBloc = CartBloc();
+  late CartBloc cartBloc = CartBloc();
   final _formKey = GlobalKey<FormState>();
   final _timeKey = GlobalKey<FormFieldState>();
   DateTime time = DateTime(2016, 5, 10, 22, 35);
@@ -191,13 +194,13 @@ class _OrderScreenState extends State<OrderScreen> {
                           )),
                         ),
                         onPress: () {
+                          final CartBloc cartBloc =
+                              BlocProvider.of<CartBloc>(context, listen: false);
                           if (_formKey.currentState != null &&
                               _formKey.currentState!.validate() &&
                               _timeKey.currentState!.validate() &&
                               name != null &&
                               phone != null) {
-                            final CartBloc cartBloc =
-                                BlocProvider.of<CartBloc>(context);
                             var data = OrderModel(
                               name: name!,
                               phone: phone!,
@@ -206,7 +209,33 @@ class _OrderScreenState extends State<OrderScreen> {
                               address: "London",
                               products: cartBloc.state.products,
                             );
-                            apiServices.createOrder(data);
+
+                            apiServices.createOrder(data).then((value) {
+                              const snackBar = SnackBar(
+                                backgroundColor: AppColors.backgroundLight,
+                                content: Text(
+                                  'Заказ успешно оформлен!',
+                                  style: TextStyle(color: AppColors.write),
+                                ),
+                              );
+                              cartBloc.add(CartClearAction());
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Timer(Duration(microseconds: 20), () {
+                                Navigator.pushNamed(context, PathRoute.home);
+                              });
+                            }).catchError((e) {
+                              print("Error: ${e.toString()}");
+                              final snackBar = SnackBar(
+                                backgroundColor: AppColors.red[200],
+                                content: const Text(
+                                  'Ошибка! Повторите через время',
+                                  style: TextStyle(color: AppColors.write),
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            });
                           }
                         })
                   ],
