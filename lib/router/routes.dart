@@ -3,6 +3,7 @@ import 'package:coffe_flutter/screens/cart/cart.dart';
 import 'package:coffe_flutter/screens/favorite/favorite.dart';
 import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/screens/main/main.dart';
+import 'package:coffe_flutter/screens/order/order.dart';
 import 'package:coffe_flutter/screens/product/product.dart';
 import 'package:flutter/material.dart';
 
@@ -81,6 +82,14 @@ class AppRoutes {
       isPrivate: false,
       routePath: PathRoute.favorite,
       route: (context) => const FavoriteScreen(),
+    ),
+    RouteItem(
+      titleKey: "order",
+      isMenu: false,
+      icon: Icons.production_quantity_limits,
+      isPrivate: false,
+      routePath: PathRoute.order,
+      route: (context) => const OrderScreen(),
     ),
   ];
 

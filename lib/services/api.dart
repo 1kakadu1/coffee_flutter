@@ -6,8 +6,11 @@ import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/home_model.dart';
+import 'package:coffe_flutter/models/order.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../const/env.dart';
 
 class ApiData<T> {
   final T data;
@@ -29,6 +32,7 @@ class ApiData<T> {
 class Api {
   final _collectionBlog = FirebaseFirestore.instance.collection('blog');
   final _collectionProducts = FirebaseFirestore.instance.collection('products');
+  final _collectionOrders = FirebaseFirestore.instance.collection('orders');
   final _collectionCategories =
       FirebaseFirestore.instance.collection('categorys');
   final _auth = FirebaseAuth.instance;
@@ -186,6 +190,28 @@ class Api {
     } catch (e) {
       return ApiData(
           data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<bool?>> createOrder(OrderModel data) async {
+    try {
+      List<Map<String, dynamic>> cartJson =
+          data.products.map((e) => (e.toJson())).toList();
+
+      var rez = _collectionOrders.add({
+        "key": data.key ?? Env.orderKey,
+        "name": data.name,
+        "email": data.phone,
+        "date": data.date, //DateTime.parse(data.date),
+        "comments": data.comments,
+        "address": data.address,
+        "products": cartJson,
+        "userID": data.userID ?? 'not_register_user',
+      });
+      return ApiData<bool>(data: true, error: "", hashCode: rez.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
     }
   }
 }

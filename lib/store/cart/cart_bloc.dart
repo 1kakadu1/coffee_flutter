@@ -20,7 +20,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartInitProductsAction>(_onInitCart);
   }
 
-  _clearCartProduct(CartClearAction event, Emitter<CartState> emit) {
+  _clearCartProduct(CartClearAction event, Emitter<CartState> emit) async {
+    await DatabaseHive.clearCartProducts();
     emit(state.copyWith(products: []));
   }
 

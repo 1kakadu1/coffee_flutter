@@ -142,6 +142,15 @@ class DatabaseHive<T> {
     db.put(key, item);
   }
 
+  static Future<void> clearCartProducts() async {
+    try {
+      final box = await cartBox();
+      box.clear();
+    } catch (e) {
+      Exception('Cart error clear');
+    }
+  }
+
   static clearBoxes() async {
     final cart = await cartBox();
     cart.deleteFromDisk();
