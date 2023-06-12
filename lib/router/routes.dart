@@ -5,6 +5,7 @@ import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/screens/main/main.dart';
 import 'package:coffe_flutter/screens/order/order.dart';
 import 'package:coffe_flutter/screens/product/product.dart';
+import 'package:coffe_flutter/screens/registration/registration.screen.dart';
 import 'package:flutter/material.dart';
 
 class PathRoute {
@@ -14,6 +15,7 @@ class PathRoute {
   static const String order = "/order";
   static const String cart = "/cart";
   static const String login = "/login";
+  static const String registration = "/registration";
   static const String profile = "/profile";
   static const String about = "/about";
   static const String favorite = '/favorite';
@@ -54,11 +56,18 @@ class AppRoutes {
         route: (context) => AboutScreen()),
     RouteItem(
         titleKey: "login",
-        isMenu: true,
+        isMenu: false,
         icon: Icons.home,
         isPrivate: false,
         routePath: PathRoute.login,
         route: (context) => LoginScreen()),
+    RouteItem(
+        titleKey: "registartion",
+        isMenu: false,
+        icon: Icons.home,
+        isPrivate: false,
+        routePath: PathRoute.registration,
+        route: (context) => RegistrationScreen()),
     RouteItem(
       titleKey: "product",
       isMenu: false,

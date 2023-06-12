@@ -60,7 +60,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: const AppBarCustom(
+      appBar: AppBarCustom(
         title: "Оформление заказа",
       ),
       body: Container(
