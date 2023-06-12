@@ -8,6 +8,7 @@ import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/home_model.dart';
 import 'package:coffe_flutter/models/order.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
+import 'package:coffe_flutter/models/user.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../const/env.dart';
@@ -33,9 +34,101 @@ class Api {
   final _collectionBlog = FirebaseFirestore.instance.collection('blog');
   final _collectionProducts = FirebaseFirestore.instance.collection('products');
   final _collectionOrders = FirebaseFirestore.instance.collection('orders');
+  final _collectionUsers = FirebaseFirestore.instance.collection('users');
   final _collectionCategories =
       FirebaseFirestore.instance.collection('categorys');
   final _auth = FirebaseAuth.instance;
+
+  Future<ApiData<bool?>> createUserWithEmailAndPassword({
+    required String password,
+    required String email,
+    required String name,
+    required String phone,
+  }) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      _collectionUsers.add({
+        "name": name,
+        "email": email,
+        "address": '',
+        "preview": '',
+        "orders": [],
+        "phone": phone,
+        "userID": userCredential.user?.uid,
+      });
+
+      return ApiData<bool?>(
+          data: true, error: "", hashCode: userCredential.hashCode);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw Exception("The password provided is too weak.");
+      } else if (e.code == 'email-already-in-use') {
+        throw Exception("The account already exists for that email.");
+      }
+      throw Exception(e.toString());
+    } catch (e) {
+      return ApiData(
+          data: null, error: "Error: ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<UserCustom?>> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+          .user!;
+
+      final data = await getUser(user.uid);
+      if (data.error != null) {
+        throw Exception("No user found for that email or user.");
+      }
+      return ApiData(data: data.data, error: "", hashCode: user.hashCode);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw Exception("No user found for that email.");
+      } else if (e.code == 'wrong-password') {
+        throw Exception("Wrong password provided for that user.");
+      }
+      throw Exception(e.toString());
+    } catch (e) {
+      return ApiData(
+          data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<UserCustom?>> getUser(String id) async {
+    try {
+      final req = await _collectionUsers.where("userID", isEqualTo: id).get();
+      List<UserCustom> data = [];
+      req.docs.forEach((element) {
+        var doc = element.data();
+        data.add(UserCustom.fromJson(doc));
+      });
+
+      if (data.isEmpty || data[0].id != id) {
+        throw Exception("Not found 404");
+      }
+
+      return ApiData<UserCustom>(
+          data: UserCustom(
+              address: data[0].address,
+              email: data[0].email,
+              name: data[0].name,
+              phone: data[0].phone,
+              preview: data[0].preview,
+              id: id),
+          error: "",
+          hashCode: req.hashCode);
+    } catch (e) {
+      return ApiData(
+          data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
 
   Future<ApiData<HomeModel>> getHome() async {
     try {
@@ -172,6 +265,19 @@ class Api {
     } catch (e) {
       return ApiData(
           data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<UserCustom?>> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return ApiData(data: UserCustom.initial(), error: "", hashCode: 200);
+    } catch (e) {
+      return ApiData(
+          data: null,
+          error:
+              "Problem when exiting the application. Restart and repeat again",
+          hashCode: 200);
     }
   }
 

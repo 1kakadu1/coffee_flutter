@@ -2,6 +2,7 @@ import 'package:coffe_flutter/utils/parse.util.dart';
 
 class ProductModel {
   late String id;
+  late String slug;
   late String preview;
   late String name;
   late String code;
@@ -22,6 +23,7 @@ class ProductModel {
       {required this.code,
       this.isTop,
       this.isSpecial,
+      required this.slug,
       required this.id,
       required this.description,
       required this.name,
@@ -38,6 +40,7 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     name = json["name"] ?? "";
+    slug = json["slug"] ?? "";
     preview = json["preview"] ?? "";
     id = json["id"] ?? "";
     code = json["code"] ?? 0;
@@ -74,28 +77,30 @@ class ProductModel {
     data["categorys"] = categorys;
     data["isTop"] = isTop ?? false;
     data["isSpecial"] = isSpecial ?? false;
+    data["slug"] = slug;
     return data;
   }
 
-  ProductModel copyWith({
-    code,
-    description,
-    name,
-    preview,
-    price,
-    rating,
-    id,
-    composition,
-    size,
-    energy_and_nutritional_value,
-    gallary,
-    isPublic,
-    measurement_value,
-    categorys,
-    isSpecial,
-    isTop,
-  }) {
+  ProductModel copyWith(
+      {code,
+      description,
+      name,
+      preview,
+      price,
+      rating,
+      id,
+      composition,
+      size,
+      energy_and_nutritional_value,
+      gallary,
+      isPublic,
+      measurement_value,
+      categorys,
+      isSpecial,
+      isTop,
+      slug}) {
     return ProductModel(
+        slug: slug ?? this.slug,
         id: id ?? this.id,
         code: code ?? this.code,
         description: description ?? this.description,
@@ -119,6 +124,7 @@ class ProductModel {
 final List<ProductModel> productsMock = [
   ProductModel(
       id: "1",
+      slug: "bumble-coffee",
       name: "Бамбл кофе",
       description:
           "Холодный веселый напиток: кофе с апельсиновым соком, уложенные полосками. Отсюда и сравнение со шмелем (bumblebee по-английски — шмель). Перед употреблением напиток лучше размешать. Этот рецепт — из «Кофемании».",
@@ -142,6 +148,7 @@ final List<ProductModel> productsMock = [
       categorys: ["id-all", "id-coffee"]),
   ProductModel(
       id: "2",
+      slug: "latte-halva",
       name: "Латте-халва",
       description:
           "Этот кофейный напиток можно назвать самым русским, ведь в нем неожиданное сочетание семечек и кофе. Но вы будете приятно удивлены, этот кофе получается нежным, сладким и ароматным.",
@@ -165,6 +172,7 @@ final List<ProductModel> productsMock = [
   ProductModel(
       id: "3",
       name: "Раф",
+      slug: 'raf',
       description:
           "Раф кофе — это горячий кофейный напиток на основе эспрессо, ванильного сахара и жирных сливок, которые смешиваются в питчере и взбиваются паром с помощью кофемашины.",
       preview:
@@ -190,6 +198,7 @@ final List<ProductModel> productsMock = [
       categorys: ["id-all", "id-coffee"]),
   ProductModel(
       id: "4",
+      slug: 'milk-oolong-tea',
       name: "Чай Молочный улун",
       description:
           "Молочный улун (оолонг) – самый знаменитый светлый улун, особый вид полуферментированного китайского чая. Сливочный вкус, а также необыкновенно полезный состав — все это делает чай очень востребованным и популярным. Легенда и история открытия нового сорта чая начинается с 1982 году, в горной области Наньтоу на острове Тайвань. Настоящий молочный улун получил официальное название «Най Сян Цзинь Сюань» - что означает «золотой цветок», и в короткие сроки стал широко известен среди ценителей чая по всему миру.",
@@ -213,6 +222,7 @@ final List<ProductModel> productsMock = [
       isSpecial: true),
   ProductModel(
       id: "5",
+      slug: 'karkade',
       name: "Каркаде",
       description:
           "Каркаде — цветочный чай родом с Востока. Первыми высушенные лепестки гибискуса и розеллы для приготовления бодрящего напитка начали использовать жители Древнего Египта. Отсюда пошло и альтернативное название каркаде — «напиток фараонов». Также этот чай поэтично называют суданской розой, мальвой Венеции, розой Шарона. В Европе каркаде появился лишь в XVIII веке, и поначалу его кисловатый привкус пришелся консервативным обывателям Старого Света не по душе. Ситуация изменялась лишь к середине XX столетия.",
@@ -236,6 +246,7 @@ final List<ProductModel> productsMock = [
       isTop: true),
   ProductModel(
       id: "6",
+      slug: 'irish-coffee',
       name: "Ирландский кофе",
       description:
           "Вам нравятся классические горячие коктейли? Тогда попробуйте этот слабоалкогольный сливочный, кофейный и сладкий коктейль на основе виски. ",
@@ -259,6 +270,7 @@ final List<ProductModel> productsMock = [
       isTop: true),
   ProductModel(
       id: "7",
+      slug: "iced-tea-with-persian-rose-and-raspberry",
       name: "Холодный чай с персидской розой и малиной",
       description:
           "Сладкий, ягодный, красивый, освежающий — этот напиток создан для тёплых летних дней.",
@@ -283,6 +295,7 @@ final List<ProductModel> productsMock = [
   ProductModel(
     id: "8",
     name: "Холодный кофе с молоком",
+    slug: "cold-coffee-with-milk",
     description:
         "Лето в городе — на улицах, в парках и в любимых кофейнях. И пока заведения пытаются спасти посетителей от жары, нам следует узнать кое-что о прохладительных напитках для кофеманов. Вы уже пробовали колдбрю в бутылках, газированный кофейный лимонад, кофе сауэр или эспрессо-тоник? Если нет, еще есть немного времени в запасе. Мы же хотим рассказать вам, как сделать простые и вкусные холодные коктейли с кофе в домашних условиях.",
     preview:

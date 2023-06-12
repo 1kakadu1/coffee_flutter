@@ -8,9 +8,35 @@ String? validationPhone(String? value) {
   return null;
 }
 
+String? validationEmail(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Поле обязательно для ввода';
+  }
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(value)) {
+    return 'Введите верно email';
+  }
+  return null;
+}
+
 String? validationString(String? value) {
   if (value == null || value.isEmpty) {
     return 'Поле обязательно для ввода';
+  }
+  return null;
+}
+
+String? validationPassword(String? value,
+    {bool isConfirm = false, String? confirm}) {
+  if (value == null || value.isEmpty) {
+    return 'Поле обязательно для ввода';
+  }
+  if (value.length < 6) {
+    return 'Пароль должен быть больше 6';
+  }
+  if (isConfirm == true && value != confirm) {
+    return 'Пароли не совпали';
   }
   return null;
 }
