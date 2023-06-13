@@ -31,6 +31,11 @@ await db.createProductsDB(productsMock);
 ```
 У правилах бази потрібно дозволити запис в колекції.
 
+Для можливості пошуку за назвою, потрібно згенерувати дані:
+```
+final db = FirebaseCreateSearchData();
+db.createSearchDataDB(productsMock, "search_name");
+```
 ## Зборка
 
 Для Андроїд все робиться стандартно по кроках з доки.

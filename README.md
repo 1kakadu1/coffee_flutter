@@ -29,8 +29,14 @@ You can fill the firebase database with temporary data by calling the necessary 
 ```
 final db = FirebaseCreateData();
 await db.createProductsDB(productsMock);
-``
+```
 In the database rules, you need to allow writing to the collection.
+
+To be able to search by name, you need to generate data:
+```
+final db = FirebaseCreateSearchData();
+db.createSearchDataDB(productsMock, "search_name");
+```
 
 ## Assembly
 

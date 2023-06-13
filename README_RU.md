@@ -32,6 +32,12 @@ flutter pub get
 ```
 В правилах базы нужно разрешить запись в коллекции.
 
+Для возможности поиска по названию, нужносгенерировать данные:
+```
+final db = FirebaseCreateSearchData();
+db.createSearchDataDB(productsMock, "search_name");
+```
+
 ## Сборка
 
 Для андроид все делается стандартно по шагам из доки.
