@@ -6,6 +6,8 @@ import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
+import 'package:coffe_flutter/store/profile/profile_bloc.dart';
+import 'package:coffe_flutter/store/profile/profile_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/validation.utils.dart';
 import 'package:coffe_flutter/widgets/app_bar_custom.dart';
@@ -26,11 +28,17 @@ class _OrderScreenState extends State<OrderScreen> {
   late CartBloc cartBloc = CartBloc();
   final _formKey = GlobalKey<FormState>();
   final _timeKey = GlobalKey<FormFieldState>();
-  DateTime time = DateTime(2016, 5, 10, 22, 35);
+  DateTime time = DateTime.now();
   final _controllerTime = TextEditingController();
   String? phone, name;
   @override
   void initState() {
+    final ProfileBloc profileBloc =
+        BlocProvider.of<ProfileBloc>(context, listen: false);
+    if (profileBloc.state.isAuth && profileBloc.state.user != null) {
+      phone = profileBloc.state.user?.phone;
+      name = profileBloc.state.user?.name;
+    }
     super.initState();
   }
 
@@ -68,181 +76,206 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Center(
           child: SingleChildScrollView(
               child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white.withOpacity(0.15),
-            ),
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Ваше имя"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                          onChanged: (text) => setState(() {
-                            name = text;
-                          }),
-                          validator: validationString,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Телефон"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                          validator: validationPhone,
-                          onChanged: (text) => setState(() {
-                            phone = text;
-                          }),
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: [
-                            MaskedInputFormatter('+# (###) ####-###')
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white.withOpacity(0.15),
+                  ),
+                  child: BlocBuilder<ProfileBloc, ProfileState>(
+                      builder: (context, state) {
+                    log(state.isAuth.toString());
+                    log(state.user?.name.toString() ?? "not");
+                    return Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Ваше имя"),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                TextFormField(
+                                  readOnly: state.isAuth == true &&
+                                      state.user != null,
+                                  initialValue:
+                                      state.isAuth == true && state.user != null
+                                          ? state.user?.name
+                                          : "",
+                                  onChanged: (text) => setState(() {
+                                    name = text;
+                                  }),
+                                  validator: validationString,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Телефон"),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                TextFormField(
+                                  readOnly: state.isAuth == true &&
+                                      state.user != null,
+                                  initialValue:
+                                      state.isAuth == true && state.user != null
+                                          ? state.user?.phone
+                                          : "",
+                                  validator: validationPhone,
+                                  onChanged: (text) => setState(() {
+                                    phone = text;
+                                  }),
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: [
+                                    MaskedInputFormatter('+# (###) ####-###')
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Сделатть заказ на"),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    _showDialog(
+                                      CupertinoDatePicker(
+                                        minuteInterval: 30,
+                                        initialDateTime: DateTime(
+                                            time.year,
+                                            time.month,
+                                            time.day,
+                                            time.hour,
+                                            30),
+                                        mode: CupertinoDatePickerMode.time,
+                                        use24hFormat: true,
+                                        onDateTimeChanged: (DateTime newTime) {
+                                          _controllerTime.text =
+                                              '${newTime.hour}:${newTime.minute}';
+                                          setState(() => time = newTime);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Stack(children: [
+                                    TextFormField(
+                                      key: _timeKey,
+                                      validator: validationTimeOrder,
+                                      controller: _controllerTime,
+                                    ),
+                                    Positioned.fill(
+                                      child: Container(
+                                        color: Colors.amber.withOpacity(0),
+                                        height: 100,
+                                        width: double.infinity,
+                                      ),
+                                    ),
+                                  ]),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("В магазин"),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                TextFormField(
+                                  initialValue: "London",
+                                  enabled: false,
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                )
+                              ],
+                            ),
+                            ButtonDefault(
+                                radius: 14,
+                                text: const Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Center(
+                                      child: Text(
+                                    "оформить",
+                                    style: TextStyle(color: AppColors.write),
+                                  )),
+                                ),
+                                onPress: () {
+                                  final CartBloc cartBloc =
+                                      BlocProvider.of<CartBloc>(context,
+                                          listen: false);
+                                  final ProfileBloc profileBloc =
+                                      BlocProvider.of<ProfileBloc>(context,
+                                          listen: false);
+
+                                  if (_formKey.currentState != null &&
+                                      _formKey.currentState!.validate() &&
+                                      _timeKey.currentState!.validate() &&
+                                      name != null &&
+                                      phone != null) {
+                                    var data = OrderModel(
+                                        name: name!,
+                                        phone: phone!,
+                                        date:
+                                            ' ${time.year}.${time.month < 10 ? "0${time.month}" : time.month}.${time.day < 10 ? "0${time.day}" : time.day} ${time.hour < 10 ? "0${time.hour}" : time.hour}:${(time.minute % 5 * 5).toString()}',
+                                        address: "London",
+                                        products: cartBloc.state.products,
+                                        userID: profileBloc.state.user?.id);
+
+                                    apiServices.createOrder(data).then((value) {
+                                      const snackBar = SnackBar(
+                                        backgroundColor:
+                                            AppColors.backgroundLight,
+                                        content: Text(
+                                          'Заказ успешно оформлен!',
+                                          style:
+                                              TextStyle(color: AppColors.write),
+                                        ),
+                                      );
+                                      cartBloc.add(CartClearAction());
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      Timer(Duration(microseconds: 20), () {
+                                        Navigator.pushNamed(
+                                            context, PathRoute.home);
+                                      });
+                                    }).catchError((e) {
+                                      print("Error: ${e.toString()}");
+                                      final snackBar = SnackBar(
+                                        backgroundColor: AppColors.red[200],
+                                        content: const Text(
+                                          'Ошибка! Повторите через время',
+                                          style:
+                                              TextStyle(color: AppColors.write),
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    });
+                                  }
+                                })
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Сделатть заказ на"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _showDialog(
-                              CupertinoDatePicker(
-                                minuteInterval: 30,
-                                initialDateTime: DateTime(
-                                    time.year,
-                                    time.month,
-                                    time.day,
-                                    time.hour,
-                                    (time.minute % 5 * 5).toInt()),
-                                mode: CupertinoDatePickerMode.time,
-                                use24hFormat: true,
-                                onDateTimeChanged: (DateTime newTime) {
-                                  _controllerTime.text =
-                                      '${newTime.hour}:${newTime.minute}';
-                                  setState(() => time = newTime);
-                                },
-                              ),
-                            );
-                          },
-                          child: Stack(children: [
-                            TextFormField(
-                              key: _timeKey,
-                              validator: validationTimeOrder,
-                              controller: _controllerTime,
-                            ),
-                            Positioned.fill(
-                              child: Container(
-                                color: Colors.amber.withOpacity(0),
-                                height: 100,
-                                width: double.infinity,
-                              ),
-                            ),
-                          ]),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("В магазин"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                          initialValue: "London",
-                          enabled: false,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    ),
-                    ButtonDefault(
-                        radius: 14,
-                        text: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Center(
-                              child: Text(
-                            "оформить",
-                            style: TextStyle(color: AppColors.write),
-                          )),
-                        ),
-                        onPress: () {
-                          final CartBloc cartBloc =
-                              BlocProvider.of<CartBloc>(context, listen: false);
-                          if (_formKey.currentState != null &&
-                              _formKey.currentState!.validate() &&
-                              _timeKey.currentState!.validate() &&
-                              name != null &&
-                              phone != null) {
-                            var data = OrderModel(
-                              name: name!,
-                              phone: phone!,
-                              date:
-                                  ' ${time.year}.${time.month}.${time.day} ${time.hour}:${(time.minute % 5 * 5).toString()}',
-                              address: "London",
-                              products: cartBloc.state.products,
-                            );
-
-                            apiServices.createOrder(data).then((value) {
-                              const snackBar = SnackBar(
-                                backgroundColor: AppColors.backgroundLight,
-                                content: Text(
-                                  'Заказ успешно оформлен!',
-                                  style: TextStyle(color: AppColors.write),
-                                ),
-                              );
-                              cartBloc.add(CartClearAction());
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              Timer(Duration(microseconds: 20), () {
-                                Navigator.pushNamed(context, PathRoute.home);
-                              });
-                            }).catchError((e) {
-                              print("Error: ${e.toString()}");
-                              final snackBar = SnackBar(
-                                backgroundColor: AppColors.red[200],
-                                content: const Text(
-                                  'Ошибка! Повторите через время',
-                                  style: TextStyle(color: AppColors.write),
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            });
-                          }
-                        })
-                  ],
-                ),
-              ),
-            ),
-          )),
+                      ),
+                    );
+                  }))),
         ),
       ),
     );
