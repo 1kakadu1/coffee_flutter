@@ -160,7 +160,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             time.month,
                                             time.day,
                                             time.hour,
-                                            (time.minute % 5 * 5).toInt()),
+                                            30),
                                         mode: CupertinoDatePickerMode.time,
                                         use24hFormat: true,
                                         onDateTimeChanged: (DateTime newTime) {
@@ -221,20 +221,23 @@ class _OrderScreenState extends State<OrderScreen> {
                                   final CartBloc cartBloc =
                                       BlocProvider.of<CartBloc>(context,
                                           listen: false);
-                                  log(name.toString());
+                                  final ProfileBloc profileBloc =
+                                      BlocProvider.of<ProfileBloc>(context,
+                                          listen: false);
+
                                   if (_formKey.currentState != null &&
                                       _formKey.currentState!.validate() &&
                                       _timeKey.currentState!.validate() &&
                                       name != null &&
                                       phone != null) {
                                     var data = OrderModel(
-                                      name: name!,
-                                      phone: phone!,
-                                      date:
-                                          ' ${time.year}.${time.month < 10 ? "0${time.month}" : time.month}.${time.day < 10 ? "0${time.day}" : time.day} ${time.hour < 10 ? "0${time.hour}" : time.hour}:${(time.minute % 5 * 5).toString()}',
-                                      address: "London",
-                                      products: cartBloc.state.products,
-                                    );
+                                        name: name!,
+                                        phone: phone!,
+                                        date:
+                                            ' ${time.year}.${time.month < 10 ? "0${time.month}" : time.month}.${time.day < 10 ? "0${time.day}" : time.day} ${time.hour < 10 ? "0${time.hour}" : time.hour}:${(time.minute % 5 * 5).toString()}',
+                                        address: "London",
+                                        products: cartBloc.state.products,
+                                        userID: profileBloc.state.user?.id);
 
                                     apiServices.createOrder(data).then((value) {
                                       const snackBar = SnackBar(
