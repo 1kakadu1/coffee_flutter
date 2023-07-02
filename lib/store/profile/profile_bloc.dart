@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/profile/profile_event.dart';
@@ -28,6 +30,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(isLoadingAuth: true, error: null));
     try {
       var response = await apiServices.getUser(event.id);
+      log("profile get ${response.data?.email.toString() ?? "not"}");
       emit(state.copyWith(
           isLoadingAuth: false, isAuth: true, user: response.data));
     } catch (e) {
