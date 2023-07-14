@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/blog/blog_state.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:coffe_flutter/widgets/list_view_products.dart';
 import 'package:coffe_flutter/widgets/list_view_tabs.dart';
 import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
 class HomeScreenContent extends StatelessWidget {
   final HomeBloc blocHome;
   const HomeScreenContent({Key? key, required this.blocHome}) : super(key: key);
-
+  static const platform = MethodChannel('com.example.coffe_flutter/payment');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,7 +81,7 @@ class HomeScreenContent extends StatelessWidget {
                       },
                     )),
             ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 300),
+                constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
                 child: BlocBuilder<HomeBloc, HomeState>(
                     bloc: blocHome,
                     buildWhen: (previousState, state) {
@@ -89,6 +92,15 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
+            //TODO: shoew test native module activity. Type: 'payment_bottom_sheet' or 'payment'
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       var result = await platform.invokeMethod<String>(
+            //           'payment_bottom_sheet',
+            //           <String, dynamic>{'price': 2000.0});
+            //       log("RESULT NATIVE MODULE $result");
+            //     },
+            //     child: Text("оплата")),
             const TitleWidget(
               text: "Специальные продукты",
               fontSize: 18,
@@ -97,7 +109,7 @@ class HomeScreenContent extends StatelessWidget {
               height: 20,
             ),
             ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 300),
+                constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
                 child: BlocBuilder<HomeBloc, HomeState>(
                     bloc: blocHome,
                     buildWhen: (previousState, state) {
