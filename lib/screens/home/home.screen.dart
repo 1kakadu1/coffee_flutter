@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/blog/blog_state.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
 import 'package:coffe_flutter/store/home/home_event.dart';
 import 'package:coffe_flutter/store/home/home_state.dart';
+import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/cards/special_card.dart';
 import 'package:coffe_flutter/widgets/fields/input_search.dart';
 import 'package:coffe_flutter/widgets/list_view_products.dart';
@@ -24,25 +26,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   final homeScreenKey = GlobalKey();
-  late HomeBloc homeBloc = HomeBloc();
 
   @override
   void initState() {
+    final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
     homeBloc.add(HomeEventInit());
     super.initState();
   }
 
   @override
   void dispose() {
-    homeBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return HomeScreenContent(
       key: homeScreenKey,
-      blocHome: homeBloc,
+      blocHome: null,
     );
   }
 
@@ -51,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen>
 }
 
 class HomeScreenContent extends StatelessWidget {
-  final HomeBloc blocHome;
-  const HomeScreenContent({Key? key, required this.blocHome}) : super(key: key);
+  final HomeBloc? blocHome;
+  const HomeScreenContent({Key? key, this.blocHome}) : super(key: key);
   static const platform = MethodChannel('com.example.coffe_flutter/payment');
   @override
   Widget build(BuildContext context) {
@@ -72,18 +74,36 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const TitleWidget(
+                  text: "Наши напитки",
+                  fontSize: 18,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, PathRoute.products);
+                  },
+                  child: const Text(
+                    "Смотреть все",
+                    style: TextStyle(color: AppColors.write),
+                  ),
+                )
+              ],
+            ),
             BlocBuilder<HomeBloc, HomeState>(
-                bloc: blocHome,
                 builder: (context, state) => ListViewTabs<dynamic>(
                       items: state.categorys,
                       onPress: (int index, String id) {
-                        blocHome.add(HomeEventChangeCategory(id));
+                        final HomeBloc homeBloc =
+                            BlocProvider.of<HomeBloc>(context, listen: false);
+                        homeBloc.add(HomeEventChangeCategory(id));
                       },
                     )),
             ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
                 child: BlocBuilder<HomeBloc, HomeState>(
-                    bloc: blocHome,
                     buildWhen: (previousState, state) {
                       return previousState.tabsProduct != state.tabsProduct;
                     },
@@ -111,7 +131,6 @@ class HomeScreenContent extends StatelessWidget {
             ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
                 child: BlocBuilder<HomeBloc, HomeState>(
-                    bloc: blocHome,
                     buildWhen: (previousState, state) {
                       return previousState.special != state.special;
                     },

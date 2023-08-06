@@ -320,6 +320,21 @@ class Api {
           data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
     }
   }
+
+  Future<ApiData<List<CategoryModel>>> getCategoryList() async {
+    try {
+      var requestCategory = await _collectionCategories.get();
+      List<CategoryModel> cat = requestCategory.docs.map((item) {
+        return CategoryModel.fromJson(item.data());
+      }).toList();
+
+      return ApiData<List<CategoryModel>>(
+          data: cat, hashCode: requestCategory.hashCode);
+    } catch (e) {
+      return ApiData<List<CategoryModel>>(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
 }
 
 final apiServices = Api();

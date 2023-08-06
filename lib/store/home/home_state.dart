@@ -1,7 +1,8 @@
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
+import 'package:equatable/equatable.dart';
 
-class HomeState {
+class HomeState extends Equatable {
   final List<CategoryModel> categorys;
   final List<ProductModel> special;
   final List<ProductModel> tabsProduct;
@@ -27,4 +28,8 @@ class HomeState {
         error: error ?? this.error,
         isLoading: isLoading ?? this.isLoading);
   }
+
+  @override
+  List<Object?> get props =>
+      [categorys, special, tabsProduct, activeTab, isLoading, error];
 }

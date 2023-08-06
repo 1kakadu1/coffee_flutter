@@ -5,6 +5,7 @@ import 'package:coffe_flutter/screens/login/login.screen.dart';
 import 'package:coffe_flutter/screens/main/main.dart';
 import 'package:coffe_flutter/screens/order/order.dart';
 import 'package:coffe_flutter/screens/product/product.dart';
+import 'package:coffe_flutter/screens/products/products.screen.dart';
 import 'package:coffe_flutter/screens/registration/registration.screen.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +76,14 @@ class AppRoutes {
       isPrivate: false,
       routePath: PathRoute.product,
       route: (context) => const ProductScreen(),
+    ),
+    RouteItem(
+      titleKey: "products",
+      isMenu: false,
+      icon: Icons.production_quantity_limits,
+      isPrivate: false,
+      routePath: PathRoute.products,
+      route: (context) => const ProductsScreen(),
     ),
     RouteItem(
       titleKey: "cart",
