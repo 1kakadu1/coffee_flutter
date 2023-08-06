@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/utils/parse.util.dart';
+import 'package:equatable/equatable.dart';
 
-class ProductModel {
+class ProductModel extends Equatable {
   late String id;
   late String slug;
   late String preview;
@@ -119,6 +120,24 @@ class ProductModel {
         isTop: isTop ?? this.isTop,
         categorys: categorys ?? this.categorys);
   }
+
+  @override
+  List<Object> get props => [
+        slug,
+        id,
+        description,
+        name,
+        preview,
+        price,
+        rating,
+        composition,
+        energy_and_nutritional_value,
+        gallary,
+        isPublic,
+        measurement_value,
+        size,
+        categorys,
+      ];
 }
 
 final List<ProductModel> productsMock = [

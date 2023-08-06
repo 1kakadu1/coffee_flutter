@@ -20,7 +20,12 @@ abstract class TypeExtends {
 class ListViewTabs<T> extends StatefulWidget {
   final void Function(int, String) onPress;
   final List<T> items;
-  const ListViewTabs({Key? key, required this.onPress, required this.items})
+  final int? activeIndex;
+  const ListViewTabs(
+      {Key? key,
+      required this.onPress,
+      required this.items,
+      this.activeIndex = 0})
       : super(key: key);
 
   @override
@@ -31,7 +36,7 @@ class _ListViewTabsState extends State<ListViewTabs> {
   late int activeItem;
   @override
   void initState() {
-    activeItem = 0;
+    activeItem = widget.activeIndex ?? 0;
     super.initState();
   }
 

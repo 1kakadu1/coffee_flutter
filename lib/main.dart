@@ -8,6 +8,7 @@ import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/category/category_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
+import 'package:coffe_flutter/store/products/products_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -38,21 +39,33 @@ class MyApp extends StatelessWidget {
         lazy: true,
         create: (context) => FavoriteBloc(),
       ),
-      BlocProvider<CategoryBloc>(
-        lazy: true,
-        create: (context) => CategoryBloc(),
-      ),
       BlocProvider<HomeBloc>(
-        create: (context) => HomeBloc(),
+        create: (context) {
+          // final CategoryBloc categoryBloc =
+          //     BlocProvider.of<CategoryBloc>(context);
+          return HomeBloc();
+        },
+      ),
+      BlocProvider<CategoryBloc>(
+        lazy: false,
+        create: (context) {
+          final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
+          return CategoryBloc(homeBloc);
+        },
       ),
       BlocProvider<CartBloc>(
         create: (context) => CartBloc(),
+        lazy: true,
       ),
       BlocProvider<BlogBloc>(
         create: (context) => BlogBloc(),
       ),
+      BlocProvider<ProductsBloc>(
+        create: (context) => ProductsBloc(),
+      ),
       BlocProvider<ProfileBloc>(
         create: (context) => ProfileBloc(),
+        lazy: true,
       ),
     ], child: RoutsAuthContainer());
   }

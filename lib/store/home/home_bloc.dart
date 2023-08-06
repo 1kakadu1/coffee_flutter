@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/services/api.dart';
+import 'package:coffe_flutter/store/category/category_bloc.dart';
 import 'package:coffe_flutter/store/home/home_event.dart';
 import 'package:coffe_flutter/store/home/home_state.dart';
 
@@ -16,6 +18,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             tabsProduct: const [])) {
     on<HomeEventInit>(_onGetHome);
     on<HomeEventChangeCategory>(_onChangeCategory);
+  }
+
+  @override
+  Future<void> close() async {
+    return super.close();
   }
 
   Future<void> _onGetHome(HomeEventInit event, Emitter<HomeState> emit) async {
