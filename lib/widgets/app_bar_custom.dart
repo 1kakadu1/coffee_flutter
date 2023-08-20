@@ -32,12 +32,12 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
                   width: 44,
                   assets: false,
                   onPress: () {
-                    if (state.isAuth == false) {
-                      Navigator.pushNamed(
-                        context,
-                        PathRoute.login,
-                      );
-                    }
+                    Navigator.pushNamed(
+                      context,
+                      state.isAuth == false
+                          ? PathRoute.login
+                          : PathRoute.profile,
+                    );
                   },
                 ))
       ],

@@ -10,6 +10,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       : super(ProfileState(user: null, isLoadingAuth: false, isAuth: false)) {
     on<ProfileSingInAction>(_onSingIn);
     on<ProfileGetAction>(_getUser);
+    on<ProfileChangeFieldsAction>(_changeUserFields);
   }
 
   Future<void> _onSingIn(
@@ -36,5 +37,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (e) {
       emit(state.copyWith(isLoadingAuth: false, error: e.toString()));
     }
+  }
+
+  void _changeUserFields(
+      ProfileChangeFieldsAction event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(user: event.fields));
   }
 }

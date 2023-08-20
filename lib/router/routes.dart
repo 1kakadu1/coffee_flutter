@@ -6,6 +6,7 @@ import 'package:coffe_flutter/screens/main/main.dart';
 import 'package:coffe_flutter/screens/order/order.dart';
 import 'package:coffe_flutter/screens/product/product.dart';
 import 'package:coffe_flutter/screens/products/products.screen.dart';
+import 'package:coffe_flutter/screens/profile/profile_screen.dart';
 import 'package:coffe_flutter/screens/registration/registration.screen.dart';
 import 'package:flutter/material.dart';
 
@@ -108,6 +109,14 @@ class AppRoutes {
       isPrivate: false,
       routePath: PathRoute.order,
       route: (context) => const OrderScreen(),
+    ),
+    RouteItem(
+      titleKey: "profile",
+      isMenu: false,
+      icon: Icons.production_quantity_limits,
+      isPrivate: true,
+      routePath: PathRoute.profile,
+      route: (context) => const ProfileScreen(),
     ),
   ];
 

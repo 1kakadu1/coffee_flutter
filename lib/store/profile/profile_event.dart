@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/models/user.model.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -29,4 +30,9 @@ class ProfileSingInAction extends ProfileEvent {
   final String email;
   final String password;
   ProfileSingInAction({required this.email, required this.password});
+}
+
+class ProfileChangeFieldsAction extends ProfileEvent {
+  final UserCustom fields;
+  ProfileChangeFieldsAction(this.fields);
 }

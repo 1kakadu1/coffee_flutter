@@ -34,7 +34,9 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="coffe_flutter"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
+    >
         <activity
             android:name=".PaymentActivity"
             android:exported="false" />

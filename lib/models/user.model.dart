@@ -1,4 +1,6 @@
-class UserCustom {
+import 'package:equatable/equatable.dart';
+
+class UserCustom extends Equatable {
   late String id;
   late String name;
   late String email;
@@ -44,4 +46,7 @@ class UserCustom {
         phone: phone ?? this.phone,
         preview: preview ?? this.preview);
   }
+
+  @override
+  List<Object?> get props => [id, name, email, address, phone, preview];
 }
