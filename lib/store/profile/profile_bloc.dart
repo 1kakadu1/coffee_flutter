@@ -7,10 +7,15 @@ import 'package:coffe_flutter/store/profile/profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc()
-      : super(ProfileState(user: null, isLoadingAuth: false, isAuth: false)) {
+      : super(ProfileState(
+            user: null,
+            isLoadingAuth: false,
+            isAuth: false,
+            isLoadingUpdate: false)) {
     on<ProfileSingInAction>(_onSingIn);
     on<ProfileGetAction>(_getUser);
     on<ProfileChangeFieldsAction>(_changeUserFields);
+    on<ProfileLoadingUpdateAction>(_toggleLoadingUpdate);
   }
 
   Future<void> _onSingIn(
@@ -41,6 +46,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void _changeUserFields(
       ProfileChangeFieldsAction event, Emitter<ProfileState> emit) {
-    emit(state.copyWith(user: event.fields));
+    emit(state.copyWith(user: event.fields, isLoadingUpdate: false));
+  }
+
+  void _toggleLoadingUpdate(
+      ProfileLoadingUpdateAction event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(isLoadingUpdate: event.value));
   }
 }

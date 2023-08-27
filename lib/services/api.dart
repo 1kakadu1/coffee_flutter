@@ -358,20 +358,20 @@ class Api {
           await _collectionUsers.where("userID", isEqualTo: userID).get();
       List<UserCustom> data = [];
       String docID = "";
-      req.docs.forEach((element) {
+      for (var element in req.docs) {
         var doc = element.data();
         data.add(UserCustom.fromJson(doc));
         docID = element.id;
-      });
+      }
 
-      if (data.length == 0 || data[0].id != userID || docID == "") {
+      if (data.isEmpty || data[0].id != userID || docID == "") {
         throw Exception("Not found 404");
       }
 
       await _collectionUsers.doc(docID).update({field: value});
 
       return ApiData<UpdateApiData>(
-          data: new UpdateApiData(field: field, data: value),
+          data: UpdateApiData(field: field, data: value),
           error: "",
           hashCode: req.hashCode);
     } catch (e) {

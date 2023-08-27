@@ -43,9 +43,12 @@ class _UploadImgInFirebaseState extends State<UploadImgInFirebase> {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
         child: ButtonDefault(
-          text: Text(_isUploading == false
-              ? "Загрузить"
-              : "${_progress.toStringAsFixed(0)}%"),
+          text: Text(
+            _isUploading == false
+                ? "Загрузить новое фото"
+                : "Загружено ${_progress.toStringAsFixed(0)}%",
+            style: const TextStyle(color: AppColors.write),
+          ),
           onPress: () {
             _openGallery(context);
           },

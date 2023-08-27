@@ -36,3 +36,8 @@ class ProfileChangeFieldsAction extends ProfileEvent {
   final UserCustom fields;
   ProfileChangeFieldsAction(this.fields);
 }
+
+class ProfileLoadingUpdateAction extends ProfileEvent {
+  final bool value;
+  ProfileLoadingUpdateAction(this.value);
+}
