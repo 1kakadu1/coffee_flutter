@@ -41,3 +41,5 @@ class ProfileLoadingUpdateAction extends ProfileEvent {
   final bool value;
   ProfileLoadingUpdateAction(this.value);
 }
+
+class ProfileSingOutAction extends ProfileEvent {}

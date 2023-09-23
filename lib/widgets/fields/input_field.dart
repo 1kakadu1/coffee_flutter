@@ -1,5 +1,6 @@
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Input extends StatefulWidget {
   final String label;
@@ -8,6 +9,8 @@ class Input extends StatefulWidget {
   final Widget? suffix;
   final void Function(dynamic value)? onSubmit;
   final bool? enabled;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   const Input(
       {super.key,
       required this.label,
@@ -15,6 +18,8 @@ class Input extends StatefulWidget {
       this.defaultValue = "",
       this.suffix,
       this.onSubmit,
+      this.keyboardType,
+      this.inputFormatters,
       this.enabled = false});
 
   @override
@@ -56,6 +61,8 @@ class _InputState extends State<Input> {
         style: const TextStyle(fontSize: 20),
       ),
       TextField(
+        keyboardType: widget.keyboardType,
+        inputFormatters: widget.inputFormatters,
         controller: _controller,
         readOnly: widget.enabled!,
         decoration: InputDecoration(

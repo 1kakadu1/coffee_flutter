@@ -11,11 +11,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             user: null,
             isLoadingAuth: false,
             isAuth: false,
+            isLoadingAuthOut: false,
             isLoadingUpdate: false)) {
     on<ProfileSingInAction>(_onSingIn);
     on<ProfileGetAction>(_getUser);
     on<ProfileChangeFieldsAction>(_changeUserFields);
     on<ProfileLoadingUpdateAction>(_toggleLoadingUpdate);
+    on<ProfileSingOutAction>(_onSingOut);
   }
 
   Future<void> _onSingIn(
@@ -28,6 +30,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           isLoadingAuth: false, isAuth: true, user: response.data));
     } catch (e) {
       emit(state.copyWith(isLoadingAuth: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onSingOut(
+      ProfileSingOutAction event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(isLoadingAuthOut: true, error: null));
+    try {
+      var response = await apiServices.signOut();
+
+      if (response.data != null) {
+        emit(
+            state.copyWith(isLoadingAuthOut: false, isAuth: false, user: null));
+      } else {
+        throw Exception(response.error.toString());
+      }
+    } catch (e) {
+      emit(state.copyWith(isLoadingAuthOut: false, error: e.toString()));
     }
   }
 
