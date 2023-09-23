@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:coffe_flutter/router/routes.dart';
@@ -150,12 +151,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   .validate() &&
                                               email != null &&
                                               password != null) {
-                                            // final ProfileBloc profileBloc =
-                                            //     BlocProvider.of<ProfileBloc>(
-                                            //         context);
                                             profileBloc.add(ProfileSingInAction(
                                                 email: email!,
                                                 password: password!));
+                                            Timer(
+                                                const Duration(seconds: 1),
+                                                () => {
+                                                      Navigator.popAndPushNamed(
+                                                          context,
+                                                          PathRoute.home)
+                                                    });
                                           }
                                         }),
                                     TextButton(

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/services/api.dart';
+import 'package:coffe_flutter/services/locator.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -12,12 +13,18 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  final HomeBloc homeBloc;
+  final HomeBloc homeBloc = locator.get<HomeBloc>();
   late final StreamSubscription homeBlocSubscription;
-  CategoryBloc(this.homeBloc)
-      : super(const CategoryState(isLoading: false, categorys: [])) {
+  /* 
+    TODO: так можно пррокинуть из вне что-то. Без использования get_it
+    CategoryBloc(this.homeBloc)
+  */
+
+  CategoryBloc() : super(const CategoryState(isLoading: false, categorys: [])) {
     on<CategoryEventGet>(_onGetCategory);
     on<CategorySetEventGet>(_setCategoryList);
+
+    /* TODO:  подписка на слежку за изменениями иного блока. Можно вызывать через action в get_it. Тогда не нужен слушатель */
     homeBlocSubscription = homeBloc.stream.listen((state) {
       if (state.isLoading == false &&
           state.error == null &&

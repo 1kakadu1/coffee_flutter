@@ -2,6 +2,7 @@ import 'package:coffe_flutter/database/database.dart';
 import 'package:coffe_flutter/firebase_options.dart';
 import 'package:coffe_flutter/router/router.dart';
 import 'package:coffe_flutter/services/firebase_messaging_service_provider.dart';
+import 'package:coffe_flutter/services/locator.dart';
 import 'package:coffe_flutter/services/notification_service.dart';
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -22,6 +23,7 @@ void main() async {
   await firebaseMessagingService.checkForInitialMessage(initialMessage);
   await notificationService.setup();
   await DatabaseHive.initDB();
+  setupLocator();
   //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
   // await db.createProductsDB(productsMock);
@@ -37,24 +39,28 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider<FavoriteBloc>(
         lazy: true,
-        create: (context) => FavoriteBloc(),
+        create: (context) => locator.get<FavoriteBloc>(),
       ),
       BlocProvider<HomeBloc>(
         create: (context) {
-          // final CategoryBloc categoryBloc =
-          //     BlocProvider.of<CategoryBloc>(context);
-          return HomeBloc();
+          return locator.get<HomeBloc>();
         },
       ),
       BlocProvider<CategoryBloc>(
         lazy: false,
         create: (context) {
-          final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
-          return CategoryBloc(homeBloc);
+          /* 
+            TODO: Так можно прокинуть что-то в блок. Например, блок home, в блок с категориями 
+            Можно использовать get_it для прямого изменения. Сейчас так и работает.
+            
+            final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
+            return CategoryBloc(homeBloc);
+          */
+          return CategoryBloc();
         },
       ),
       BlocProvider<CartBloc>(
-        create: (context) => CartBloc(),
+        create: (context) => locator.get<CartBloc>(),
         lazy: true,
       ),
       BlocProvider<BlogBloc>(
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
         create: (context) => ProductsBloc(),
       ),
       BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(),
+        create: (context) => locator.get<ProfileBloc>(),
         lazy: true,
       ),
     ], child: RoutsAuthContainer());
