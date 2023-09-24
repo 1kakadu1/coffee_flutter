@@ -2,6 +2,11 @@
 
 A small application for the sale of drinks
 
+![image home](./assets/img/screen/13.jpg)
+![image product](./assets/img/screen/12.jpg)
+![image products](./assets/img/screen/2.jpg)
+![image user history](./assets/img/screen/3.jpg)
+
 ## Getting Started
 
 
@@ -50,4 +55,5 @@ Perform the necessary adjustments in General. Select Any as the device and creat
 - animated_bottom_navigation_bar
 - flutter_bloc
 - hive
+- get_it
 - and other
