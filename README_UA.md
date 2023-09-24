@@ -2,6 +2,11 @@
 
 Невеликий мобільний додаток для продажу напоїв
 
+![image home](./assets/img/screen/13.jpg)
+![image product](./assets/img/screen/12.jpg)
+![image products](./assets/img/screen/2.jpg)
+![image user history](./assets/img/screen/3.jpg)
+
 ## Getting Started
 
 Створити файл env.dart в lib / const/
@@ -24,7 +29,7 @@ flutter pub get
 
 ## Оновлення БД
 
-Можна заповнити базу даних firebase тимчасовими даними викликавши нужнве методи класу FirebaseCreateData
+Можна заповнити базу даних firebase тимчасовими даними викликавши потрібні методи класу File Base Create Data
 ```
 final db = FirebaseCreateData();
 await db.createProductsDB(productsMock);
@@ -38,7 +43,7 @@ db.createSearchDataDB(productsMock, "search_name");
 ```
 ## Зборка
 
-Для Андроїд все робиться стандартно по кроках з доки.
+Для Андроїд все робиться стандартно по кроках з документації.
 
 Для ios потрібен macbook і Xcode.
 Виконати потрібні насройкі в General. Вибрати в якості пристрою Any і створити Archive. Почнеться створення ipa і потім буде запропонований варіант поширення.
@@ -48,4 +53,5 @@ db.createSearchDataDB(productsMock, "search_name");
 - animated_bottom_navigation_bar
 - flutter_bloc
 - hive
+- get_it
 - і інше

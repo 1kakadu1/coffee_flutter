@@ -2,6 +2,11 @@
 
 Небольшое приложение для продажи напитков
 
+![image home](./assets/img/screen/13.jpg)
+![image product](./assets/img/screen/12.jpg)
+![image products](./assets/img/screen/2.jpg)
+![image user history](./assets/img/screen/3.jpg)
+
 ## Getting Started
 
 
@@ -32,7 +37,7 @@ flutter pub get
 ```
 В правилах базы нужно разрешить запись в коллекции.
 
-Для возможности поиска по названию, нужносгенерировать данные:
+Для возможности поиска по названию, нужно сгенерировать данные:
 ```
 final db = FirebaseCreateSearchData();
 db.createSearchDataDB(productsMock, "search_name");
@@ -40,7 +45,7 @@ db.createSearchDataDB(productsMock, "search_name");
 
 ## Сборка
 
-Для андроид все делается стандартно по шагам из доки.
+Для андроид все делается стандартно по шагам из документыции.
 
 Для ios нужен macbook и Xcode.
 Выполнить нужные насройки в General. Выбрать в качестве устройства Any и создать Archive. Начнется создание ipa и затем будет предложен вариант распространения.
@@ -50,4 +55,5 @@ db.createSearchDataDB(productsMock, "search_name");
   - animated_bottom_navigation_bar
   - flutter_bloc
   - hive
+  - get_it
   - и другое
