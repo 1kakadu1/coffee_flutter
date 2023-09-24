@@ -1,21 +1,25 @@
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:coffe_flutter/models/user.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/services/locator.dart';
-import 'package:coffe_flutter/store/home/home_bloc.dart';
+import 'package:coffe_flutter/store/history/history_bloc.dart';
+import 'package:coffe_flutter/store/history/history_event.dart';
+import 'package:coffe_flutter/store/history/history_state.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_event.dart';
 import 'package:coffe_flutter/store/profile/profile_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/utils/validation.utils.dart';
 import 'package:coffe_flutter/widgets/avatar.dart';
+import 'package:coffe_flutter/widgets/cards/product_card.dart';
 import 'package:coffe_flutter/widgets/fields/input_field.dart';
 import 'package:coffe_flutter/widgets/upload_img_in_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
+import 'package:skeletons/skeletons.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -24,8 +28,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final HistoryBloc _historyBloc = locator.get<HistoryBloc>();
+  final ProfileBloc _profileBloc = locator.get<ProfileBloc>();
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -36,15 +43,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               IconButton(
                 icon: const Icon(Icons.exit_to_app_outlined),
                 onPressed: () {
-                  final ProfileBloc profileBloc = locator.get<ProfileBloc>();
-                  profileBloc.add(ProfileSingOutAction());
+                  _profileBloc.add(ProfileSingOutAction());
                   Navigator.popAndPushNamed(context, PathRoute.home);
                 },
               ),
             ],
-            bottom: const TabBar(
+            bottom: TabBar(
               indicatorColor: AppColors.primary,
-              tabs: [
+              onTap: (int index) {
+                if (index == 1 && !_historyBloc.state.isLoading) {
+                  _historyBloc.add(HistoryEventGetItemsAction(
+                      id: _profileBloc.state.user!.id,
+                      limit: 10,
+                      isRefresh: true));
+                }
+              },
+              tabs: const [
                 Tab(icon: Icon(Icons.settings)),
                 Tab(icon: Icon(Icons.history)),
               ],
@@ -157,10 +171,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         )),
               ),
-              Icon(Icons.directions_transit),
+              BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) =>
+                      BlocBuilder<HistoryBloc, HistoryState>(
+                        builder: (context, state) => RefreshIndicator(
+                          onRefresh: _pullRefreshHistory,
+                          child: ListView.separated(
+                            itemCount: state.isLoading ? 4 : state.items.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                              height: 16,
+                            ),
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 16,
+                                          right: 16,
+                                          top: 12),
+                                      child: state.isLoading
+                                          ? SizedBox(
+                                              width: 100,
+                                              height: 20,
+                                              child: SkeletonParagraph(
+                                                style:
+                                                    const SkeletonParagraphStyle(
+                                                  lines: 1,
+                                                  spacing: 0,
+                                                  padding: EdgeInsets.all(0),
+                                                ),
+                                              ),
+                                            )
+                                          : Text(
+                                              state.items[index].date,
+                                              style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w600),
+                                            )),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: state.isLoading
+                                        ? 2
+                                        : state.items[index].products.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    separatorBuilder: (context, j) =>
+                                        const SizedBox(
+                                      height: 12,
+                                    ),
+                                    itemBuilder: (context, j) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: state.isLoading
+                                            ? const SkeletonAvatar(
+                                                style: SkeletonAvatarStyle(
+                                                    width: double.infinity,
+                                                    height: 100),
+                                              )
+                                            : ProductCartCard(
+                                                product: state
+                                                    .items[index].products[j],
+                                              ),
+                                      );
+                                    },
+                                  )
+                                ],
+                              );
+                              ;
+                            },
+                          ),
+                        ),
+                      ))
             ],
           ),
         ));
+  }
+
+  Future<void> _pullRefreshHistory() async {
+    final Completer completer = Completer();
+    _historyBloc.add(HistoryEventGetItemsAction(
+        id: _profileBloc.state.user!.id,
+        limit: 10,
+        isRefresh: true,
+        completer: completer));
+    return completer.future;
   }
 
   void _onUpdateField<T>(BuildContext context,

@@ -8,6 +8,7 @@ import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/category/category_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
+import 'package:coffe_flutter/store/history/history_bloc.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
 import 'package:coffe_flutter/store/products/products_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
@@ -61,6 +62,10 @@ class MyApp extends StatelessWidget {
       ),
       BlocProvider<CartBloc>(
         create: (context) => locator.get<CartBloc>(),
+        lazy: true,
+      ),
+      BlocProvider<HistoryBloc>(
+        create: (context) => locator.get<HistoryBloc>(),
         lazy: true,
       ),
       BlocProvider<BlogBloc>(

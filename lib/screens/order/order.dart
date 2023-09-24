@@ -231,6 +231,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                       name != null &&
                                       phone != null) {
                                     var data = OrderModel(
+                                        email:
+                                            profileBloc.state.user?.email ?? "",
                                         name: name!,
                                         phone: phone!,
                                         date:

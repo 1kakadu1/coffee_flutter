@@ -17,12 +17,10 @@ class ApiData<T> {
   final T data;
   final String? error;
   final int hashCode;
+  final dynamic offset;
 
-  ApiData({
-    required this.data,
-    this.error,
-    required this.hashCode,
-  });
+  ApiData(
+      {required this.data, this.error, required this.hashCode, this.offset});
 
   @override
   bool operator ==(Object other) {
@@ -322,7 +320,8 @@ class Api {
       var rez = _collectionOrders.add({
         "key": data.key ?? Env.orderKey,
         "name": data.name,
-        "email": data.phone,
+        "email": data.email,
+        "phone": data.phone,
         "date": data.date, //DateTime.parse(data.date),
         "comments": data.comments,
         "address": data.address,
@@ -377,6 +376,49 @@ class Api {
     } catch (e) {
       return ApiData(
           data: null, error: "Error ${e.toString()}", hashCode: e.hashCode);
+    }
+  }
+
+  Future<ApiData<List<OrderModel>>> getUserOrders(
+      String userID, int limit, dynamic offset) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> rez;
+      if (offset != null) {
+        rez = await _collectionOrders
+            .where("userID", isEqualTo: userID)
+            .orderBy("date", descending: true)
+            .startAfter([offset.data()["date"]])
+            .limit(limit)
+            .get();
+      } else {
+        rez = await _collectionOrders
+            .where("userID", isEqualTo: userID)
+            .orderBy("date", descending: true)
+            .limit(limit)
+            .get();
+      }
+
+      var docs = rez.docs;
+      var lastVisible;
+
+      List<OrderModel> data = [];
+      if (docs.isNotEmpty) {
+        lastVisible = docs[docs.length - 1];
+        for (var element in docs) {
+          var doc = element.data();
+          doc["date"] = doc["date"];
+          doc['id'] = element.id;
+          data.add(OrderModel.fromJson(doc));
+        }
+      }
+      return ApiData<List<OrderModel>>(
+          data: data,
+          error: "",
+          hashCode: rez.hashCode,
+          offset: lastVisible ?? offset);
+    } catch (e) {
+      return ApiData(
+          data: [], error: "Error ${e.toString()}", hashCode: e.hashCode);
     }
   }
 }
