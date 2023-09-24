@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class Counter extends StatelessWidget {
   final int? counter;
-  final Function onAdd;
-  final Function onSub;
+  final Function? onAdd;
+  final Function? onSub;
   const Counter(
       {Key? key, this.counter = 0, required this.onAdd, required this.onSub})
       : super(key: key);
@@ -13,17 +13,19 @@ class Counter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ButtonDefault(
-          onPress: onSub,
-          width: 30,
-          height: 30,
-          radius: 30,
-          text: const Icon(
-            Icons.remove,
-            color: Colors.white,
-            size: 16.0,
-          ),
-        ),
+        onSub != null
+            ? ButtonDefault(
+                onPress: onSub!,
+                width: 30,
+                height: 30,
+                radius: 30,
+                text: const Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                  size: 16.0,
+                ),
+              )
+            : const SizedBox(),
         const SizedBox(
           width: 12,
         ),
@@ -34,17 +36,19 @@ class Counter extends StatelessWidget {
         const SizedBox(
           width: 12,
         ),
-        ButtonDefault(
-          onPress: onAdd,
-          width: 30,
-          height: 30,
-          radius: 30,
-          text: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 16.0,
-          ),
-        )
+        onAdd != null
+            ? ButtonDefault(
+                onPress: onAdd!,
+                width: 30,
+                height: 30,
+                radius: 30,
+                text: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 16.0,
+                ),
+              )
+            : const SizedBox()
       ],
     );
   }

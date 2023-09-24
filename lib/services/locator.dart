@@ -1,6 +1,7 @@
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/favorite/favorite_bloc.dart';
+import 'package:coffe_flutter/store/history/history_bloc.dart';
 import 'package:coffe_flutter/store/home/home_bloc.dart';
 import 'package:coffe_flutter/store/products/products_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
@@ -16,4 +17,5 @@ void setupLocator() {
   locator.registerLazySingleton<CartBloc>(() => CartBloc());
   locator.registerLazySingleton<FavoriteBloc>(() => FavoriteBloc());
   locator.registerLazySingleton<ProfileBloc>(() => ProfileBloc());
+  locator.registerLazySingleton<HistoryBloc>(() => HistoryBloc());
 }
