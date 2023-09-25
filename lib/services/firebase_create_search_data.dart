@@ -32,11 +32,15 @@ class FirebaseCreateSearchData {
         }
         for (int j = 0; j < splitListEn.length; j++) {
           for (int a = 1; a < splitListEn[j].length + 1; a++) {
-            searchListEn.add(splitList[j].substring(0, a).toLowerCase());
+            searchListEn.add(splitListEn[j].substring(0, a).toLowerCase());
           }
         }
         _collectionProducts.doc(docs[0].id).update({
-          field: [...searchList, ...searchListUa, ...searchListEn]
+          field: [
+            ...searchList.toList(),
+            ...searchListUa.toList(),
+            ...searchListEn.toList()
+          ]
         });
       }
       log("PRODUCT CREATE SEARCH SUCCESS");

@@ -124,10 +124,14 @@ class AboutScreenContent extends StatelessWidget {
         center: LatLng(51.509364, -0.128928),
         zoom: 9.2,
       ),
-      nonRotatedChildren: [
-        AttributionWidget.defaultWidget(
-          source: 'OpenStreetMap contributors',
-          onSourceTapped: null,
+      nonRotatedChildren: const [
+        RichAttributionWidget(
+          attributions: [
+            TextSourceAttribution(
+              'OpenStreetMap contributors',
+              onTap: null,
+            ),
+          ],
         ),
       ],
       children: [

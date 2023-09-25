@@ -27,9 +27,9 @@ void main() async {
   setupLocator();
   //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
-  // await db.createProductsDB(productsMock);
-  //final db = FirebaseCreateSearchData();
-  //db.createSearchDataDB(productsMock, "search_name");
+  // await db.updateProductsDB(productsMock);
+  // final db = FirebaseCreateSearchData();
+  // db.createSearchDataDB(productsMock, "search_name");
   runApp(const MyApp());
 }
 

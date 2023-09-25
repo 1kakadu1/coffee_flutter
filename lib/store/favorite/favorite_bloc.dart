@@ -27,21 +27,27 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       int item = [...state.products].indexWhere((x) => x.id == product.id);
       if (item == -1) {
         final value = FavoriteItemModel(
-          name: product.name,
-          preview: product.preview,
-          id: product.id,
-          categorys: event.product!.categorys,
-          description: product.description,
-        );
+            name_en: product.name_en,
+            name_ua: product.name_ua,
+            name: product.name,
+            preview: product.preview,
+            id: product.id,
+            categorys: event.product!.categorys,
+            description: product.description,
+            description_en: product.description_en,
+            description_ua: product.description_ua);
         items.add(value);
         await DatabaseHive.createFavoriteItem(
           FavoriteHive(
-            name: value.name,
-            preview: value.preview ?? "",
-            id: value.id,
-            categorys: value.categorys,
-            description: value.description,
-          ),
+              name: value.name,
+              name_en: value.name_en,
+              name_ua: value.name_ua,
+              preview: value.preview ?? "",
+              id: value.id,
+              categorys: value.categorys,
+              description: value.description,
+              description_en: value.description_en,
+              description_ua: value.description_ua),
         );
       } else {
         await DatabaseHive.whereDelateFavoriteItem(id: items[item].id);

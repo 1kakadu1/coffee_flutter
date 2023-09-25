@@ -161,6 +161,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                                       .read<FavoriteBloc>()
                                                       .add(FavoriteToggleAction(
                                                           product: FavoriteItemModel(
+                                                              description_en:
+                                                                  product
+                                                                      .composition_en,
+                                                              description_ua:
+                                                                  product
+                                                                      .description_ua,
                                                               categorys: product
                                                                   .categorys,
                                                               id: product.id,
@@ -168,6 +174,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                   .description,
                                                               name:
                                                                   product.name,
+                                                              name_en: product
+                                                                  .name_en,
+                                                              name_ua: product
+                                                                  .description_ua,
                                                               preview: product
                                                                   .preview)));
                                                 }

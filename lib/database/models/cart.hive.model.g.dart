@@ -25,13 +25,15 @@ class CartHiveAdapter extends TypeAdapter<CartHive> {
       categorys: (fields[5] as List?)?.cast<String>(),
       comments: fields[6] as String?,
       currentSize: fields[7] as String,
+      name_ua: fields[8] as String,
+      name_en: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, CartHive obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class CartHiveAdapter extends TypeAdapter<CartHive> {
       ..writeByte(6)
       ..write(obj.comments)
       ..writeByte(7)
-      ..write(obj.currentSize);
+      ..write(obj.currentSize)
+      ..writeByte(8)
+      ..write(obj.name_ua)
+      ..writeByte(9)
+      ..write(obj.name_en);
   }
 
   @override
