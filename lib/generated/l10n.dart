@@ -49,6 +49,106 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Latest news`
+  String get home_news_title {
+    return Intl.message(
+      'Latest news',
+      name: 'home_news_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading...`
+  String get loading {
+    return Intl.message(
+      'Loading...',
+      name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not launch`
+  String get couldNotLaunch {
+    return Intl.message(
+      'Could not launch',
+      name: 'couldNotLaunch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Special products`
+  String get home_special_products {
+    return Intl.message(
+      'Special products',
+      name: 'home_special_products',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View all `
+  String get seeAll {
+    return Intl.message(
+      'View all ',
+      name: 'seeAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our drinks`
+  String get yourDrinks {
+    return Intl.message(
+      'Our drinks',
+      name: 'yourDrinks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find a drink for yourself`
+  String get home_search_title {
+    return Intl.message(
+      'Find a drink for yourself',
+      name: 'home_search_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Product search`
+  String get hintSearch {
+    return Intl.message(
+      'Product search',
+      name: 'hintSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Found:`
+  String get searchFind {
+    return Intl.message(
+      'Found:',
+      name: 'searchFind',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't find the right product! Try typing, for example: 'coffee', 'tea' or other.`
+  String get searchTitle {
+    return Intl.message(
+      'We couldn\'t find the right product! Try typing, for example: \'coffee\', \'tea\' or other.',
+      name: 'searchTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -57,6 +157,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ru'),
+      Locale.fromSubtags(languageCode: 'ua'),
     ];
   }
 

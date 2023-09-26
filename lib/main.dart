@@ -21,10 +21,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  setupLocator();
   await firebaseMessagingService.checkForInitialMessage(initialMessage);
   await notificationService.setup();
   await DatabaseHive.initDB();
-  setupLocator();
   //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
   // await db.updateProductsDB(productsMock);

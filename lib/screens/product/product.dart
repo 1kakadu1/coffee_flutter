@@ -119,11 +119,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                   onPress: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       SizedBox(
                                         width: 4,
                                       ),

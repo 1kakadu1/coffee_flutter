@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/navigation.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
@@ -32,10 +33,10 @@ class _InputSearchState extends State<InputSearch> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
-      decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
-          hintText: "Поиск продуктов"),
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search),
+          border: const OutlineInputBorder(),
+          hintText: S.of(context).hintSearch),
       onSubmitted: (String value) async {
         showMaterialModalBottomSheet(
             isDismissible: true,
@@ -83,7 +84,7 @@ class _InputSearchState extends State<InputSearch> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12),
                                           child: Text(
-                                            "Найдено: ${snapshot.data!.docs.length}",
+                                            "${S.of(context).searchFind} ${snapshot.data!.docs.length}",
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w900),
@@ -118,11 +119,11 @@ class _InputSearchState extends State<InputSearch> {
                                         ),
                                       ],
                                     )
-                                  : const Center(
+                                  : Center(
                                       child: Padding(
-                                        padding: EdgeInsets.all(30.0),
+                                        padding: const EdgeInsets.all(30.0),
                                         child: Text(
-                                          "Нам не удалось найти нужный продукт! Попробуйте ввести, например: 'кофе', 'чай' или другое.",
+                                          S.of(context).searchTitle,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),

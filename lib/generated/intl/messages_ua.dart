@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a ua locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,23 +18,24 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'ua';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "couldNotLaunch":
-            MessageLookupByLibrary.simpleMessage("Could not launch"),
-        "hintSearch": MessageLookupByLibrary.simpleMessage("Product search"),
-        "home_news_title": MessageLookupByLibrary.simpleMessage("Latest news"),
+            MessageLookupByLibrary.simpleMessage("не вдалося запустити"),
+        "hintSearch": MessageLookupByLibrary.simpleMessage("Поиск продуктов"),
+        "home_news_title":
+            MessageLookupByLibrary.simpleMessage("Останні новини"),
         "home_search_title":
-            MessageLookupByLibrary.simpleMessage("Find a drink for yourself"),
+            MessageLookupByLibrary.simpleMessage("Знайдіть напій для себе "),
         "home_special_products":
-            MessageLookupByLibrary.simpleMessage("Special products"),
-        "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
-        "searchFind": MessageLookupByLibrary.simpleMessage("Found:"),
+            MessageLookupByLibrary.simpleMessage("Спеціальні продукти"),
+        "loading": MessageLookupByLibrary.simpleMessage("Завантаження..."),
+        "searchFind": MessageLookupByLibrary.simpleMessage("Знайдено:"),
         "searchTitle": MessageLookupByLibrary.simpleMessage(
-            "We couldn\'t find the right product! Try typing, for example: \'coffee\', \'tea\' or other."),
-        "seeAll": MessageLookupByLibrary.simpleMessage("View all "),
-        "yourDrinks": MessageLookupByLibrary.simpleMessage("Our drinks")
+            "Нам не вдалося знайти потрібний продукт! Спробуйте ввести, наприклад: \'кава\', \' чай \' або інше."),
+        "seeAll": MessageLookupByLibrary.simpleMessage("Дивитися все"),
+        "yourDrinks": MessageLookupByLibrary.simpleMessage("Наші напої")
       };
 }

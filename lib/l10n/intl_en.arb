@@ -1,1 +1,12 @@
-{}
+{
+  "home_news_title": "Latest news",
+  "loading": "Loading...",
+  "couldNotLaunch": "Could not launch",
+  "home_special_products": "Special products",
+  "seeAll": "View all ",
+  "yourDrinks": "Our drinks",
+  "home_search_title": "Find a drink for yourself",
+  "hintSearch": "Product search",
+  "searchFind": "Found:",
+  "searchTitle": "We couldn't find the right product! Try typing, for example: 'coffee', 'tea' or other."
+}

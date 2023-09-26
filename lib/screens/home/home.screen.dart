@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
 import 'package:coffe_flutter/store/blog/blog_state.dart';
@@ -15,6 +16,7 @@ import 'package:coffe_flutter/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,14 +60,15 @@ class HomeScreenContent extends StatelessWidget {
   static const platform = MethodChannel('com.example.coffe_flutter/payment');
   @override
   Widget build(BuildContext context) {
+    final lang = Intl.getCurrentLocale();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TitleWidget(
-              text: "Найдите напиток для себя ",
+            TitleWidget(
+              text: S.of(context).home_search_title,
             ),
             const SizedBox(
               height: 40,
@@ -77,17 +80,17 @@ class HomeScreenContent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const TitleWidget(
-                  text: "Наши напитки",
+                TitleWidget(
+                  text: S.of(context).yourDrinks,
                   fontSize: 18,
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, PathRoute.products);
                   },
-                  child: const Text(
-                    "Смотреть все",
-                    style: TextStyle(color: AppColors.write),
+                  child: Text(
+                    S.of(context).seeAll,
+                    style: const TextStyle(color: AppColors.write),
                   ),
                 )
               ],
@@ -121,8 +124,8 @@ class HomeScreenContent extends StatelessWidget {
             //       log("RESULT NATIVE MODULE $result");
             //     },
             //     child: Text("оплата")),
-            const TitleWidget(
-              text: "Специальные продукты",
+            TitleWidget(
+              text: S.of(context).home_special_products,
               fontSize: 18,
             ),
             const SizedBox(
@@ -139,8 +142,8 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const TitleWidget(
-              text: "Последние новости",
+            TitleWidget(
+              text: S.of(context).home_news_title,
               fontSize: 18,
             ),
             const SizedBox(
@@ -152,24 +155,31 @@ class HomeScreenContent extends StatelessWidget {
               },
               builder: (context, state) {
                 return state.isLoading
-                    ? const Text("loading...")
+                    ? Text(S.of(context).loading)
                     : ListView.builder(
                         itemCount: state.posts.length,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         physics: const ClampingScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
+                          final itemJson = state.posts[index].toJson();
+                          final title = lang == "ru"
+                              ? itemJson["name"]
+                              : itemJson["name_$lang"];
+                          final description = lang == "ru"
+                              ? itemJson["description"]
+                              : itemJson["description_$lang"];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: SpecialCard(
                               orientation: index == 0
                                   ? SpecialCardOrientation.vertical
                                   : SpecialCardOrientation.horizontal,
-                              title: state.posts[index].name,
-                              description: state.posts[index].description ?? "",
+                              title: title,
+                              description: description ?? "",
                               preview: state.posts[index].preview,
                               onPress: (dynamic value) {
-                                _launchURL(state.posts[index].link);
+                                _launchURL(state.posts[index].link, context);
                               },
                               horizontalWidgetReverse: index % 2 == 0,
                             ),
@@ -186,12 +196,12 @@ class HomeScreenContent extends StatelessWidget {
     );
   }
 
-  _launchURL(String link) async {
+  _launchURL(String link, BuildContext context) async {
     final uri = Uri.parse(link);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      throw 'Could not launch $link';
+      throw '${S.of(context).couldNotLaunch} $link';
     }
   }
 }

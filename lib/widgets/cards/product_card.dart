@@ -9,6 +9,7 @@ import 'package:coffe_flutter/widgets/counter.dart';
 import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -38,6 +39,11 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Intl.getCurrentLocale();
+    final itemJson = product.toJson();
+    final title = lang == "ru" ? itemJson["name"] : itemJson["name_$lang"];
+    final description =
+        lang == "ru" ? itemJson["description"] : itemJson["description_$lang"];
     return Container(
       width: width,
       decoration: _decorationContainer,
@@ -144,7 +150,7 @@ class ProductCard extends StatelessWidget {
                 SizedBox(
                   height: 40,
                   child: Text(
-                    product.name,
+                    title,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(
@@ -157,7 +163,7 @@ class ProductCard extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  product.description,
+                  description,
                   overflow: TextOverflow.ellipsis,
                   style:
                       const TextStyle(fontSize: 14, color: AppColors.subtext),
