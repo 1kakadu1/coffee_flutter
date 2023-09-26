@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/blog/blog_bloc.dart';
@@ -81,16 +79,22 @@ class HomeScreenContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TitleWidget(
+                  width: 200,
                   text: S.of(context).yourDrinks,
                   fontSize: 18,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, PathRoute.products);
-                  },
-                  child: Text(
-                    S.of(context).seeAll,
-                    style: const TextStyle(color: AppColors.write),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, PathRoute.products);
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        S.of(context).seeAll,
+                        style: const TextStyle(color: AppColors.write),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -165,10 +169,14 @@ class HomeScreenContent extends StatelessWidget {
                           final itemJson = state.posts[index].toJson();
                           final title = lang == "ru"
                               ? itemJson["name"]
-                              : itemJson["name_$lang"];
+                              : lang == "ua" || lang == "uk"
+                                  ? itemJson["name_ua"]
+                                  : itemJson["name_$lang"];
                           final description = lang == "ru"
                               ? itemJson["description"]
-                              : itemJson["description_$lang"];
+                              : lang == "ua" || lang == "uk"
+                                  ? itemJson["description_ua"]
+                                  : itemJson["description_$lang"];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: SpecialCard(

@@ -69,8 +69,8 @@ class ProductModel extends Equatable {
     code = json["code"] ?? 0;
     price = Map<String, double>.from(json["price"]);
     description = json["description"] ?? "";
-    description_ua = json["description_en"] ?? "";
-    description_en = json["description_ua"] ?? "";
+    description_ua = json["description_ua"] ?? "";
+    description_en = json["description_en"] ?? "";
     rating = json["rating"] ?? 0;
     size = parseArrayString(json["size"], ["0"]);
     measurement_value = json["measurement_value"] ?? "unset";
@@ -114,8 +114,8 @@ class ProductModel extends Equatable {
     data["energy_and_nutritional_value_en"] = energy_and_nutritional_value_en;
     data["gallary"] = gallary;
     data["measurement_value"] = measurement_value;
-    data["measurement_value_ua"] = measurement_value_en;
-    data["measurement_value_en"] = measurement_value_ua;
+    data["measurement_value_ua"] = measurement_value_ua;
+    data["measurement_value_en"] = measurement_value_en;
     data["size"] = size;
     data["categorys"] = categorys;
     data["isTop"] = isTop ?? false;
@@ -218,14 +218,14 @@ final List<ProductModel> productsMock = [
   ProductModel(
       id: "1",
       slug: "bumble-coffee",
-      name: "Bumble coffee",
-      name_en: "Бамбл кофе",
+      name: "Бамбл кофе",
+      name_en: "Bumble coffee",
       name_ua: "Бамбл кава",
       description:
           "Холодный веселый напиток: кофе с апельсиновым соком, уложенные полосками. Отсюда и сравнение со шмелем (bumblebee по-английски — шмель). Перед употреблением напиток лучше размешать. Этот рецепт — из «Кофемании».",
-      description_ua:
-          "Cold cheerful drink: coffee with orange juice, laid in strips. Hence the comparison with bumblebee (bumblebee in English — bumblebee). It is better to place the drink before drinking. This recipe is from 'Coffee Mania'.",
       description_en:
+          "Cold cheerful drink: coffee with orange juice, laid in strips. Hence the comparison with bumblebee (bumblebee in English — bumblebee). It is better to place the drink before drinking. This recipe is from 'Coffee Mania'.",
+      description_ua:
           "Холодний веселий напій: Кава з апельсиновим соком, укладені смужками. Звідси і порівняння зі джмелем (bumblebee по-англійськи — джміль). Перед вживанням напій краще розміщувати. Цей рецепт - з 'Кавоманії'.",
       preview:
           "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/products%2Fp_O.jpg?alt=media&token=24682faf-6aef-48c4-a86f-3a2b9792e971",

@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  RegistrationScreen({Key? key}) : super(key: key);
+  const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -49,12 +50,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(bottom: 16),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
                                     child: Center(
                                       child: Text(
-                                        "Создадим аккаунт?",
-                                        style: TextStyle(
+                                        S.of(context).createTittle,
+                                        style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -64,7 +65,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text("Имя"),
+                                      Text(S.of(context).labelName),
                                       const SizedBox(
                                         height: 4,
                                       ),
@@ -83,7 +84,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text("Телефон"),
+                                      Text(S.of(context).labelPhone),
                                       const SizedBox(
                                         height: 4,
                                       ),
@@ -126,7 +127,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text("Пароль"),
+                                      Text(S.of(context).labelPassword),
                                       const SizedBox(
                                         height: 4,
                                       ),
@@ -163,7 +164,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text("Повторите пароль"),
+                                      Text(S.of(context).labelRepeatPassword),
                                       const SizedBox(
                                         height: 4,
                                       ),
@@ -201,13 +202,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                   ButtonDefault(
                                       radius: 14,
-                                      text: const Padding(
-                                        padding: EdgeInsets.all(10.0),
+                                      text: Padding(
+                                        padding: const EdgeInsets.all(10.0),
                                         child: Center(
                                             child: Text(
-                                          "Регистрация",
-                                          style:
-                                              TextStyle(color: AppColors.write),
+                                          S.of(context).btnRegistration,
+                                          style: const TextStyle(
+                                              color: AppColors.write),
                                         )),
                                       ),
                                       onPress: () {
@@ -227,12 +228,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                   phone: phone!)
                                               .then((value) {
                                             if (value.data == true) {
-                                              const snackBar = SnackBar(
+                                              final snackBar = SnackBar(
                                                 backgroundColor:
                                                     AppColors.backgroundLight,
                                                 content: Text(
-                                                  'Вы успешно прошили регистрацию',
-                                                  style: TextStyle(
+                                                  S
+                                                      .of(context)
+                                                      .msgRegistratiopnSuccess,
+                                                  style: const TextStyle(
                                                       color: AppColors.write),
                                                 ),
                                               );
@@ -245,7 +248,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               backgroundColor:
                                                   AppColors.red[300],
                                               content: Text(
-                                                'Ошибка: ${error.toString()}',
+                                                '${S.of(context).error}: ${error.toString()}',
                                                 style: const TextStyle(
                                                     color: AppColors.write),
                                               ),

@@ -1,4 +1,6 @@
+import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/services/notification_service.dart';
+import 'package:coffe_flutter/utils/product.utils.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class _CartNotification {
@@ -40,3 +42,16 @@ class _CartNotification {
 }
 
 final cartNotification = _CartNotification();
+
+getCartTotalPrice(List<CartItemModel> items) {
+  double price = 0.0;
+  for (var element in items) {
+    if (element.price is double) {
+      price += element.count * (element.price as double);
+    } else {
+      price += element.count * element.price[element.currentSize];
+    }
+  }
+
+  return price;
+}

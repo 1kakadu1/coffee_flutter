@@ -41,9 +41,16 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = Intl.getCurrentLocale();
     final itemJson = product.toJson();
-    final title = lang == "ru" ? itemJson["name"] : itemJson["name_$lang"];
-    final description =
-        lang == "ru" ? itemJson["description"] : itemJson["description_$lang"];
+    final title = lang == "ru"
+        ? itemJson["name"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["name_ua"]
+            : itemJson["name_$lang"];
+    final description = lang == "ru"
+        ? itemJson["description"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["description_ua"]
+            : itemJson["description_$lang"];
     return Container(
       width: width,
       decoration: _decorationContainer,
@@ -121,7 +128,8 @@ class ProductCard extends StatelessWidget {
                       child: Text(
                         countSum.toString(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: AppColors.write, fontSize: 14),
+                        style: const TextStyle(
+                            color: AppColors.write, fontSize: 14),
                       ),
                     ),
                   ),
@@ -235,18 +243,30 @@ class ProductCartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
+    final lang = Intl.getCurrentLocale();
+    final itemJson = product.toJson();
+    final title = lang == "ru"
+        ? itemJson["name"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["name_ua"]
+            : itemJson["name_$lang"];
+    final description = lang == "ru"
+        ? itemJson["description"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["description_ua"]
+            : itemJson["description_$lang"];
     return animation == null
-        ? _content(widthWidget)
+        ? _content(widthWidget, title, description)
         : GestureDetector(
             onLongPress: onRemove,
             child: ScaleTransition(
               scale: animation!,
-              child: _content(widthWidget),
+              child: _content(widthWidget, title, description),
             ),
           );
   }
 
-  _content(widthWidget) {
+  _content(widthWidget, String title, String? description) {
     return Container(
         width: width,
         decoration: _decorationContainer,
@@ -271,7 +291,7 @@ class ProductCartCard extends StatelessWidget {
                 SizedBox(
                   width: widthWidget - 140,
                   child: TextScroll(
-                    product.name,
+                    title,
                     delayBefore: const Duration(milliseconds: 1000),
                     pauseBetween: const Duration(milliseconds: 5000),
                   ),

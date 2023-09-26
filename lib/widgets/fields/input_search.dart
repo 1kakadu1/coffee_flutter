@@ -5,6 +5,7 @@ import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class InputSearch extends StatefulWidget {
@@ -16,6 +17,7 @@ class InputSearch extends StatefulWidget {
 
 class _InputSearchState extends State<InputSearch> {
   late TextEditingController _controller;
+  final lang = Intl.getCurrentLocale();
 
   @override
   void initState() {
@@ -111,7 +113,12 @@ class _InputSearchState extends State<InputSearch> {
                                                                 product.id,
                                                                 product));
                                                   },
-                                                  title: Text(data["name"]),
+                                                  title: Text(lang == "ru"
+                                                      ? data["name"]
+                                                      : lang == "ua" ||
+                                                              lang == "uk"
+                                                          ? data["name_ua"]
+                                                          : data["name_$lang"]),
                                                 ),
                                               );
                                             }).toList(),

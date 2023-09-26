@@ -48,7 +48,7 @@ class _ListViewTabsState extends State<ListViewTabs> {
     final List<ListViewTabModel> tabList = widget.items.map(((e) {
       final name = lang == "ru"
           ? e.name
-          : lang == "ua"
+          : lang == "ua" || lang == "uk"
               ? e.name_ua
               : e.name_en;
       return ListViewTabModel(id: e.id, title: name ?? e.title ?? "UNSET");

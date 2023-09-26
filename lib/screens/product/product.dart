@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -334,9 +335,10 @@ class _ProductScreenState extends State<ProductScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    "Описание: ",
-                    style: TextStyle(fontSize: 16, color: AppColors.subtext),
+                  Text(
+                    S.of(context).description,
+                    style:
+                        const TextStyle(fontSize: 16, color: AppColors.subtext),
                   ),
                   const SizedBox(
                     height: 14,
@@ -349,8 +351,8 @@ class _ProductScreenState extends State<ProductScreen> {
                       },
                       builder: (context, state) => ExpandableText(
                             state.product?.description ?? "",
-                            expandText: 'ещё',
-                            collapseText: 'скрыть',
+                            expandText: S.of(context).more,
+                            collapseText: S.of(context).hide,
                             maxLines: 2,
                             linkColor: AppColors.primaryLight,
                             animation: true,
@@ -386,9 +388,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Состав:",
-                              style: TextStyle(
+                            Text(
+                              S.of(context).composition,
+                              style: const TextStyle(
                                   fontSize: 16, color: AppColors.subtext),
                             ),
                             const SizedBox(
@@ -454,8 +456,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Цена",
-                            style: TextStyle(
+                        Text(S.of(context).price,
+                            style: const TextStyle(
                                 fontSize: 14, color: AppColors.subtext)),
                         const SizedBox(
                           height: 6,

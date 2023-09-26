@@ -105,9 +105,16 @@ flutter:
   fonts:
     - family: JosefinSans
       fonts:
-        - asset: assets/fonts/JosefinSansRegular.ttf
+        - asset: assets/fonts/montserrat/MontserratLight.ttf
+          weight: 300
+        - asset: assets/fonts/montserrat/MontserratRegular.ttf
+          weight: 400
+        - asset: assets/fonts/montserrat/MontserratMedium.ttf
           weight: 500
-        - asset: assets/fonts/JosefinSansBold.ttf
+        - asset: assets/fonts/montserrat/MontserratSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/montserrat/MontserratBold.ttf
+          weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_intl:

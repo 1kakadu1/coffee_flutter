@@ -22,19 +22,47 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "btnRegistration": MessageLookupByLibrary.simpleMessage("Registration"),
+        "btnSingin": MessageLookupByLibrary.simpleMessage("Login"),
+        "cartEmpty": MessageLookupByLibrary.simpleMessage("Cart is empty"),
+        "composition": MessageLookupByLibrary.simpleMessage("Composition:"),
         "couldNotLaunch":
             MessageLookupByLibrary.simpleMessage("Could not launch"),
+        "createTittle":
+            MessageLookupByLibrary.simpleMessage("Shall we create an account?"),
+        "description": MessageLookupByLibrary.simpleMessage("Description: "),
+        "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "hide": MessageLookupByLibrary.simpleMessage("hide"),
         "hintSearch": MessageLookupByLibrary.simpleMessage("Product search"),
         "home_news_title": MessageLookupByLibrary.simpleMessage("Latest news"),
         "home_search_title":
             MessageLookupByLibrary.simpleMessage("Find a drink for yourself"),
         "home_special_products":
             MessageLookupByLibrary.simpleMessage("Special products"),
+        "labelEmail": MessageLookupByLibrary.simpleMessage("Your Email"),
+        "labelName": MessageLookupByLibrary.simpleMessage("Name"),
+        "labelPassword": MessageLookupByLibrary.simpleMessage("Your password"),
+        "labelPhone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "labelRepeatPassword":
+            MessageLookupByLibrary.simpleMessage("Repeat password"),
+        "linkCreateAccount":
+            MessageLookupByLibrary.simpleMessage("No account ?"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "more": MessageLookupByLibrary.simpleMessage("more"),
+        "msgRegistratiopnSuccess": MessageLookupByLibrary.simpleMessage(
+            "You have successfully registered"),
+        "price": MessageLookupByLibrary.simpleMessage("Price"),
+        "screenCart": MessageLookupByLibrary.simpleMessage("Shopping Cart"),
+        "screenContacts": MessageLookupByLibrary.simpleMessage("Contacts"),
+        "screenFavorite": MessageLookupByLibrary.simpleMessage("Favorites"),
         "searchFind": MessageLookupByLibrary.simpleMessage("Found:"),
         "searchTitle": MessageLookupByLibrary.simpleMessage(
             "We couldn\'t find the right product! Try typing, for example: \'coffee\', \'tea\' or other."),
         "seeAll": MessageLookupByLibrary.simpleMessage("View all "),
+        "singIn": MessageLookupByLibrary.simpleMessage("Sing In"),
+        "titleCreateOrder": MessageLookupByLibrary.simpleMessage("Checkout"),
+        "totalPayment":
+            MessageLookupByLibrary.simpleMessage("Total to be paid:"),
         "yourDrinks": MessageLookupByLibrary.simpleMessage("Our drinks")
       };
 }

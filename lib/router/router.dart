@@ -71,7 +71,7 @@ class _App extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        //locale: const Locale("ru"),
+        locale: const Locale("uk"),
         routes: AppRoutes().getRoutersMap(isAuth),
       ),
     );

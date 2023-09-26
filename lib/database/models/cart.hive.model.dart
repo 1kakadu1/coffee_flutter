@@ -44,8 +44,8 @@ class CartHive extends HiveObject {
     data["price"] = price;
     data["preview"] = preview;
     data["name"] = name;
-    data["name_en"] = name;
-    data["name_ua"] = name;
+    data["name_en"] = name_en;
+    data["name_ua"] = name_ua;
     data["currentSize"] = currentSize;
     data["categorys"] = categorys?.toList() ?? [];
     data["comments"] = comments ?? "";

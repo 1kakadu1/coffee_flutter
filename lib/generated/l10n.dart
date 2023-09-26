@@ -149,6 +149,236 @@ class S {
       args: [],
     );
   }
+
+  /// `Your Email`
+  String get labelEmail {
+    return Intl.message(
+      'Your Email',
+      name: 'labelEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password`
+  String get labelPassword {
+    return Intl.message(
+      'Your password',
+      name: 'labelPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get btnSingin {
+    return Intl.message(
+      'Login',
+      name: 'btnSingin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No account ?`
+  String get linkCreateAccount {
+    return Intl.message(
+      'No account ?',
+      name: 'linkCreateAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sing In`
+  String get singIn {
+    return Intl.message(
+      'Sing In',
+      name: 'singIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shall we create an account?`
+  String get createTittle {
+    return Intl.message(
+      'Shall we create an account?',
+      name: 'createTittle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get labelName {
+    return Intl.message(
+      'Name',
+      name: 'labelName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get labelPhone {
+    return Intl.message(
+      'Phone',
+      name: 'labelPhone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repeat password`
+  String get labelRepeatPassword {
+    return Intl.message(
+      'Repeat password',
+      name: 'labelRepeatPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registration`
+  String get btnRegistration {
+    return Intl.message(
+      'Registration',
+      name: 'btnRegistration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have successfully registered`
+  String get msgRegistratiopnSuccess {
+    return Intl.message(
+      'You have successfully registered',
+      name: 'msgRegistratiopnSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cart is empty`
+  String get cartEmpty {
+    return Intl.message(
+      'Cart is empty',
+      name: 'cartEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total to be paid:`
+  String get totalPayment {
+    return Intl.message(
+      'Total to be paid:',
+      name: 'totalPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkout`
+  String get titleCreateOrder {
+    return Intl.message(
+      'Checkout',
+      name: 'titleCreateOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get price {
+    return Intl.message(
+      'Price',
+      name: 'price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Composition:`
+  String get composition {
+    return Intl.message(
+      'Composition:',
+      name: 'composition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `more`
+  String get more {
+    return Intl.message(
+      'more',
+      name: 'more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hide`
+  String get hide {
+    return Intl.message(
+      'hide',
+      name: 'hide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description: `
+  String get description {
+    return Intl.message(
+      'Description: ',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorites`
+  String get screenFavorite {
+    return Intl.message(
+      'Favorites',
+      name: 'screenFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shopping Cart`
+  String get screenCart {
+    return Intl.message(
+      'Shopping Cart',
+      name: 'screenCart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contacts`
+  String get screenContacts {
+    return Intl.message(
+      'Contacts',
+      name: 'screenContacts',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -158,7 +388,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'ru'),
-      Locale.fromSubtags(languageCode: 'ua'),
+      Locale.fromSubtags(languageCode: 'uk'),
     ];
   }
 

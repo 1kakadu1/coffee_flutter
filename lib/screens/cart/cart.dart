@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/cart.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
 import 'package:coffe_flutter/store/cart/cart_event.dart';
 import 'package:coffe_flutter/store/cart/cart_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
+import 'package:coffe_flutter/utils/cart.utils.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/cards/product_card.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/price_text.dart';
 
 class CartScreen extends StatefulWidget {
-  CartScreen({Key? key}) : super(key: key);
+  const CartScreen({Key? key}) : super(key: key);
 
   @override
   State<CartScreen> createState() => _CartState();
@@ -68,7 +70,7 @@ class _CartState extends State<CartScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text("Корзина пуста")
+                        Text(S.of(context).cartEmpty)
                       ],
                     )),
               ),
@@ -107,15 +109,15 @@ class _CartState extends State<CartScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text("Всего к оплате:",
-                        style: TextStyle(
+                    Text(S.of(context).totalPayment,
+                        style: const TextStyle(
                           fontSize: 18,
                         )),
                     const SizedBox(
                       width: 10,
                     ),
                     PriceText(
-                      price: ("34").toString(),
+                      price: getCartTotalPrice(state.products).toString(),
                     ),
                   ],
                 ),
@@ -127,9 +129,9 @@ class _CartState extends State<CartScreen> {
                   onPress: () {
                     Navigator.pushNamed(context, PathRoute.order);
                   },
-                  text: const Text(
-                    "Оформить заказ",
-                    style: TextStyle(color: AppColors.write),
+                  text: Text(
+                    S.of(context).titleCreateOrder,
+                    style: const TextStyle(color: AppColors.write),
                   ),
                 )
               ],

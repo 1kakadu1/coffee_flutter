@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class TitleWidget extends StatelessWidget {
   final String text;
   final double? fontSize;
-  const TitleWidget({Key? key, required this.text, this.fontSize})
+  final double? width;
+  const TitleWidget({Key? key, required this.text, this.fontSize, this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 260,
+      width: width ?? 260,
       child: Text(
         text,
         style: TextStyle()
