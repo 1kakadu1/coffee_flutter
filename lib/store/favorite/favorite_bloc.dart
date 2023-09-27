@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:coffe_flutter/database/database.dart';
 import 'package:coffe_flutter/database/models/favorite.hive.model.dart';

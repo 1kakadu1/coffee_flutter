@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/user.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/services/api.dart';
@@ -32,13 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileBloc _profileBloc = locator.get<ProfileBloc>();
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
     return DefaultTabController(
         length: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: const Text("Профиль"),
+            title: Text(S.of(context).screenProfile),
             actions: [
               IconButton(
                 icon: const Icon(Icons.exit_to_app_outlined),
@@ -77,10 +77,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const Center(
+                                Center(
                                   child: Text(
-                                    "Ваши данные",
-                                    style: TextStyle(fontSize: 20),
+                                    S.of(context).titleProfile,
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ),
                                 const SizedBox(
@@ -111,14 +111,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Input(
                                   enabled: state.isLoadingUpdate,
-                                  label: "Имя",
+                                  label: S.of(context).labelName,
                                   defaultValue: state.user?.name,
-                                  onValidation: (value) {
-                                    if (value.length < 3) {
-                                      return "Минимальная длина 3 символа";
-                                    }
-                                    return null;
-                                  },
+                                  onValidation: validationString,
                                   suffix: const Icon(Icons.save),
                                   onSubmit: (value) {
                                     _onUpdateField(context,
@@ -150,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Input(
                                   enabled: state.isLoadingUpdate,
-                                  label: "Телефон",
+                                  label: S.of(context).labelPhone,
                                   defaultValue: state.user?.phone,
                                   onValidation: validationPhone,
                                   suffix: const Icon(Icons.save),
@@ -269,10 +264,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     context.read<ProfileBloc>().add(ProfileLoadingUpdateAction(true));
     apiServices.updateUserField(userID, field, value).then((r) {
       context.read<ProfileBloc>().add(ProfileChangeFieldsAction(user));
-      const snackBar = SnackBar(
+      final snackBar = SnackBar(
         backgroundColor: AppColors.primary,
         content: Text(
-          'Данные успешно обновлены',
+          S.of(context).profileSuccessUpdateData,
           style: TextStyle(color: AppColors.black),
         ),
       );
@@ -281,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final snackBar = SnackBar(
         backgroundColor: AppColors.red[300],
         content: Text(
-          'Ошибка: ${error.toString()}',
+          '${S.of(context).error} ${error.toString()}',
           style: const TextStyle(color: AppColors.write),
         ),
       );

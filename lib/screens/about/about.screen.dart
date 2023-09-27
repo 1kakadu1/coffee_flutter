@@ -1,4 +1,5 @@
 import 'package:coffe_flutter/const/env.dart';
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
@@ -19,27 +20,24 @@ class Item {
   int order;
 }
 
-List<Item> _getItems() {
+List<Item> _getItems(BuildContext context) {
   return [
     Item(
         order: 0,
-        expandedValue:
-            "Мы очень внимательно следим за качеством нашей работы, поэтому, если у вас будут какие-либо замечания или предложения, то обязательно сообщайте их нам",
-        headerValue: "Если появились замечания"),
+        expandedValue: S.of(context).aboutItemBody1,
+        headerValue: S.of(context).aboutItemHeader1),
     Item(
         order: 1,
-        expandedValue: "Оплата Visa, MasterCard",
-        headerValue: "Если появились замечания"),
+        expandedValue: S.of(context).aboutItemBody2,
+        headerValue: S.of(context).aboutItemHeader2),
     Item(
         order: 2,
-        expandedValue:
-            "Мы очень внимательно следим за качеством нашей работы, поэтому, если у вас будут какие-либо замечания или предложения, то обязательно сообщайте их нам",
-        headerValue: "Не понравился продукт?"),
+        expandedValue: S.of(context).aboutItemBody3,
+        headerValue: S.of(context).aboutItemHeader3),
     Item(
         order: 3,
-        expandedValue:
-            "Мы очень внимательно следим за качеством нашей работы, поэтому, если у вас будут какие-либо замечания или предложения, то обязательно сообщайте их нам",
-        headerValue: "Вам что-то не довезли?")
+        expandedValue: S.of(context).aboutItemHeader4,
+        headerValue: S.of(context).aboutItemBody4)
   ];
 }
 
@@ -50,11 +48,12 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   final double _panelHeightOpen = 0;
   final double _panelHeightClosed = 95.0;
-  final List<Item> _data = _getItems();
+  List<Item> _data = [];
   late final ScrollController _scrollController;
   late final PanelController _panelController;
 
@@ -62,6 +61,12 @@ class _AboutScreenState extends State<AboutScreen> {
   void initState() {
     _scrollController = ScrollController();
     _panelController = PanelController();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        _data = _getItems(context);
+      });
+    });
+
     super.initState();
 
     _fabHeight = _initFabHeight;
@@ -76,6 +81,7 @@ class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: AboutScreenContent(
           initFabHeight: _initFabHeight,
           fabHeight: _fabHeight,
@@ -191,10 +197,10 @@ class AboutScreenContent extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Text(
-                  "О нас",
-                  style: TextStyle(
+                  S.of(context).screenAbout,
+                  style: const TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 24.0,
                   ),
@@ -237,36 +243,36 @@ class AboutScreenContent extends StatelessWidget {
               padding: const EdgeInsets.only(left: 24.0, right: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
+                children: <Widget>[
                   Text(
-                    "График работы доставки:",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    S.of(context).titleTimeWork,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   SizedBox(
                     height: 6.0,
                   ),
-                  Text("с 10:00-21:00"),
+                  Text(S.of(context).timeWorkAbout),
                   SizedBox(
                     height: 16.0,
                   ),
-                  Text("График работы кафе:",
+                  Text(S.of(context).timeWorkShop,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   SizedBox(
                     height: 6.0,
                   ),
-                  Text("с 08:00-21:00"),
+                  Text(S.of(context).timeShop),
                   SizedBox(
                     height: 16.0,
                   ),
-                  Text("Минимальный заказ:",
+                  Text(S.of(context).titleMinOrder,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   SizedBox(
                     height: 6.0,
                   ),
-                  Text(
-                      "Бесплатная доставка пешим курьером при сумме заказа от 400 ₽ Доставка оператором такси от любой суммы заказа - по тарифам перевозчика."),
+                  Text(S.of(context).minOrderInfo),
                   SizedBox(
                     height: 16.0,
                   ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/categorys_model.dart';
 import 'package:coffe_flutter/models/navigation.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
@@ -51,9 +52,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 SliverAppBar(
                   automaticallyImplyLeading: false,
                   titleSpacing: 0,
-                  title: const Padding(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Text("Продукты"),
+                  title: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Text(S.of(context).screenProducts),
                   ),
                   actions: [
                     BlocBuilder<ProfileBloc, ProfileState>(

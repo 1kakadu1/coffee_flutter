@@ -39,9 +39,11 @@ class FavoriteHive extends HiveObject {
     data["id"] = id;
     data["preview"] = preview;
     data["name"] = name;
-    data["name_en"] = name;
-    data["name_ua"] = name;
+    data["name_en"] = name_en;
+    data["name_ua"] = name_ua;
     data["description"] = description;
+    data["description_ua"] = description_ua ?? "";
+    data["description_en"] = description_en ?? "";
     data["categorys"] = categorys?.toList() ?? [];
     return data;
   }

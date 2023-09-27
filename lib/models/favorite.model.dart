@@ -17,8 +17,8 @@ class FavoriteItemModel {
     required this.id,
     this.description,
     this.categorys,
-    required description_en,
-    required description_ua,
+    this.description_en,
+    this.description_ua,
   });
 
   FavoriteItemModel.fromJson(Map<String, dynamic> json) {
