@@ -21,15 +21,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  setupLocator();
   await firebaseMessagingService.checkForInitialMessage(initialMessage);
   await notificationService.setup();
   await DatabaseHive.initDB();
-  setupLocator();
   //await DatabaseHive.clearBoxes();
   // final db = FirebaseCreateData();
-  // await db.createProductsDB(productsMock);
-  //final db = FirebaseCreateSearchData();
-  //db.createSearchDataDB(productsMock, "search_name");
+  // await db.updateProductsDB(productsMock);
+  // final db = FirebaseCreateSearchData();
+  // db.createSearchDataDB(productsMock, "search_name");
   runApp(const MyApp());
 }
 

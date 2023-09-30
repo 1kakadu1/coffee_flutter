@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -35,6 +36,18 @@ class FavoriteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
+    final lang = Intl.getCurrentLocale();
+    final itemJson = product.toJson();
+    final title = lang == "ru"
+        ? itemJson["name"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["name_ua"]
+            : itemJson["name_$lang"];
+    final description = lang == "ru"
+        ? itemJson["description"]
+        : lang == "ua" || lang == "uk"
+            ? itemJson["description_ua"]
+            : itemJson["description_$lang"];
     return GestureDetector(
       onLongPress: onToggle,
       onTap: onPress,
@@ -64,7 +77,7 @@ class FavoriteCard extends StatelessWidget {
                     SizedBox(
                       width: widthWidget - 180,
                       child: TextScroll(
-                        product.name,
+                        title,
                         delayBefore: const Duration(milliseconds: 1000),
                         pauseBetween: const Duration(milliseconds: 5000),
                       ),
@@ -75,7 +88,7 @@ class FavoriteCard extends StatelessWidget {
                     SizedBox(
                       width: widthWidget - 180,
                       child: Text(
-                        product.description ?? "",
+                        description ?? "",
                         style: const TextStyle(fontSize: 12),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

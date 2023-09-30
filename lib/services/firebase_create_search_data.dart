@@ -15,13 +15,33 @@ class FirebaseCreateSearchData {
             .get();
         final docs = snapshotProduct.docs.toList();
         List<String> splitList = products[i].name.split(" ");
+        List<String> splitListEn = products[i].name_en.split(" ");
+        List<String> splitListUa = products[i].name_ua.split(" ");
         List<String> searchList = [];
+        List<String> searchListEn = [];
+        List<String> searchListUa = [];
         for (int j = 0; j < splitList.length; j++) {
           for (int a = 1; a < splitList[j].length + 1; a++) {
             searchList.add(splitList[j].substring(0, a).toLowerCase());
           }
         }
-        _collectionProducts.doc(docs[0].id).update({field: searchList});
+        for (int j = 0; j < splitListUa.length; j++) {
+          for (int a = 1; a < splitListUa[j].length + 1; a++) {
+            searchListUa.add(splitListUa[j].substring(0, a).toLowerCase());
+          }
+        }
+        for (int j = 0; j < splitListEn.length; j++) {
+          for (int a = 1; a < splitListEn[j].length + 1; a++) {
+            searchListEn.add(splitListEn[j].substring(0, a).toLowerCase());
+          }
+        }
+        _collectionProducts.doc(docs[0].id).update({
+          field: [
+            ...searchList.toList(),
+            ...searchListUa.toList(),
+            ...searchListEn.toList()
+          ]
+        });
       }
       log("PRODUCT CREATE SEARCH SUCCESS");
       return "PRODUCT CREATE SEARCH SUCCESS";

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/router/routes.dart';
-import 'package:coffe_flutter/services/api.dart';
 import 'package:coffe_flutter/services/firebase_messaging_service_provider.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_event.dart';
@@ -10,17 +10,18 @@ import 'package:coffe_flutter/theme/theme_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class RoutsAuthContainer extends StatefulWidget {
-  RoutsAuthContainer({Key? key}) : super(key: key);
+  const RoutsAuthContainer({Key? key}) : super(key: key);
 
   @override
-  _RoutsAuthContianerState createState() => _RoutsAuthContianerState();
+  _RoutsAuthContainerState createState() => _RoutsAuthContainerState();
 }
 
-class _RoutsAuthContianerState extends State<RoutsAuthContainer> {
+class _RoutsAuthContainerState extends State<RoutsAuthContainer> {
   User? user;
   @override
   void initState() {
@@ -63,6 +64,14 @@ class _App extends StatelessWidget {
       builder: (themeContext) => MaterialApp(
         initialRoute: PathRoute.home,
         theme: customThemeLight(),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: const Locale("uk"),
         routes: AppRoutes().getRoutersMap(isAuth),
       ),
     );

@@ -2,10 +2,10 @@
 
 Невеликий мобільний додаток для продажу напоїв
 
-![image home](./assets/img/screen/13.jpg)
-![image product](./assets/img/screen/12.jpg)
-![image products](./assets/img/screen/2.jpg)
-![image user history](./assets/img/screen/3.jpg)
+![image home](./assets/img/screen/uk_4.jpg)
+![image product](./assets/img/screen/uk_3.jpg)
+![image products](./assets/img/screen/uk_2.jpg)
+![image user history](./assets/img/screen/uk_1.jpg)
 
 ## Getting Started
 
@@ -48,10 +48,15 @@ db.createSearchDataDB(productsMock, "search_name");
 Для ios потрібен macbook і Xcode.
 Виконати потрібні насройкі в General. Вибрати в якості пристрою Any і створити Archive. Почнеться створення ipa і потім буде запропонований варіант поширення.
 
+## Багатомовність
+
+Доступно 3 мови з коробки. Мова за замовчуванням використовується англійська. При додаванні нової мови слід оновити моделі.
+
 ## Використовувати
 - firebase
 - animated_bottom_navigation_bar
 - flutter_bloc
 - hive
 - get_it
+- flutter_localizations
 - і інше

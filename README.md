@@ -2,10 +2,10 @@
 
 A small application for the sale of drinks
 
-![image home](./assets/img/screen/13.jpg)
-![image product](./assets/img/screen/12.jpg)
-![image products](./assets/img/screen/2.jpg)
-![image user history](./assets/img/screen/3.jpg)
+![image home](./assets/img/screen/en_1.jpg)
+![image product](./assets/img/screen/en_4.jpg)
+![image products](./assets/img/screen/en_2.jpg)
+![image user history](./assets/img/screen/en_3.jpg)
 
 ## Getting Started
 
@@ -50,10 +50,15 @@ For android, everything is done as standard by steps from the dock.
 For ios, you need a macbook and Xcode.
 Perform the necessary adjustments in General. Select Any as the device and create an Archive. The creation of the ipa will begin and then a distribution option will be offered.
 
+## Multilingualism
+
+3 languages are available out of the box. The default language is English. When adding a new language, the models should be updated.
+
 ## Used
 - firebase
 - animated_bottom_navigation_bar
 - flutter_bloc
 - hive
 - get_it
+- flutter_localizations
 - and other

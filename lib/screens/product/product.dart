@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/product.model.dart';
 import 'package:coffe_flutter/store/cart/cart_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:coffe_flutter/widgets/product_marker.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/navigation.model.dart';
 
@@ -31,6 +33,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   late ProductBloc productBloc = ProductBloc();
   bool _init = false;
+  final _lang = Intl.getCurrentLocale();
   @override
   void initState() {
     super.initState();
@@ -123,7 +126,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       SizedBox(
                                         width: 4,
                                       ),
@@ -161,6 +164,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                                       .read<FavoriteBloc>()
                                                       .add(FavoriteToggleAction(
                                                           product: FavoriteItemModel(
+                                                              description_en:
+                                                                  product
+                                                                      .description_en,
+                                                              description_ua:
+                                                                  product
+                                                                      .description_ua,
                                                               categorys: product
                                                                   .categorys,
                                                               id: product.id,
@@ -168,6 +177,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                                                   .description,
                                                               name:
                                                                   product.name,
+                                                              name_en: product
+                                                                  .name_en,
+                                                              name_ua: product
+                                                                  .name_ua,
                                                               preview: product
                                                                   .preview)));
                                                 }
@@ -203,7 +216,19 @@ class _ProductScreenState extends State<ProductScreen> {
                                     .where((element) => element == "id-tea")
                                     .isNotEmpty ??
                                 false;
-
+                            String? name = state.product?.name_en;
+                            String? description = state.product?.description_en;
+                            List<String>? composition =
+                                state.product?.composition_en;
+                            if (_lang == 'ru') {
+                              name = state.product?.name;
+                              description = state.product?.description;
+                              composition = state.product?.composition;
+                            } else if (_lang == "uk") {
+                              name = state.product?.name_ua;
+                              description = state.product?.description_ua;
+                              composition = state.product?.composition_ua;
+                            }
                             return Positioned(
                                 bottom: 0,
                                 child: GlassPaper(
@@ -225,7 +250,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  state.product?.name ?? "",
+                                                  name ?? "",
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -236,8 +261,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   height: 8,
                                                 ),
                                                 Text(
-                                                  state.product?.description ??
-                                                      "",
+                                                  description ?? "",
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -262,7 +286,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   iconName: isTea
                                                       ? "tea.png"
                                                       : "coffee.png",
-                                                  title: isTea ? "чай" : "кофе",
+                                                  title: isTea
+                                                      ? S.of(context).markerTea
+                                                      : S
+                                                          .of(context)
+                                                          .markerCoffee,
                                                   color: AppColors.black,
                                                   width: 44,
                                                   height: 44,
@@ -307,9 +335,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           ),
                                           ProductMarker(
                                             color: AppColors.black,
-                                            title:
-                                                state.product?.composition[0] ??
-                                                    "",
+                                            title: composition?[0] ?? "",
                                             padding: const EdgeInsets.all(10),
                                             width: (44 * 2) + 20,
                                           ),
@@ -324,9 +350,10 @@ class _ProductScreenState extends State<ProductScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    "Описание: ",
-                    style: TextStyle(fontSize: 16, color: AppColors.subtext),
+                  Text(
+                    S.of(context).description,
+                    style:
+                        const TextStyle(fontSize: 16, color: AppColors.subtext),
                   ),
                   const SizedBox(
                     height: 14,
@@ -337,16 +364,23 @@ class _ProductScreenState extends State<ProductScreen> {
                         return previousState.product?.description !=
                             state.product?.description;
                       },
-                      builder: (context, state) => ExpandableText(
-                            state.product?.description ?? "",
-                            expandText: 'ещё',
-                            collapseText: 'скрыть',
-                            maxLines: 2,
-                            linkColor: AppColors.primaryLight,
-                            animation: true,
-                            collapseOnTextTap: true,
-                            style: const TextStyle(fontSize: 16),
-                          )),
+                      builder: (context, state) {
+                        final description = _lang == 'ru'
+                            ? state.product?.description
+                            : _lang == "uk"
+                                ? state.product?.description_ua
+                                : state.product?.description_en;
+                        return ExpandableText(
+                          description ?? "",
+                          expandText: S.of(context).more,
+                          collapseText: S.of(context).hide,
+                          maxLines: 2,
+                          linkColor: AppColors.primaryLight,
+                          animation: true,
+                          collapseOnTextTap: true,
+                          style: const TextStyle(fontSize: 16),
+                        );
+                      }),
                   const SizedBox(
                     height: 36,
                   ),
@@ -358,27 +392,30 @@ class _ProductScreenState extends State<ProductScreen> {
                             state.product?.energy_and_nutritional_value;
                       },
                       builder: (context, state) {
-                        final list = state.product?.energy_and_nutritional_value
-                                .map((item) => (Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(item["title"] + ": "),
-                                        const SizedBox(
-                                          width: 6,
-                                        ),
-                                        Text(item["value"].toString())
-                                      ],
-                                    ))) ??
+                        final list_lang = _lang == 'ru'
+                            ? state.product?.energy_and_nutritional_value
+                            : _lang == "uk"
+                                ? state.product?.energy_and_nutritional_value_ua
+                                : state
+                                    .product?.energy_and_nutritional_value_en;
+                        final list = list_lang?.map((item) => (Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(item["title"] + ": "),
+                                    const SizedBox(
+                                      width: 6,
+                                    ),
+                                    Text(item["value"].toString())
+                                  ],
+                                ))) ??
                             [];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Состав:",
-                              style: TextStyle(
+                            Text(
+                              S.of(context).composition,
+                              style: const TextStyle(
                                   fontSize: 16, color: AppColors.subtext),
                             ),
                             const SizedBox(
@@ -397,11 +434,19 @@ class _ProductScreenState extends State<ProductScreen> {
                         return previousState.product?.measurement_value !=
                             state.product?.measurement_value;
                       },
-                      builder: (context, state) => Text(
-                            "Размер (${state.product?.measurement_value ?? "мл"}): ",
-                            style: const TextStyle(
-                                fontSize: 16, color: AppColors.subtext),
-                          )),
+                      builder: (context, state) {
+                        final measurement = _lang == 'ru'
+                            ? state.product?.measurement_value
+                            : _lang == "uk"
+                                ? state.product?.measurement_value_ua
+                                : state.product?.measurement_value_en;
+                        final sizeLabel = S.of(context).productSize;
+                        return Text(
+                          "$sizeLabel (${measurement ?? "ml"}): ",
+                          style: const TextStyle(
+                              fontSize: 16, color: AppColors.subtext),
+                        );
+                      }),
                   const SizedBox(
                     height: 14,
                   ),
@@ -444,8 +489,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Цена",
-                            style: TextStyle(
+                        Text(S.of(context).price,
+                            style: const TextStyle(
                                 fontSize: 14, color: AppColors.subtext)),
                         const SizedBox(
                           height: 6,

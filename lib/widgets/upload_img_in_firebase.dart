@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/buttons/btn_default.dart';
 import 'package:coffe_flutter/widgets/snack.dart';
@@ -45,8 +46,8 @@ class _UploadImgInFirebaseState extends State<UploadImgInFirebase> {
         child: ButtonDefault(
           text: Text(
             _isUploading == false
-                ? "Загрузить новое фото"
-                : "Загружено ${_progress.toStringAsFixed(0)}%",
+                ? S.of(context).btnUpload
+                : "${S.of(context).btnProgress} ${_progress.toStringAsFixed(0)}%",
             style: const TextStyle(color: AppColors.write),
           ),
           onPress: () {

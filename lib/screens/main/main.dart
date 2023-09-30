@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/navigation.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/screens/about/about.screen.dart';
@@ -21,12 +22,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../store/cart/cart_event.dart';
 
-const _appBarTitle = [
-  null,
-  "Избранное",
-  "Корзина",
-  "Контакты",
-];
+String? getTitle(int index, BuildContext context) {
+  final appBarTitle = [
+    null,
+    S.of(context).screenFavorite,
+    S.of(context).screenCart,
+    S.of(context).screenContacts,
+  ];
+
+  return appBarTitle[index];
+}
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -73,7 +78,7 @@ class _MainPageState extends State<MainPage>
         },
       ),
       appBar: AppBarCustom(
-        title: _appBarTitle[active],
+        title: getTitle(active, context),
       ),
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
@@ -81,7 +86,7 @@ class _MainPageState extends State<MainPage>
         children: [
           HomeScreen(),
           const FavoriteScreen(),
-          CartScreen(),
+          const CartScreen(),
           AboutScreen(),
         ],
       ),

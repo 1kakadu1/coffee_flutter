@@ -7,7 +7,7 @@ import 'package:coffe_flutter/widgets/buttons/btn_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
+class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   AppBarCustom({Key? key, this.title}) : super(key: key);
 

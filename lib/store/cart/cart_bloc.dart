@@ -33,6 +33,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           .indexWhere((x) => x.id == product.id && x.currentSize == event.size);
       if (item == -1) {
         final value = CartItemModel(
+            name_en: product.name_en,
+            name_ua: product.name_ua,
             name: product.name,
             price: product.price,
             preview: product.preview,
@@ -43,6 +45,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         items.add(value);
         DatabaseHive.createCartItem(
           CartHive(
+              name_en: value.name_en,
+              name_ua: value.name_ua,
               name: value.name,
               preview: value.preview ?? "",
               id: value.id,
@@ -56,6 +60,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         items[item] = items[item].copyWith(count: items[item].count + 1);
         DatabaseHive.whereUpdateCartItem(
             item: CartHive(
+                name_en: product.name_en,
+                name_ua: product.name_ua,
                 name: items[item].name,
                 preview: items[item].preview ?? "",
                 id: items[item].id,
@@ -90,6 +96,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         DatabaseHive.whereUpdateCartItem(
             item: CartHive(
                 name: items[item].name,
+                name_en: items[item].name_en,
+                name_ua: items[item].name_ua,
                 preview: items[item].preview ?? "",
                 id: items[item].id,
                 count: items[item].count,
@@ -123,6 +131,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       DatabaseHive.whereUpdateCartItem(
           item: CartHive(
               name: items[item].name,
+              name_en: items[item].name_en,
+              name_ua: items[item].name_ua,
               preview: items[item].preview ?? "",
               id: items[item].id,
               count: items[item].count,
@@ -162,6 +172,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         DatabaseHive.whereUpdateCartItem(
             item: CartHive(
                 name: value.name,
+                name_ua: value.name_ua,
+                name_en: value.name_en,
                 preview: value.preview ?? "",
                 id: value.id,
                 count: value.count,

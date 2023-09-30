@@ -1,5 +1,6 @@
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 
 class ListViewTabModel {
@@ -42,18 +43,24 @@ class _ListViewTabsState extends State<ListViewTabs> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ListViewTabModel> tabList = widget.items
-        .map(((e) =>
-            ListViewTabModel(id: e.id, title: e.name ?? e.title ?? "UNSET")))
-        .toList();
+    final lang = Intl.getCurrentLocale();
+
+    final List<ListViewTabModel> tabList = widget.items.map(((e) {
+      final name = lang == "ru"
+          ? e.name
+          : lang == "ua" || lang == "uk"
+              ? e.name_ua
+              : e.name_en;
+      return ListViewTabModel(id: e.id, title: name ?? e.title ?? "UNSET");
+    })).toList();
     return SizedBox(
       height: 50,
       child: widget.items.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+          ? const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   ListViewTabSkeleton(
                     height: 30,
                   ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/order.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/services/api.dart';
@@ -69,7 +70,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBarCustom(
-        title: "Оформление заказа",
+        title: S.of(context).screenOrder,
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -94,7 +95,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Ваше имя"),
+                                Text(S.of(context).labelName),
                                 const SizedBox(
                                   height: 4,
                                 ),
@@ -118,7 +119,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Телефон"),
+                                Text(S.of(context).labelPhone),
                                 const SizedBox(
                                   height: 4,
                                 ),
@@ -146,7 +147,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Сделатть заказ на"),
+                                Text(S.of(context).labelRangeTime),
                                 const SizedBox(
                                   height: 4,
                                 ),
@@ -194,7 +195,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("В магазин"),
+                                Text(S.of(context).labelShop),
                                 const SizedBox(
                                   height: 4,
                                 ),
@@ -209,12 +210,13 @@ class _OrderScreenState extends State<OrderScreen> {
                             ),
                             ButtonDefault(
                                 radius: 14,
-                                text: const Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                text: Padding(
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Center(
                                       child: Text(
-                                    "оформить",
-                                    style: TextStyle(color: AppColors.write),
+                                    S.of(context).labelCreateOrder,
+                                    style:
+                                        const TextStyle(color: AppColors.write),
                                   )),
                                 ),
                                 onPress: () {
@@ -242,11 +244,11 @@ class _OrderScreenState extends State<OrderScreen> {
                                         userID: profileBloc.state.user?.id);
 
                                     apiServices.createOrder(data).then((value) {
-                                      const snackBar = SnackBar(
+                                      final snackBar = SnackBar(
                                         backgroundColor:
                                             AppColors.backgroundLight,
                                         content: Text(
-                                          'Заказ успешно оформлен!',
+                                          S.of(context).orderCreateSuccess,
                                           style:
                                               TextStyle(color: AppColors.write),
                                         ),
@@ -262,10 +264,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                       print("Error: ${e.toString()}");
                                       final snackBar = SnackBar(
                                         backgroundColor: AppColors.red[200],
-                                        content: const Text(
-                                          'Ошибка! Повторите через время',
-                                          style:
-                                              TextStyle(color: AppColors.write),
+                                        content: Text(
+                                          S.of(context).orderError,
+                                          style: const TextStyle(
+                                              color: AppColors.write),
                                         ),
                                       );
                                       ScaffoldMessenger.of(context)

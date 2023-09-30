@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/router/routes.dart';
 import 'package:coffe_flutter/store/profile/profile_bloc.dart';
 import 'package:coffe_flutter/store/profile/profile_event.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -21,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late ProfileBloc profileBloc = ProfileBloc();
   final _formKey = GlobalKey<FormState>();
+
   String? email, password;
   bool obscureText = true;
 
@@ -40,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
             final snackBar = SnackBar(
               backgroundColor: AppColors.red[300],
               content: Text(
-                'Ошибка: ${state.error.toString()}',
-                style: TextStyle(color: AppColors.write),
+                "${S.of(context).error}:${state.error.toString()}",
+                style: const TextStyle(color: AppColors.write),
               ),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -67,12 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 16),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 16),
                                       child: Center(
                                         child: Text(
-                                          "Sing In",
-                                          style: TextStyle(
+                                          S.of(context).singIn,
+                                          style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w600),
                                         ),
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text("Ваш Email"),
+                                        Text(S.of(context).labelEmail),
                                         const SizedBox(
                                           height: 4,
                                         ),
@@ -101,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text("Ваш пароль"),
+                                        Text(S.of(context).labelPassword),
                                         const SizedBox(
                                           height: 4,
                                         ),
@@ -136,12 +138,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     ButtonDefault(
                                         radius: 14,
-                                        text: const Padding(
-                                          padding: EdgeInsets.all(10.0),
+                                        text: Padding(
+                                          padding: const EdgeInsets.all(10.0),
                                           child: Center(
                                               child: Text(
-                                            "Войти",
-                                            style: TextStyle(
+                                            S.of(context).btnSingin,
+                                            style: const TextStyle(
                                                 color: AppColors.write),
                                           )),
                                         ),
@@ -156,11 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 password: password!));
                                             Timer(
                                                 const Duration(seconds: 1),
-                                                () => {
-                                                      Navigator.popAndPushNamed(
-                                                          context,
-                                                          PathRoute.home)
-                                                    });
+                                                () => Navigator.popAndPushNamed(
+                                                    context, PathRoute.home));
                                           }
                                         }),
                                     TextButton(
@@ -168,9 +167,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           Navigator.pushNamed(
                                               context, PathRoute.registration);
                                         },
-                                        child: const Text(
-                                          "Нет аккаунта ?",
-                                          style: TextStyle(
+                                        child: Text(
+                                          S.of(context).linkCreateAccount,
+                                          style: const TextStyle(
                                               color: AppColors.primary),
                                         ))
                                   ],

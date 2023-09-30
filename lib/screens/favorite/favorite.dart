@@ -1,3 +1,4 @@
+import 'package:coffe_flutter/generated/l10n.dart';
 import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/models/navigation.model.dart';
 import 'package:coffe_flutter/router/routes.dart';
@@ -6,7 +7,6 @@ import 'package:coffe_flutter/store/favorite/favorite_event.dart';
 import 'package:coffe_flutter/store/favorite/favorite_state.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:coffe_flutter/widgets/cards/favorite_card.dart';
-import 'package:coffe_flutter/widgets/cards/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +58,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text("У вас нет пока избранного товара")
+                        Text(S.of(context).emptyFavorite)
                       ],
                     )),
               ),
