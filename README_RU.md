@@ -50,10 +50,15 @@ db.createSearchDataDB(productsMock, "search_name");
 Для ios нужен macbook и Xcode.
 Выполнить нужные насройки в General. Выбрать в качестве устройства Any и создать Archive. Начнется создание ipa и затем будет предложен вариант распространения.
 
+## Мультиязычность
+
+Доступно 3 языка из коробки. Язык по умолчанию используется английский. При добавлении нового языка следует обновить модели.  
+
 ## Использовалось
   - firebase
   - animated_bottom_navigation_bar
   - flutter_bloc
   - hive
   - get_it
+  - flutter_localizations
   - и другое

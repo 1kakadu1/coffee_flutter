@@ -18,10 +18,10 @@ class RoutsAuthContainer extends StatefulWidget {
   const RoutsAuthContainer({Key? key}) : super(key: key);
 
   @override
-  _RoutsAuthContianerState createState() => _RoutsAuthContianerState();
+  _RoutsAuthContainerState createState() => _RoutsAuthContainerState();
 }
 
-class _RoutsAuthContianerState extends State<RoutsAuthContainer> {
+class _RoutsAuthContainerState extends State<RoutsAuthContainer> {
   User? user;
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _App extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        locale: const Locale("ru"),
+        locale: const Locale("uk"),
         routes: AppRoutes().getRoutersMap(isAuth),
       ),
     );

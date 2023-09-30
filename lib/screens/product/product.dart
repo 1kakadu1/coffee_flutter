@@ -122,7 +122,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   onPress: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
