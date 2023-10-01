@@ -39,6 +39,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final widthCard = width! < 1 ? 186.0 : width;
     final lang = Intl.getCurrentLocale();
     final itemJson = product.toJson();
     final title = lang == "ru"
@@ -52,14 +53,14 @@ class ProductCard extends StatelessWidget {
             ? itemJson["description_ua"]
             : itemJson["description_$lang"];
     return Container(
-      width: width,
+      width: widthCard,
       decoration: _decorationContainer,
       padding: const EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Stack(
           children: [
             Container(
-              width: width,
+              width: widthCard,
               height: 160,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -399,18 +400,19 @@ class ProductCardSkeleton extends StatelessWidget {
   const ProductCardSkeleton({super.key, this.width = 186});
   @override
   Widget build(BuildContext context) {
+    final widthCard = width! < 1.0 ? 100.0 : width;
     return SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
-        width: width,
+        width: widthCard,
         height: 160,
         decoration: _decorationContainer,
         padding: const EdgeInsets.all(10),
         child: Column(children: [
           SkeletonAvatar(
             style: SkeletonAvatarStyle(
-              width: width,
+              width: widthCard,
               height: 160,
             ),
           ),

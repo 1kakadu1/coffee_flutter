@@ -109,7 +109,8 @@ class HomeScreenContent extends StatelessWidget {
                       },
                     )),
             ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
+                constraints: const BoxConstraints(
+                    maxHeight: 300, minWidth: 10, minHeight: 100),
                 child: BlocBuilder<HomeBloc, HomeState>(
                     buildWhen: (previousState, state) {
                       return previousState.tabsProduct != state.tabsProduct;
@@ -119,13 +120,13 @@ class HomeScreenContent extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            //TODO: shoew test native module activity. Type: 'payment_bottom_sheet' or 'payment'
+            //TODO: show test native module activity. Type: 'payment_bottom_sheet' or 'payment'
             // ElevatedButton(
             //     onPressed: () async {
             //       var result = await platform.invokeMethod<String>(
             //           'payment_bottom_sheet',
             //           <String, dynamic>{'price': 2000.0});
-            //       log("RESULT NATIVE MODULE $result");
+            //       debugPrint("RESULT NATIVE MODULE $result");
             //     },
             //     child: Text("оплата")),
             TitleWidget(
@@ -136,7 +137,8 @@ class HomeScreenContent extends StatelessWidget {
               height: 20,
             ),
             ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 300, minWidth: 10),
+                constraints: const BoxConstraints(
+                    maxHeight: 300, minWidth: 10, minHeight: 100),
                 child: BlocBuilder<HomeBloc, HomeState>(
                     buildWhen: (previousState, state) {
                       return previousState.special != state.special;
