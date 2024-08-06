@@ -154,14 +154,12 @@ class AboutScreenContent extends StatelessWidget {
               point: LatLng(51.509364, -0.128928),
               width: 80,
               height: 80,
-              builder: (context) {
-                return Image.asset(
+              child: Image.asset(
                   "assets/img/marker.png",
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
-                );
-              },
+                ),
             ),
           ],
         ),
