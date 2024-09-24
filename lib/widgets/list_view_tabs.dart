@@ -1,7 +1,7 @@
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:skeletons/skeletons.dart';
+// import 'package:skeletons/skeletons.dart';
 
 class ListViewTabModel {
   String id;
@@ -153,16 +153,17 @@ class ListViewTabSkeleton extends StatelessWidget {
   const ListViewTabSkeleton({super.key, this.height = 50});
   @override
   Widget build(BuildContext context) {
-    return SkeletonTheme(
-      themeMode: ThemeMode.light,
-      shimmerGradient: AppColors.skeletonGradient,
-      child: SkeletonAvatar(
-        style: SkeletonAvatarStyle(
-          width: 100,
-          height: height,
-        ),
-      ),
-    );
+    return SizedBox();
+    // return SkeletonTheme(
+    //   themeMode: ThemeMode.light,
+    //   shimmerGradient: AppColors.skeletonGradient,
+    //   child: SkeletonAvatar(
+    //     style: SkeletonAvatarStyle(
+    //       width: 100,
+    //       height: height,
+    //     ),
+    //   ),
+    // );
   }
 }
 
