@@ -477,7 +477,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget _scaffoldBottom() {
     return Container(
-      height: 70,
+      height: 74,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       color: AppColors.black,
       child: BlocBuilder<ProductBloc, ProductState>(

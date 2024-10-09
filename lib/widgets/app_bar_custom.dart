@@ -30,6 +30,7 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
                       : "https://firebasestorage.googleapis.com/v0/b/cofee-flutter.appspot.com/o/users%2Fno-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg?alt=media&token=55ad603a-222f-4cb9-844c-11e2b9c41d51&_gl=1*1se3xc1*_ga*OTY2NjYwNjYwLjE2NjI1NzYwMzA.*_ga_CW55HF8NVT*MTY4NjU4NzgwMC4xMi4xLjE2ODY1ODc4NzUuMC4wLjA.",
                   radius: 10,
                   width: 44,
+                  height: 50,
                   assets: false,
                   onPress: () {
                     Navigator.pushNamed(

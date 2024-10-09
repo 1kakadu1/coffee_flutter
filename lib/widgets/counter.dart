@@ -16,13 +16,13 @@ class Counter extends StatelessWidget {
         onSub != null
             ? ButtonDefault(
                 onPress: onSub!,
-                width: 30,
-                height: 30,
-                radius: 30,
+                width: 36,
+                height: 36,
+                radius: 36,
                 text: const Icon(
                   Icons.remove,
                   color: Colors.white,
-                  size: 16.0,
+                  size: 14.0,
                 ),
               )
             : const SizedBox(),
@@ -39,13 +39,13 @@ class Counter extends StatelessWidget {
         onAdd != null
             ? ButtonDefault(
                 onPress: onAdd!,
-                width: 30,
-                height: 30,
-                radius: 30,
+                width: 36,
+                height: 36,
+                radius: 36,
                 text: const Icon(
                   Icons.add,
                   color: Colors.white,
-                  size: 16.0,
+                  size: 14.0,
                 ),
               )
             : const SizedBox()

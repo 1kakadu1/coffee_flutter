@@ -3,7 +3,7 @@ import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:skeletons/skeletons.dart';
+import 'package:flutter_skeleton_plus/flutter_skeleton_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 final _decorationContainer = BoxDecoration(
@@ -144,7 +144,8 @@ class ProductCartCardSkeleton extends StatelessWidget {
                           lineStyle: SkeletonLineStyle(
                             maxLength: 10,
                           )),
-                    )),
+                    )
+                    ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -158,7 +159,8 @@ class ProductCartCardSkeleton extends StatelessWidget {
                           lineStyle: SkeletonLineStyle(
                             maxLength: 10,
                           )),
-                    )),
+                    )
+                    ),
               ])),
         ]),
       ),
@@ -172,7 +174,7 @@ class FavoriteCardSkeleton extends StatelessWidget {
   const FavoriteCardSkeleton({super.key, this.width = 186});
   @override
   Widget build(BuildContext context) {
-    return SkeletonTheme(
+    return  SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
