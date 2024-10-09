@@ -32,6 +32,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  flutter_skeleton_plus: ^0.0.2
   firebase_auth: ^5.1.4
   firebase_core: ^3.3.0
   firebase_messaging: ^15.0.4

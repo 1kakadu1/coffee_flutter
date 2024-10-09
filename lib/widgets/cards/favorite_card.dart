@@ -3,7 +3,7 @@ import 'package:coffe_flutter/models/favorite.model.dart';
 import 'package:coffe_flutter/theme/theme_const.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-// import 'package:skeletons/skeletons.dart';
+import 'package:flutter_skeleton_plus/flutter_skeleton_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 final _decorationContainer = BoxDecoration(
@@ -118,54 +118,53 @@ class ProductCartCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
-    return SizedBox();
-    /*SkeletonTheme(
+    return SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
         width: width,
         decoration: _decorationContainer,
         child: Row(children: [
-          // const SkeletonAvatar(
-          //   style: SkeletonAvatarStyle(
-          //     width: 90,
-          //     height: 90,
-          //   ),
-          // ),
+          const SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: 90,
+              height: 90,
+            ),
+          ),
           Container(
               padding: const EdgeInsets.all(10),
               child: Column(children: [
                 SizedBox(
                     width: widthWidget - 140,
-                    // child: SkeletonParagraph(
-                    //   style: const SkeletonParagraphStyle(
-                    //       lines: 1,
-                    //       spacing: 0,
-                    //       padding: EdgeInsets.all(0),
-                    //       lineStyle: SkeletonLineStyle(
-                    //         maxLength: 10,
-                    //       )),
-                    // )
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )
                     ),
                 const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: widthWidget - 140,
-                    // child: SkeletonParagraph(
-                    //   style: const SkeletonParagraphStyle(
-                    //       lines: 1,
-                    //       spacing: 0,
-                    //       padding: EdgeInsets.all(0),
-                    //       lineStyle: SkeletonLineStyle(
-                    //         maxLength: 10,
-                    //       )),
-                    // )
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                          lines: 1,
+                          spacing: 0,
+                          padding: EdgeInsets.all(0),
+                          lineStyle: SkeletonLineStyle(
+                            maxLength: 10,
+                          )),
+                    )
                     ),
               ])),
         ]),
       ),
-    ); */
+    );
   }
 }
 
@@ -175,8 +174,7 @@ class FavoriteCardSkeleton extends StatelessWidget {
   const FavoriteCardSkeleton({super.key, this.width = 186});
   @override
   Widget build(BuildContext context) {
-    return SizedBox();}
-    /*return SkeletonTheme(
+    return  SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
@@ -239,5 +237,5 @@ class FavoriteCardSkeleton extends StatelessWidget {
         ]),
       ),
     );
-  } */
+  }
 }

@@ -10,7 +10,7 @@ import 'package:coffe_flutter/widgets/price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-// import 'package:skeletons/skeletons.dart';
+import 'package:flutter_skeleton_plus/flutter_skeleton_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -207,10 +207,10 @@ class ProductCard extends StatelessWidget {
                   context.read<CartBloc>().add(
                       CartAddAction(size: product.size[0], product: product));
                 },
-                width: 32,
+                width: 38,
                 height: 32,
                 radius: 12,
-                text: const Icon(
+                text:  Icon(
                   Icons.add,
                   color: Colors.white,
                   size: 16.0,
@@ -346,8 +346,7 @@ class ProductCartCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthWidget = MediaQuery.of(context).size.width;
-    return SizedBox();
-   /* SkeletonTheme(
+    return SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
@@ -391,7 +390,7 @@ class ProductCartCardSkeleton extends StatelessWidget {
               ])),
         ]),
       ),
-    ); */
+    );
   }
 }
 
@@ -402,8 +401,7 @@ class ProductCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widthCard = width! < 1.0 ? 100.0 : width;
-    return SizedBox();
-     /*SkeletonTheme(
+    return SkeletonTheme(
       themeMode: ThemeMode.light,
       shimmerGradient: AppColors.skeletonGradient,
       child: Container(
@@ -465,6 +463,6 @@ class ProductCardSkeleton extends StatelessWidget {
           ]),
         ]),
       ),
-    ); */
+    );
   }
 }
